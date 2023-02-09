@@ -15,7 +15,6 @@ enum FILTER_TYPES {
 }
 
 
-
 function  ShedulePage() {
 
   const [week, setWeek] = useState(1);
@@ -111,10 +110,10 @@ function  ShedulePage() {
         {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
     ]
     const columns: GridColDef[] = [
-        {field: 'subjNumber', headerName: 'Пара', width: 55},
-        {field: 'teacher', headerName: 'Преподаватель', width: 125},
-        {field: 'subject', headerName: 'Дисциплина', minWidth: 275},
-        {field: 'room', headerName: 'Аудитория', width: 100},
+        {field: 'subjNumber', headerName: 'Пара', flex: 1},
+        {field: 'teacher', headerName: 'Преподаватель', flex: 2},
+        {field: 'subject', headerName: 'Дисциплина', flex: 3},
+        {field: 'room', headerName: 'Аудитория', flex: 1},
     ]
 
   const objects = [
@@ -189,19 +188,19 @@ function  ShedulePage() {
 
         <Grid2 xs={4}>
 
-        <Autocomplete 
-          
-          size='small'
-          options={objects}
-          renderInput={(params) => <TextField {...params} label={filterType}/> }
-          />
+          <Autocomplete 
+            
+            size='small'
+            options={objects}
+            renderInput={(params) => <TextField {...params} label={filterType}/> }
+            />
           </Grid2>
 
       </Stack>
 
       <Grid2 container spacing={6} sx={{mx: 8, my: 2}}>
           {weekRows.map((item, index) => (
-            <DayGrid xsNum={6} 
+            <DayGrid xsNum={12} 
                      key={index}
                    mdNum={6} 
                    lNum={4}

@@ -31,7 +31,7 @@ const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, columns, rows, isS
     {console.log('123');
     }
   return (
-    <Grid2 xs={xsNum} md={mdNum} >
+    <Grid2 xs={xsNum} sm={xsNum} md={mdNum} lg={lNum}>
         
         <Box sx={{width: "fit-content", height: 25, 
             border: "1px solid", 
