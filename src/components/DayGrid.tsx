@@ -8,6 +8,7 @@ interface DayGridProps {
     xsNum: number,
     mdNum: number,
     lNum: number,
+    xlNum: number,
     columns: GridColDef[],
     rows: GridRowsProp,
     isSelected: boolean,
@@ -22,7 +23,7 @@ const WEEK_DAYS = [
     'Суббота',
 ]
 
-const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, columns, rows, isSelected, dayNumber: titleDay}) => {
+const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, columns, rows, isSelected, dayNumber: titleDay}) => {
 
 
     const bgColor = isSelected === true ? "primary.main" : "white";
@@ -31,7 +32,7 @@ const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, columns, rows, isS
     {console.log('123');
     }
   return (
-    <Grid2 xs={xsNum} sm={xsNum} md={mdNum} lg={lNum}>
+    <Grid2 xs={xsNum} sm={xsNum} md={mdNum} lg={lNum} xl={xlNum}>
         
         <Box sx={{width: "fit-content", height: 25, 
             border: "1px solid", 
@@ -49,7 +50,6 @@ const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, columns, rows, isS
                 columns={columns} 
                 hideFooter 
                 disableColumnMenu
-                
                 sx={{m:0, border: "1px solid", borderColor: "primary.main", borderRadius: "0px, 4px,4px, 4px"}} />
     </Grid2>
   )
