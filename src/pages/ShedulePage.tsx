@@ -20,11 +20,12 @@ function  ShedulePage() {
   const [week, setWeek] = useState(1);
   const [isReplaceActive, setIsReplaceActive] = useState(true);
   const [filterType, setFilterType] = useState(FILTER_TYPES.GROUPS);
+  const [filterValue, setFilterValue] = useState< string | null>(null);
 
   const date = new Date();
   const currentDay = date.getDay() - 1;
 
-  const weekRows = [
+  const weekRows = [[
     [
       {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
         {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
@@ -61,8 +62,45 @@ function  ShedulePage() {
         {id: 3, subjNumber: "3", teacher: "Шостак Н. И.",subject: 'Инструментальные средста разработки', room: "104"},
         {id: 4, subjNumber: "4", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
     ],
-    
-  ]
+  ],
+  [
+    [
+      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "460"},
+        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+        {id: 3, subjNumber: "2", teacher: "Шостак Р. А.",subject: 'Разработка программных модулей', room: "105"},
+        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+    ],
+    [
+      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
+        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+        {id: 3, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+    ],
+    [
+      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
+        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+        {id: 3, subjNumber: "2", teacher: "йцукйцук Р. А.",subject: 'Разработка программных модулей', room: "105"},
+        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+    ],
+    [
+      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
+        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+        {id: 3, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+    ],
+    [
+      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
+        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+        {id: 3, subjNumber: "2", teacher: "йцукйцук Р. А.",subject: 'Разработка программных модулей', room: "105"},
+        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+    ],
+    [
+      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
+        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+        {id: 3, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
+    ],
+  ]]
 
   const weekRows2 = [
     [
@@ -112,8 +150,8 @@ function  ShedulePage() {
     ]
 
   const objects = [
-    {label: '4-Д9-4ИСП'},
-    {label: '3-Д9-4ИНС'},
+    '4-Д9-4ИСП',
+    '3-Д9-4ИНС'
   ]
 
   const handleWeekChange = (weekNumber: number) => {
@@ -132,7 +170,7 @@ function  ShedulePage() {
   return (
     <>
       <NavBar/>
-      <Stack spacing={2} direction='row' sx={{ml: '85px', mr: '100px', mt: '25px', flexWrap: 'wrap'}}>
+      <Stack spacing={{lg: 2, md: 1, sm: 0}} direction='row' sx={{ml: '85px', mr: '100px', mt: '25px', flexWrap: 'wrap'}}>
         <Grid2 xs={2}>
           <ButtonGroup variant='outlined' >
             <Button disabled>Неделя</Button>
@@ -184,18 +222,23 @@ function  ShedulePage() {
         <Grid2 xs={4}>
 
           <Autocomplete 
-            
+            value={filterValue}
             size='small'
             options={objects}
             renderInput={(params) => <TextField {...params} label={filterType}/> }
-            
+            onChange={(event: any, newValue: string | null) => {
+                setFilterValue((state) => state = newValue );
+                  
+            }}
             />
           </Grid2>
 
       </Stack>
 
       <Grid2 container spacing={6} sx={{mx: 8, my: 2}}>
-          {weekRows.map((item, index) => (
+          
+
+          {filterValue !== null ? weekRows[objects.findIndex((item) => item === filterValue)].map((item, index) => (
             <DayGrid xsNum={12} 
                      key={index}
                    mdNum={6} 
@@ -205,7 +248,7 @@ function  ShedulePage() {
                    rows={item}
                    isSelected={index === currentDay ? true : false}
                    dayNumber={index}/>   
-          ))}
+          )) : null}
 
       </Grid2>
     </>
