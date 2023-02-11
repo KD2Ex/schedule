@@ -1,6 +1,6 @@
 import React from 'react'
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
-import { Box, Typography } from '@mui/material'
+import { Box, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 
 
@@ -9,7 +9,6 @@ interface DayGridProps {
     mdNum: number,
     lNum: number,
     xlNum: number,
-    columns: GridColDef[],
     rows: GridRowsProp,
     isSelected: boolean,
     dayNumber: number,
@@ -23,15 +22,18 @@ const WEEK_DAYS = [
     'Суббота',
 ]
 
-const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, columns, rows, isSelected, dayNumber: titleDay}) => {
+
+
+const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, rows, isSelected, dayNumber: titleDay}) => {
 
 
     const bgColor = isSelected === true ? "primary.main" : "white";
     const fontColor = isSelected === true ? "white" : "primary.main";
+    
 
     {console.log('123');}
   return (
-    <Grid2 xs={xsNum} sm={xsNum} md={mdNum} lg={lNum} xl={xlNum}>
+    <Grid2 xs={xsNum} sm={xsNum} md={mdNum} lg={lNum} xl={xlNum} >
         
         <Box sx={{width: "fit-content", height: 25, 
             border: "1px solid", 
@@ -44,12 +46,35 @@ const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, columns, ro
             </Typography>
             
         </Box>
-      <DataGrid autoHeight 
-                rows={rows} 
-                columns={columns} 
-                hideFooter 
-                disableColumnMenu
-                sx={{m:0, border: "1px solid", borderColor: "primary.main", borderRadius: "0px, 4px,4px, 4px"}} />
+
+        <Table sx={{border: "1px solid", borderRadius: 2}} component={Paper} >
+              <TableHead>
+                <TableRow>
+                  <TableCell>Пара</TableCell>
+                  <TableCell>Преподаватель</TableCell>
+                  <TableCell>Дисциплина</TableCell>
+                  <TableCell>Аудитория</TableCell>
+                </TableRow>
+              </TableHead>
+
+              <TableBody>
+                {rows.map((row) => (
+                  <TableRow 
+                    key={row.id}
+                    sx={{}}>
+                      <TableCell component="th" scope='row'>
+                        {row.subjNumber}
+                      </TableCell>
+                      <TableCell>{row.teacher}</TableCell>
+                      <TableCell>{row.subject}</TableCell>
+                      <TableCell>{row.room}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+
+
+
     </Grid2>
   )
 }

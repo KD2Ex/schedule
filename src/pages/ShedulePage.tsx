@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import Button from '@mui/material/Button'
-import {Stack, Autocomplete, TextField} from '@mui/material'
+import {Stack, Autocomplete, TextField, TableContainer, Table, TableHead, TableRow, TableCell, Paper, TableBody} from '@mui/material'
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {Typography} from '@mui/material'
@@ -24,6 +24,26 @@ function  ShedulePage() {
 
   const date = new Date();
   const currentDay = date.getDay() - 1;
+
+  function createData (
+    id: number,
+    subjNumber: number,
+    teacher: string,
+    subject: string,
+    room: number,
+  ) {
+    return {id, subjNumber, teacher, subject, room};
+  }
+  
+  
+
+  const rows = [
+    createData(1, 1, "Тесленко Н. Ф.", "Элементы высшей математики", 46),
+    createData(2, 2, "Тесленко Н. Ф.", "Элементы высшей математики", 46),
+    createData(3, 3, "Тесленко Н. Ф.", "Элементы высшей математики", 46),
+    createData(4, 4, "Тесленко Н. Ф.", "Элементы высшей математики", 46),
+  ]
+  
 
   const weekRows = [[
     [
@@ -101,45 +121,6 @@ function  ShedulePage() {
         {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
     ],
   ]]
-
-  const weekRows2 = [
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "460"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "2", teacher: "Шостак Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "2", teacher: "йцукйцук Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "2", teacher: "йцукйцук Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-  ]
 
 
     const columns: GridColDef[] = [
@@ -236,15 +217,15 @@ function  ShedulePage() {
       </Stack>
 
       <Grid2 container spacing={6} sx={{mx: 8, my: 2}}>
-          
+        
+
 
           {filterValue !== null ? weekRows[objects.findIndex((item) => item === filterValue)].map((item, index) => (
             <DayGrid xsNum={12} 
                      key={index}
-                   mdNum={6} 
+                   mdNum={12} 
                    lNum={6}
                    xlNum={4}
-                   columns={columns} 
                    rows={item}
                    isSelected={index === currentDay ? true : false}
                    dayNumber={index}/>   
