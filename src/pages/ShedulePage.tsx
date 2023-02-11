@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import Button from '@mui/material/Button'
 import {Stack, Autocomplete, TextField, TableContainer, Table, TableHead, TableRow, TableCell, Paper, TableBody} from '@mui/material'
@@ -7,6 +7,7 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {Typography} from '@mui/material'
 import NavBar from '../components/NavBar'
 import DayGrid from '../components/DayGrid';
+import useScheduleStore from '../store/scheduleStore';
 
 enum FILTER_TYPES {
   GROUPS = 'Группы',
@@ -25,6 +26,16 @@ function  ShedulePage() {
   const date = new Date();
   const currentDay = date.getDay() - 1;
 
+  const schedule = useScheduleStore(state => state.schedule);
+  const getSchedule = useScheduleStore(state => state.testSchedule);
+  
+  useEffect(() => {
+    getSchedule();
+  }, [])
+  
+
+  console.log(schedule);
+  
   function createData (
     id: number,
     subjNumber: number,
@@ -209,7 +220,7 @@ function  ShedulePage() {
             renderInput={(params) => <TextField {...params} label={filterType}/> }
             onChange={(event: any, newValue: string | null) => {
                 setFilterValue((state) => state = newValue );
-                  
+                
             }}
             />
           </Grid2>
@@ -219,8 +230,10 @@ function  ShedulePage() {
       <Grid2 container spacing={6} sx={{mx: 8, my: 2}}>
         
 
+        
 
-          {filterValue !== null ? weekRows[objects.findIndex((item) => item === filterValue)].map((item, index) => (
+
+          {filterValue !== null ? schedule[objects.findIndex((item) => item === filterValue)].map((item, index) => (
             <DayGrid xsNum={12} 
                      key={index}
                    mdNum={12} 

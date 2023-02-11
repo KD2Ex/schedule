@@ -1,6 +1,6 @@
 import React from 'react'
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
-import { Box, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
+import { Box, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, TableContainer } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 
 
@@ -47,7 +47,11 @@ const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, rows, isSel
             
         </Box>
 
-        <Table sx={{border: "1px solid", borderRadius: 2}} component={Paper} >
+
+        <TableContainer sx={{border: "1px solid", borderRadius: "0px 4px 4px 4px" }} >
+
+        
+        <Table component={Paper} >
               <TableHead>
                 <TableRow>
                   <TableCell>Пара</TableCell>
@@ -71,7 +75,8 @@ const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, rows, isSel
                   </TableRow>
                 ))}
               </TableBody>
-            </Table>
+        </Table>
+        </TableContainer>
 
 
 
