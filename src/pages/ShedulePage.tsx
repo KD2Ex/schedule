@@ -1,13 +1,17 @@
 import React, {useEffect, useState} from 'react'
 import ButtonGroup from '@mui/material/ButtonGroup'
 import Button from '@mui/material/Button'
-import {Stack, Autocomplete, TextField, TableContainer, Table, TableHead, TableRow, TableCell, Paper, TableBody} from '@mui/material'
+import {Stack, Autocomplete, TextField, TableContainer, Table, TableHead, TableRow, TableCell, Paper, TableBody, ToggleButtonGroup, ToggleButton} from '@mui/material'
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {Typography} from '@mui/material'
 import NavBar from '../components/NavBar'
 import DayGrid from '../components/DayGrid';
 import useScheduleStore from '../store/scheduleStore';
+import useGroupStore from '../store/groupStore';
+import useTeachersStore from './../store/teachersStore';
+import useRoomsStore from './../store/roomsStore';
+
 
 enum FILTER_TYPES {
   GROUPS = 'Группы',
@@ -16,136 +20,106 @@ enum FILTER_TYPES {
 }
 
 
+interface Group {
+    id: number,
+    groupNumber: number,
+    course: number,
+    label: string,
+}
+
+interface Teacher {
+  id: number,
+  label: string,
+};
+
+interface Room {
+  id: number,
+  lable: string,
+}
+
+
 function  ShedulePage() {
 
   const [week, setWeek] = useState(1);
   const [isReplaceActive, setIsReplaceActive] = useState(true);
-  const [filterType, setFilterType] = useState(FILTER_TYPES.GROUPS);
-  const [filterValue, setFilterValue] = useState< string | null>(null);
+  const [filterValue, setFilterValue] = useState< Group | Teacher | Room | null>(null);
+  const [filterOptions, setFilterOptions] = useState<Group[] | Teacher[] | Room[]>([]);
+  const [filterType, setFilterType] = useState<FILTER_TYPES>(FILTER_TYPES.GROUPS);
+  const [open, setOpen] = useState(false);
+  const loading = open && filterOptions?.length === 0;
 
   const date = new Date();
   const currentDay = date.getDay() - 1;
 
   const schedule = useScheduleStore(state => state.schedule);
-  const getSchedule = useScheduleStore(state => state.testSchedule);
+  const getGroupSchedule = useScheduleStore(state => state.getGroupSchedule);
+
+  const groups = useGroupStore(state => state.groups);
+  const getGroups = useGroupStore(state => state.getGroups);
+
+  const teachers = useTeachersStore(state => state.teachers);
+  const getTeachers = useTeachersStore(state => state.getTeachers); 
+
+  const rooms = useRoomsStore(state => state.rooms);
+  const getRooms = useRoomsStore(state => state.getRooms);
+  
   
   useEffect(() => {
-    getSchedule();
-  }, [])
-  
+      
+        let active = true;
 
-  console.log(schedule);
-  
-  function createData (
-    id: number,
-    subjNumber: number,
-    teacher: string,
-    subject: string,
-    room: number,
-  ) {
-    return {id, subjNumber, teacher, subject, room};
+        if (!loading) {
+          return undefined;
+        }
+
+        (() => {
+
+          let options: any = [];
+          
+          switch(filterType) {
+            case FILTER_TYPES.TEACHERS:
+              getTeachers();
+              console.log(teachers);
+              options = teachers;
+              break;
+            case FILTER_TYPES.GROUPS:      
+                      
+              getGroups();
+              options = groups;
+              break;
+            case FILTER_TYPES.ROOMS:
+              getRooms();
+              options = rooms;
+              break;
+          }
+
+          if (active) {
+            setFilterOptions(options);
+          }
+        })();
+
+  }, [loading])
+
+  React.useEffect(() => {
+    if (!open) {
+      setOptions([]);
+      
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (filterValue !== null) {
+      if (filterType === FILTER_TYPES.GROUPS) {
+        getGroupSchedule(4);
+        console.log('qwe');
+      }
+    }
+  }, [filterValue])
+
+  const setOptions = (value: any[]) => {
+    setFilterOptions(value);
   }
-  
-  
-
-  const rows = [
-    createData(1, 1, "Тесленко Н. Ф.", "Элементы высшей математики", 46),
-    createData(2, 2, "Тесленко Н. Ф.", "Элементы высшей математики", 46),
-    createData(3, 3, "Тесленко Н. Ф.", "Элементы высшей математики", 46),
-    createData(4, 4, "Тесленко Н. Ф.", "Элементы высшей математики", 46),
-  ]
-  
-
-  const weekRows = [[
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "3", teacher: "Шостак Н. И.",subject: 'Инструментальные средста разработки', room: "104"},
-        {id: 4, subjNumber: "4", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "3", teacher: "Шостак Н. И.",subject: 'Инструментальные средста разработки', room: "104"},
-        {id: 4, subjNumber: "4", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "3", teacher: "Шостак Н. И.",subject: 'Инструментальные средста разработки', room: "104"},
-        {id: 4, subjNumber: "4", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "3", teacher: "Шостак Н. И.",subject: 'Инструментальные средста разработки', room: "104"},
-        {id: 4, subjNumber: "4", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "3", teacher: "Шостак Н. И.",subject: 'Инструментальные средста разработки', room: "104"},
-        {id: 4, subjNumber: "4", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "3", teacher: "Шостак Н. И.",subject: 'Инструментальные средста разработки', room: "104"},
-        {id: 4, subjNumber: "4", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-  ],
-  [
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "460"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "2", teacher: "Шостак Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "2", teacher: "йцукйцук Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "2", teacher: "йцукйцук Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-    [
-      {id: 1, subjNumber: "1", teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: "46"},
-        {id: 2, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 3, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-        {id: 4, subjNumber: "2", teacher: "Головко Р. А.",subject: 'Разработка программных модулей', room: "105"},
-    ],
-  ]]
-
-
-    const columns: GridColDef[] = [
-        {field: 'subjNumber', headerName: 'Пара', flex: 1},
-        {field: 'teacher', headerName: 'Преподаватель', flex: 2},
-        {field: 'subject', headerName: 'Дисциплина', flex: 3},
-        {field: 'room', headerName: 'Аудитория', flex: 1},
-    ]
-
-  const objects = [
-    '4-Д9-4ИСП',
-    '3-Д9-4ИНС'
-  ]
-
+ 
   const handleWeekChange = (weekNumber: number) => {
     setWeek(weekNumber);
     console.log(week);
@@ -155,15 +129,20 @@ function  ShedulePage() {
     setIsReplaceActive(value);
   }
 
-  const handleFilterTypeChange = (value: FILTER_TYPES) => {
-    setFilterType(value);
+  const handelAlignment = (event: React.MouseEvent<HTMLElement>, newFilter: FILTER_TYPES) => {
+    if (newFilter !== null) {
+      setFilterType(newFilter);
+      setFilterValue(null);
+    }
   }
 
   return (
     <>
       <NavBar/>
+      
       <Stack spacing={{lg: 2, md: 1, sm: 0}} direction='row' sx={{ml: '85px', mr: '100px', mt: '25px', flexWrap: 'wrap'}}>
         <Grid2 xs={2}>
+
           <ButtonGroup variant='outlined' >
             <Button disabled>Неделя</Button>
             <Button 
@@ -190,37 +169,53 @@ function  ShedulePage() {
         </Grid2>
 
         <Grid2 xs={4}>
-          <ButtonGroup variant='outlined' >
-            <Button disabled>Тип</Button>
-            <Button 
-              variant={filterType === FILTER_TYPES.GROUPS ? 'contained' : 'outlined'}
-              onClick={() => handleFilterTypeChange(FILTER_TYPES.GROUPS)}
-              >
+        <ToggleButtonGroup 
+            size='small'
+            onChange={handelAlignment}
+            value={filterType}
+            exclusive
+            >
+              <ToggleButton value="Тип" disabled>
+                Тип
+              </ToggleButton>
+              <ToggleButton value={FILTER_TYPES.GROUPS} >
                 Группы
-            </Button>
-            <Button
-              variant={filterType === FILTER_TYPES.TEACHERS ? 'contained' : 'outlined'}
-              onClick={() => handleFilterTypeChange(FILTER_TYPES.TEACHERS)}>
+              </ToggleButton>
+              <ToggleButton value={FILTER_TYPES.TEACHERS}>
                 Преподаватели
-            </Button>
-            <Button
-              variant={filterType === FILTER_TYPES.ROOMS ? 'contained' : 'outlined'}
-              onClick={() => handleFilterTypeChange(FILTER_TYPES.ROOMS)}>
+              </ToggleButton>
+              <ToggleButton value={FILTER_TYPES.ROOMS}>
                 Аудитории
-            </Button>
-          </ButtonGroup>
+              </ToggleButton>
+          </ToggleButtonGroup>
         </Grid2>
 
         <Grid2 xs={4}>
 
-          <Autocomplete 
+          <Autocomplete
             value={filterValue}
             size='small'
-            options={objects}
-            renderInput={(params) => <TextField {...params} label={filterType}/> }
-            onChange={(event: any, newValue: string | null) => {
-                setFilterValue((state) => state = newValue );
-                
+            open={open}
+            // getOptionLabel={(option) => option.label}
+            // isOptionEqualToValue={(option, value) => option.label === value.label}
+            onOpen={() => {
+              setOpen(true);
+              
+            }}
+            onClose={() => {
+              setOpen(false);
+            }}
+            loading={loading}
+            options={filterOptions}
+            renderInput={(params) => (<TextField 
+              {...params} 
+              label={filterType}
+              InputProps={{
+                ...params.InputProps,
+              }}
+              /> )}
+            onChange={(event: any, newValue: Group | Teacher | null) => {
+                setFilterValue((state) => state = newValue);
             }}
             />
           </Grid2>
@@ -230,10 +225,7 @@ function  ShedulePage() {
       <Grid2 container spacing={6} sx={{mx: 8, my: 2}}>
         
 
-        
-
-
-          {filterValue !== null ? schedule[objects.findIndex((item) => item === filterValue)].map((item, index) => (
+          {filterValue !== null && schedule !== null ? schedule.map((item, index) => (
             <DayGrid xsNum={12} 
                      key={index}
                    mdNum={12} 
@@ -243,6 +235,7 @@ function  ShedulePage() {
                    isSelected={index === currentDay ? true : false}
                    dayNumber={index}/>   
           )) : null}
+
 
       </Grid2>
     </>

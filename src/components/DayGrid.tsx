@@ -31,7 +31,6 @@ const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, rows, isSel
     const fontColor = isSelected === true ? "white" : "primary.main";
     
 
-    {console.log('123');}
   return (
     <Grid2 xs={xsNum} sm={xsNum} md={mdNum} lg={lNum} xl={xlNum} >
         

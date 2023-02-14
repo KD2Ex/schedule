@@ -77,5 +77,41 @@ export const theme = createTheme({
                 },
             }
         },     
+        MuiToggleButtonGroup: {
+            styleOverrides: {
+                root: {
+                    '& .MuiToggleButtonGroup-grouped': {
+                        height: 36,
+                        border: "1px solid",
+                        color: "rgba(3, 29, 96, 0.82)",
+                        padding: 16,
+                        transition: '0.3s',
+                        '&.Mui-selected': {
+                            backgroundColor: "rgba(3, 29, 96, 0.82)",
+                            color: "white",
+                            border: "1px solid rgba(3, 29, 96, 0.82)",  
+                            
+                            '&:hover': {
+                                backgroundColor: "rgba(3, 29, 96, 0.82)",
+                            }
+                        },
+                }
+            }
+        }
+        },
+        MuiTogglleButton: {
+            styeOverrides: {
+                root: {
+                    
+                }
+            }
+        },
+        MuiButtonBase: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: "",
+                }
+            }
+        }
     },
 });
