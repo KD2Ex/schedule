@@ -34,17 +34,6 @@ const useScheduleStore = create<ScheduleState>((set) => ({
 
         let schedule1: any = [];
 
-        // for (let i = 0; i < 6; i++) {
-
-        //     const lessons: Lesson[] = [
-        //         {id: 1, subjNumber: 1, teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: 46},
-        //         {id: 2, subjNumber: 2, teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: 46},
-        //         {id: 3, subjNumber: 3, teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: 46},
-        //         {id: 4, subjNumber: 4, teacher: "Тесленко Н. Ф.",subject: 'Элементы высшей математики', room: 46},
-        //     ],
-            
-        // }
-
 
         const fullSchedule = [[
             

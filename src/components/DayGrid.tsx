@@ -48,10 +48,10 @@ const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, rows, colum
         </Box>
 
 
-        <TableContainer sx={{border: "1px solid", borderRadius: "0px 4px 4px 4px" }} >
+        <TableContainer sx={{border: "1px solid", borderRadius: "0px 4px 4px 4px" }}  >
 
           
-          <Table component={Paper} >
+          <Table component={Paper}>
                 <TableHead>
                   <TableRow sx={{borderBottom: "1px solid black"}}>
 
@@ -70,9 +70,9 @@ const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, rows, colum
                         <TableCell component="th" scope='row'>
                           {row.subjNumber}
                         </TableCell>
-                        <TableCell sx={{flexWrap: 'nowrap'}} >{row.teacher}</TableCell>
-                        <TableCell>{row.subject}</TableCell>
-                        <TableCell>{row.room}</TableCell>
+                        <TableCell sx={{flexWrap: 'nowrap'}}  size='small'>{row.teacher}</TableCell>
+                        <TableCell size='small'>{row.subject}</TableCell>
+                        <TableCell size='small'>{row.room}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

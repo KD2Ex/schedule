@@ -82,7 +82,6 @@ function  ShedulePage() {
           switch(filterType) {
             case FILTER_TYPES.TEACHERS:
               getTeachers();
-              console.log(teachers);
               options = teachers;
               break;
             case FILTER_TYPES.GROUPS:        
@@ -112,14 +111,13 @@ function  ShedulePage() {
   useEffect(() => {
     if (filterValue !== null) {
       if (filterType === FILTER_TYPES.GROUPS) {
-        getGroupSchedule(4);
-        console.log('qwe');
+        getGroupSchedule(filterValue.id);
       }
       if (filterType === FILTER_TYPES.TEACHERS) {
-        getTeacherSchedule(1);
+        getTeacherSchedule(filterValue.id);
       }
       if (filterType === FILTER_TYPES.ROOMS) {
-        getRoomSchedule(1);
+        getRoomSchedule(filterValue.id);
       }
     }
   }, [filterValue])
