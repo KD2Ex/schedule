@@ -10,6 +10,7 @@ interface DayGridProps {
     lNum: number,
     xlNum: number,
     rows: GridRowsProp,
+    columns: string[],
     isSelected: boolean,
     dayNumber: number,
 }
@@ -24,7 +25,7 @@ const WEEK_DAYS = [
 
 
 
-const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, rows, isSelected, dayNumber: titleDay}) => {
+const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, rows, columns, isSelected, dayNumber: titleDay}) => {
 
 
     const bgColor = isSelected === true ? "primary.main" : "white";
@@ -40,7 +41,7 @@ const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, rows, isSel
             borderRadius: "4px 4px 0px 0px", 
             borderBottom: "0px",
             backgroundColor: bgColor}}>
-            <Typography sx={{color: fontColor, px: 1, fontWeidht: 'light    '}} >
+            <Typography sx={{color: fontColor, px: 1, fontWeidht: 'bold'}} >
                 {WEEK_DAYS[titleDay]}
             </Typography>
             
@@ -49,32 +50,33 @@ const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, rows, isSel
 
         <TableContainer sx={{border: "1px solid", borderRadius: "0px 4px 4px 4px" }} >
 
-        
-        <Table component={Paper} >
-              <TableHead>
-                <TableRow>
-                  <TableCell>Пара</TableCell>
-                  <TableCell>Преподаватель</TableCell>
-                  <TableCell>Дисциплина</TableCell>
-                  <TableCell>Аудитория</TableCell>
-                </TableRow>
-              </TableHead>
+          
+          <Table component={Paper} >
+                <TableHead>
+                  <TableRow sx={{borderBottom: "1px solid black"}}>
 
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow 
-                    key={row.id}
-                    sx={{}}>
-                      <TableCell component="th" scope='row'>
-                        {row.subjNumber}
-                      </TableCell>
-                      <TableCell>{row.teacher}</TableCell>
-                      <TableCell>{row.subject}</TableCell>
-                      <TableCell>{row.room}</TableCell>
+                    {columns.map((value) => (
+                      <TableCell>{value}</TableCell>
+                    ))}
+                    
                   </TableRow>
-                ))}
-              </TableBody>
-        </Table>
+                </TableHead>
+
+                <TableBody >
+                  {rows.map((row) => (
+                    <TableRow 
+                      key={row.id}
+                      sx={{}}>
+                        <TableCell component="th" scope='row'>
+                          {row.subjNumber}
+                        </TableCell>
+                        <TableCell sx={{flexWrap: 'nowrap'}} >{row.teacher}</TableCell>
+                        <TableCell>{row.subject}</TableCell>
+                        <TableCell>{row.room}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+          </Table>
         </TableContainer>
 
 

@@ -48,11 +48,14 @@ function  ShedulePage() {
   const [open, setOpen] = useState(false);
   const loading = open && filterOptions?.length === 0;
 
+
   const date = new Date();
   const currentDay = date.getDay() - 1;
 
   const schedule = useScheduleStore(state => state.schedule);
   const getGroupSchedule = useScheduleStore(state => state.getGroupSchedule);
+  const getTeacherSchedule = useScheduleStore(state => state.getTeacherSchedule);
+  const getRoomSchedule = useScheduleStore(state => state.getRoomSchedule);
 
   const groups = useGroupStore(state => state.groups);
   const getGroups = useGroupStore(state => state.getGroups);
@@ -82,8 +85,7 @@ function  ShedulePage() {
               console.log(teachers);
               options = teachers;
               break;
-            case FILTER_TYPES.GROUPS:      
-                      
+            case FILTER_TYPES.GROUPS:        
               getGroups();
               options = groups;
               break;
@@ -113,6 +115,12 @@ function  ShedulePage() {
         getGroupSchedule(4);
         console.log('qwe');
       }
+      if (filterType === FILTER_TYPES.TEACHERS) {
+        getTeacherSchedule(1);
+      }
+      if (filterType === FILTER_TYPES.ROOMS) {
+        getRoomSchedule(1);
+      }
     }
   }, [filterValue])
 
@@ -133,6 +141,17 @@ function  ShedulePage() {
     if (newFilter !== null) {
       setFilterType(newFilter);
       setFilterValue(null);
+    }
+  }
+
+  const getColumns = (filterType: FILTER_TYPES) => {
+    switch(filterType) {
+      case FILTER_TYPES.GROUPS:
+        return ['Пара', 'Преподаватель', 'Дисциплина', 'Аудитория'];
+      case FILTER_TYPES.TEACHERS:
+        return ['Пара', 'Группа', 'Дисциплина', 'Аудитория'];
+      case FILTER_TYPES.ROOMS:
+        return ['Пара', 'Группа', 'Преподаватель', 'Дисциплина'];
     }
   }
 
@@ -204,6 +223,8 @@ function  ShedulePage() {
             }}
             onClose={() => {
               setOpen(false);
+              {console.log(schedule);
+              }
             }}
             loading={loading}
             options={filterOptions}
@@ -228,6 +249,7 @@ function  ShedulePage() {
           {filterValue !== null && schedule !== null ? schedule.map((item, index) => (
             <DayGrid xsNum={12} 
                      key={index}
+                     columns={getColumns(filterType)}
                    mdNum={12} 
                    lNum={6}
                    xlNum={4}

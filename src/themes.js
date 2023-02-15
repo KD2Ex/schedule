@@ -95,23 +95,21 @@ export const theme = createTheme({
                                 backgroundColor: "rgba(3, 29, 96, 0.82)",
                             }
                         },
-                }
-            }
-        }
-        },
-        MuiTogglleButton: {
-            styeOverrides: {
-                root: {
-                    
+                    }
                 }
             }
         },
-        MuiButtonBase: {
+        
+        MuiTableCell: {
             styleOverrides: {
                 root: {
-                    backgroundColor: "",
+                    '&.MuiTableCell-root': {
+                
+                        fontSize: 14,
+                    }
                 }
             }
         }
+        
     },
 });

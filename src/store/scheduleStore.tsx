@@ -19,6 +19,8 @@ interface ScheduleState {
     fetchSchedule: () => void,
     testSchedule: () => void,
     getGroupSchedule: (groupNumber: number) => void,
+    getTeacherSchedule: (teacherId: number) => void,
+    getRoomSchedule: (roomNumber: number) => void,
 }
 
 const useScheduleStore = create<ScheduleState>((set) => ({
@@ -124,7 +126,7 @@ const useScheduleStore = create<ScheduleState>((set) => ({
 
         set({schedule:fullSchedule})
     },
-    getGroupSchedule(groupNumber) {
+    getGroupSchedule: (groupNumber) => {
       
       const result4 = [
         [
@@ -204,16 +206,99 @@ const useScheduleStore = create<ScheduleState>((set) => ({
         ],
       ]
 
-      if (groupNumber === 4) {
-          set({schedule: result4})
-          
-          
-      }
-      if (groupNumber === 3) {
-        set({schedule: result3})
-      }
+      set({schedule: result4})
 
     },
+    getTeacherSchedule: (teacherId: number) => {
+
+        const result = 
+        [
+
+        [
+          {id: 1, subjNumber: "1", teacher: "4-Д9-4ИСП",subject: 'Элементы высшей математики', room: "46"},
+            {id: 2, subjNumber: "2", teacher: "3-Д9-4ИНС",subject: 'Элементы высшей математики', room: "46"},
+            {id: 3, subjNumber: "3", teacher: "12-КД9-4ИСП",subject: 'Элементы высшей математики', room: "46"},
+            {id: 4, subjNumber: "4", teacher: "11-КД9-4ИНС",subject: 'Элементы высшей математики', room: "46"},
+        ],
+        [
+          {id: 1, subjNumber: "1", teacher: "4-Д9-4ИСП",subject: 'Элементы высшей математики', room: "46"},
+            {id: 2, subjNumber: "2", teacher: "3-Д9-4ИНС",subject: 'Элементы высшей математики', room: "46"},
+            {id: 3, subjNumber: "3", teacher: "12-КД9-4ИСП",subject: 'Элементы высшей математики', room: "46"},
+            {id: 4, subjNumber: "4", teacher: "11-КД9-4ИНС",subject: 'Элементы высшей математики', room: "46"},
+        ],
+        [
+          {id: 1, subjNumber: "1", teacher: "4-Д9-4ИСП",subject: 'Элементы высшей математики', room: "46"},
+            {id: 2, subjNumber: "2", teacher: "3-Д9-4ИНС",subject: 'Элементы высшей математики', room: "46"},
+            {id: 3, subjNumber: "3", teacher: "12-КД9-4ИСП",subject: 'Элементы высшей математики', room: "46"},
+            {id: 4, subjNumber: "4", teacher: "11-КД9-4ИНС",subject: 'Элементы высшей математики', room: "46"},
+        ],
+        [
+          {id: 1, subjNumber: "1", teacher: "4-Д9-4ИСП",subject: 'Элементы высшей математики', room: "46"},
+            {id: 2, subjNumber: "2", teacher: "3-Д9-4ИНС",subject: 'Элементы высшей математики', room: "46"},
+            {id: 3, subjNumber: "3", teacher: "12-КД9-4ИСП",subject: 'Элементы высшей математики', room: "46"},
+            {id: 4, subjNumber: "4", teacher: "11-КД9-4ИНС",subject: 'Элементы высшей математики', room: "46"},
+        ],
+        [
+          {id: 1, subjNumber: "1", teacher: "4-Д9-4ИСП",subject: 'Элементы высшей математики', room: "46"},
+            {id: 2, subjNumber: "2", teacher: "3-Д9-4ИНС",subject: 'Элементы высшей математики', room: "46"},
+            {id: 3, subjNumber: "3", teacher: "12-КД9-4ИСП",subject: 'Элементы высшей математики', room: "46"},
+            {id: 4, subjNumber: "4", teacher: "11-КД9-4ИНС",subject: 'Элементы высшей математики', room: "46"},
+        ],
+        [
+          {id: 1, subjNumber: "1", teacher: "4-Д9-4ИСП",subject: 'Элементы высшей математики', room: "46"},
+            {id: 2, subjNumber: "2", teacher: "3-Д9-4ИНС",subject: 'Элементы высшей математики', room: "46"},
+            {id: 3, subjNumber: "3", teacher: "12-КД9-4ИСП",subject: 'Элементы высшей математики', room: "46"},
+            {id: 4, subjNumber: "4", teacher: "11-КД9-4ИНС",subject: 'Элементы высшей математики', room: "46"},
+        ],
+      ]
+
+        set({schedule: result})
+
+    },
+    getRoomSchedule: (roomNumber: number) => {
+
+      const result = [
+        [
+          {id: 1, subjNumber: "1", teacher: "4-Д9-4ИСП",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 2, subjNumber: "2", teacher: "3-Д9-4ИНС",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 3, subjNumber: "3", teacher: "12-КД9-4ИСП",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 4, subjNumber: "4", teacher: "11-КД9-4ИНС",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+        ],
+        [
+          {id: 1, subjNumber: "1", teacher: "4-Д9-4ИСП",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 2, subjNumber: "2", teacher: "3-Д9-4ИНС",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 3, subjNumber: "3", teacher: "12-КД9-4ИСП",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 4, subjNumber: "4", teacher: "11-КД9-4ИНС",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+        ],
+        [
+          {id: 1, subjNumber: "1", teacher: "4-Д9-4ИСП",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 2, subjNumber: "2", teacher: "3-Д9-4ИНС",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 3, subjNumber: "3", teacher: "12-КД9-4ИСП",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 4, subjNumber: "4", teacher: "11-КД9-4ИНС",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+        ],
+        [
+          {id: 1, subjNumber: "1", teacher: "4-Д9-4ИСП",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 2, subjNumber: "2", teacher: "3-Д9-4ИНС",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 3, subjNumber: "3", teacher: "12-КД9-4ИСП",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 4, subjNumber: "4", teacher: "11-КД9-4ИНС",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+        ],
+        [
+          {id: 1, subjNumber: "1", teacher: "4-Д9-4ИСП",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 2, subjNumber: "2", teacher: "3-Д9-4ИНС",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 3, subjNumber: "3", teacher: "12-КД9-4ИСП",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 4, subjNumber: "4", teacher: "11-КД9-4ИНС",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+        ],
+        [
+          {id: 1, subjNumber: "1", teacher: "4-Д9-4ИСП",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 2, subjNumber: "2", teacher: "3-Д9-4ИНС",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 3, subjNumber: "3", teacher: "12-КД9-4ИСП",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+            {id: 4, subjNumber: "4", teacher: "11-КД9-4ИНС",subject: 'Элементы высшей математики', room: "Тесленко Н. Ф."},
+        ],
+      ]
+
+      set({schedule: result})
+
+    }
 }))
 
 export default useScheduleStore;
