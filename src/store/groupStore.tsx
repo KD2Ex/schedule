@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import axios from 'axios';
 
 interface Group {
     id: number,
@@ -7,20 +8,28 @@ interface Group {
     label: string,
 };
 
+interface Room {
+    id: number,
+    label: string,
+};
 
 interface GroupState {
     groups: Group[],
+    rooms: string[],
     isLoading: boolean;
-    addGroup: (groupLabel: string) => void;
+    addGroup: (roomNumber: string) => void;
     getGroups: () => void;
+    getRooms: () => void;
 }
 
-const useGroupStore = create<GroupState>((set) => ({
+const useGroupStore = create<GroupState>((set, get) => ({
     groups: [],
+    rooms: [],
     isLoading: false,
-    addGroup: (groupLabel: string) => set(state => (
+    addGroup: (roomNumber: string) => set(state => (
         {
-            
+            rooms: [...state.rooms, roomNumber],
+            //rooms: [...state.rooms, roomNumber]
         }
     )),
     getGroups: () => {
@@ -32,6 +41,28 @@ const useGroupStore = create<GroupState>((set) => ({
         ];
         set({groups: result})
         
+    },
+    getRooms: async () => {
+        const result: Room[] = [
+            {id: 1, label: "46"},
+            {id: 2, label: "104"},
+            {id: 3, label: "105"},
+            {id: 4, label: "61"},
+        ];
+        set({isLoading: true})
+        try {
+            const rooms = await axios.get('http://192.168.43.109:8080/api/test/aud');
+            const res = await rooms.data;
+            console.log(res);
+            set((state) => ({rooms: res}))
+            console.log(get().rooms);
+        }
+        catch {
+           // set({rooms: result})
+            console.log(get().rooms);
+        }
+        
+        set({isLoading: false})
     }
 }))
 

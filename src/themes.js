@@ -9,6 +9,7 @@ export const theme = createTheme({
         },
         primary: {
             main: "rgba(3, 29, 96, 0.82)",
+            pale: "rgba(3, 29, 96, 0.50)",
         },
         secondary: {
             main: "rgb(255, 255, 255)",
@@ -82,14 +83,14 @@ export const theme = createTheme({
                 root: {
                     '& .MuiToggleButtonGroup-grouped': {
                         height: 36,
-                        border: "1px solid",
+                        border: "1px solid rgba(3, 29, 96, 0.50)",
                         color: "rgba(3, 29, 96, 0.82)",
                         padding: 16,
                         transition: '0.3s',
                         '&.Mui-selected': {
                             backgroundColor: "rgba(3, 29, 96, 0.82)",
                             color: "white",
-                            border: "1px solid rgba(3, 29, 96, 0.82)",  
+                            border: "1px solid rgba(3, 29, 96, 0.50)",  
                             
                             '&:hover': {
                                 backgroundColor: "rgba(3, 29, 96, 0.82)",
@@ -104,7 +105,8 @@ export const theme = createTheme({
             styleOverrides: {
                 root: {
                     '&.MuiTableCell-root': {
-                
+                        textAlign: 'left',
+                        flexWrap: 'nowrap',
                         fontSize: 14,
                     }
                 }

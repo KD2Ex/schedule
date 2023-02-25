@@ -33,11 +33,11 @@ const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, rows, colum
     
 
   return (
-    <Grid2 xs={xsNum} sm={xsNum} md={mdNum} lg={lNum} xl={xlNum} >
+    <Grid2 xs={xsNum} sm={xsNum} md={mdNum} lg={lNum} xl={xlNum}>
         
         <Box sx={{width: "fit-content", height: 25, 
             border: "1px solid", 
-            borderColor:"primary.main",
+            borderColor:"primary.pale",
             borderRadius: "4px 4px 0px 0px", 
             borderBottom: "0px",
             backgroundColor: bgColor}}>
@@ -48,34 +48,32 @@ const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, rows, colum
         </Box>
 
 
-        <TableContainer sx={{border: "1px solid", borderRadius: "0px 4px 4px 4px" }}  >
-
-          
+        <TableContainer sx={{border: "1px solid", borderColor: "primary.pale", borderRadius: "0px 4px 4px 4px" }} component={Paper} >
           <Table component={Paper}>
-                <TableHead>
-                  <TableRow sx={{borderBottom: "1px solid black"}}>
+            <TableHead>
+              <TableRow sx={{borderBottom: "1px solid primary.main"}}>
 
-                    {columns.map((value) => (
-                      <TableCell>{value}</TableCell>
-                    ))}
-                    
-                  </TableRow>
-                </TableHead>
+                {columns.map((value, index) => (
+                  <TableCell key={index}>{value}</TableCell>
+                ))}
+                
+              </TableRow>
+            </TableHead>
 
-                <TableBody >
-                  {rows.map((row) => (
-                    <TableRow 
-                      key={row.id}
-                      sx={{}}>
-                        <TableCell component="th" scope='row'>
-                          {row.subjNumber}
-                        </TableCell>
-                        <TableCell sx={{flexWrap: 'nowrap'}}  size='small'>{row.teacher}</TableCell>
-                        <TableCell size='small'>{row.subject}</TableCell>
-                        <TableCell size='small'>{row.room}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
+            <TableBody >
+              {rows.map((row) => (
+                <TableRow 
+                  key={row.id}
+                  sx={{}}>
+                    <TableCell component="th" scope='row'>
+                      {row.subjNumber}
+                    </TableCell>
+                    <TableCell sx={{flexWrap: 'nowrap'}}  size='small'>{row.teacher}</TableCell>
+                    <TableCell size='small'>{row.subject}</TableCell>
+                    <TableCell size='small'>{row.room}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
           </Table>
         </TableContainer>
 

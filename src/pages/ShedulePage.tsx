@@ -44,7 +44,7 @@ function  ShedulePage() {
   const [isReplaceActive, setIsReplaceActive] = useState(true);
   const [filterValue, setFilterValue] = useState< Group | Teacher | Room | null>(null);
   const [filterOptions, setFilterOptions] = useState<Group[] | Teacher[] | Room[]>([]);
-  const [filterType, setFilterType] = useState<FILTER_TYPES>(FILTER_TYPES.GROUPS);
+  const [filterType, setFilterType] = useState<FILTER_TYPES>(FILTER_TYPES.TEACHERS);
   const [open, setOpen] = useState(false);
   const loading = open && filterOptions?.length === 0;
 
@@ -52,20 +52,21 @@ function  ShedulePage() {
   const date = new Date();
   const currentDay = date.getDay() - 1;
 
+  const groups = useGroupStore(state => state.groups);
+  const getGroups = useGroupStore(state => state.getGroups);
+
+  const rooms = useGroupStore(state => state.rooms);
+  const getRooms = useGroupStore(state => state.getRooms);
+
   const schedule = useScheduleStore(state => state.schedule);
   const getGroupSchedule = useScheduleStore(state => state.getGroupSchedule);
   const getTeacherSchedule = useScheduleStore(state => state.getTeacherSchedule);
   const getRoomSchedule = useScheduleStore(state => state.getRoomSchedule);
-
-  const groups = useGroupStore(state => state.groups);
-  const getGroups = useGroupStore(state => state.getGroups);
+  const addGroup = useGroupStore(state => state.addGroup);
 
   const teachers = useTeachersStore(state => state.teachers);
   const getTeachers = useTeachersStore(state => state.getTeachers); 
 
-  const rooms = useRoomsStore(state => state.rooms);
-  const getRooms = useRoomsStore(state => state.getRooms);
-  
   
   useEffect(() => {
       
@@ -75,36 +76,50 @@ function  ShedulePage() {
           return undefined;
         }
 
-        (() => {
+        (async () => {
 
           let options: any = [];
           
           switch(filterType) {
             case FILTER_TYPES.TEACHERS:
               getTeachers();
+              console.log(teachers);
               options = teachers;
               break;
-            case FILTER_TYPES.GROUPS:        
+            case FILTER_TYPES.GROUPS:   
+              
               getGroups();
+              console.log(groups);
               options = groups;
               break;
             case FILTER_TYPES.ROOMS:
-              getRooms();
-              options = rooms;
+              //while(rooms === null) {
+                getRooms();
+                console.log("rooms:" + rooms);
+                
+                //}
+                if (rooms.length === 0) {
+                  console.log('null')
+                  getRooms();
+                }
+                options = rooms;
               break;
           }
 
           if (active) {
-            setFilterOptions(options);
+            console.log(options)
+            setOptions(options);
           }
         })();
 
+        console.log(rooms);
+        
+
   }, [loading])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!open) {
       setOptions([]);
-      
     }
   }, [open]);
 
@@ -156,10 +171,9 @@ function  ShedulePage() {
   return (
     <>
       <NavBar/>
-      
+      <Button onClick={(e) => addGroup('123')}>qwer</Button>
       <Stack spacing={{lg: 2, md: 1, sm: 0}} direction='row' sx={{ml: '85px', mr: '100px', mt: '25px', flexWrap: 'wrap'}}>
         <Grid2 xs={2}>
-
           <ButtonGroup variant='outlined' >
             <Button disabled>Неделя</Button>
             <Button 
@@ -213,16 +227,12 @@ function  ShedulePage() {
             value={filterValue}
             size='small'
             open={open}
-            // getOptionLabel={(option) => option.label}
-            // isOptionEqualToValue={(option, value) => option.label === value.label}
             onOpen={() => {
               setOpen(true);
-              
             }}
             onClose={() => {
               setOpen(false);
-              {console.log(schedule);
-              }
+              
             }}
             loading={loading}
             options={filterOptions}

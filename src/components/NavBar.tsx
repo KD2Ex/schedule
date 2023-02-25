@@ -18,7 +18,7 @@ function NavBar() {
           <Button component={link} to="/" sx={{color: '#fff', fontWeight: 'light'}} >
               Расписание
             </Button>
-            <Button component={link} to="/" sx={{color: '#fff', fontWeight: 'light'}}>
+            <Button component={link} to="/profile" sx={{color: '#fff', fontWeight: 'light'}}>
               Профиль
             </Button>
         
