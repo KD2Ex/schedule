@@ -1,6 +1,7 @@
 import React from 'react'
 import {useRouteError} from 'react-router-dom'
-
+import logo from '../styles/anime.jpg'
+import {Stack} from "@mui/material";
 
 
 function ErrorPage() {
@@ -8,12 +9,10 @@ function ErrorPage() {
     console.error(error);
 
   return (
-    <div>
-        Err
-        {error.statusText || error.message} 
-        
+    <Stack>
+        <img style={{width: '100%', height: '100vh'}} src={logo} alt=""/>
 
-    </div>
+    </Stack>
   )
 }
 

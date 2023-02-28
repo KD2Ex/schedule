@@ -5,82 +5,88 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 
 
 interface DayGridProps {
-    xsNum: number,
-    mdNum: number,
-    lNum: number,
-    xlNum: number,
-    rows: GridRowsProp,
-    columns: string[],
-    isSelected: boolean,
-    dayNumber: number,
+	xsNum: number,
+	mdNum: number,
+	lNum: number,
+	xlNum: number,
+	rows: GridRowsProp,
+	columns: string[],
+	isSelected: boolean,
+	dayNumber: number,
 }
 const WEEK_DAYS = [
-    'Понедельник',
-    'Вторник',
-    'Среда',
-    'Четверг',
-    'Пятница',
-    'Суббота',
+	'Понедельник',
+	'Вторник',
+	'Среда',
+	'Четверг',
+	'Пятница',
+	'Суббота',
 ]
 
+const DayGrid: React.FC<DayGridProps> =
+	({
+		 xsNum,
+		 mdNum,
+		 lNum,
+		 xlNum,
+		 rows,
+		 columns,
+		 isSelected,
+		 dayNumber: titleDay
+	}) => {
 
 
-const DayGrid: React.FC<DayGridProps> = ({xsNum, mdNum, lNum, xlNum, rows, columns, isSelected, dayNumber: titleDay}) => {
+	const bgColor = isSelected ? "primary.main" : "white";
+	const fontColor = isSelected ? "white" : "primary.main";
 
 
-    const bgColor = isSelected === true ? "primary.main" : "white";
-    const fontColor = isSelected === true ? "white" : "primary.main";
-    
+	return (
+		<Grid2 xs={xsNum} sm={xsNum} md={mdNum} lg={lNum} xl={xlNum} sx={{p: 2}}>
 
-  return (
-    <Grid2 xs={xsNum} sm={xsNum} md={mdNum} lg={lNum} xl={xlNum}>
-        
-        <Box sx={{width: "fit-content", height: 25, 
-            border: "1px solid", 
-            borderColor:"primary.pale",
-            borderRadius: "4px 4px 0px 0px", 
-            borderBottom: "0px",
-            backgroundColor: bgColor}}>
-            <Typography sx={{color: fontColor, px: 1, fontWeidht: 'bold'}} >
-                {WEEK_DAYS[titleDay]}
-            </Typography>
-            
-        </Box>
+			<Box sx={{width: "fit-content",
+				height: 25,
+				border: "1px solid",
+				borderColor:"primary.pale",
+				borderRadius: "4px 4px 0px 0px",
+				borderBottom: "0px",
+				backgroundColor: bgColor}}>
+				<Typography sx={{color: fontColor, px: 1,}} >
+					{WEEK_DAYS[titleDay]}
+				</Typography>
+
+			</Box>
 
 
-        <TableContainer sx={{border: "1px solid", borderColor: "primary.pale", borderRadius: "0px 4px 4px 4px" }} component={Paper} >
-          <Table component={Paper}>
-            <TableHead>
-              <TableRow sx={{borderBottom: "1px solid primary.main"}}>
+			<TableContainer  sx={{border: "1px solid", borderColor: "primary.pale", borderRadius: "0px 4px 4px 4px" }}>
+				<Table sx={{size: 'small'}}>
+					<TableHead>
+						<TableRow sx={{borderBottom: "1px solid primary.main"}}>
 
-                {columns.map((value, index) => (
-                  <TableCell key={index}>{value}</TableCell>
-                ))}
-                
-              </TableRow>
-            </TableHead>
+							{columns.map((value, index) => (
+								<TableCell sx={{px: 1, width: 0, fontSize: '18px'}} key={index}>{value}</TableCell>
+							))}
 
-            <TableBody >
-              {rows.map((row) => (
-                <TableRow 
-                  key={row.id}
-                  sx={{}}>
-                    <TableCell component="th" scope='row'>
-                      {row.subjNumber}
-                    </TableCell>
-                    <TableCell sx={{flexWrap: 'nowrap'}}  size='small'>{row.teacher}</TableCell>
-                    <TableCell size='small'>{row.subject}</TableCell>
-                    <TableCell size='small'>{row.room}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+						</TableRow>
+					</TableHead>
 
-
-
-    </Grid2>
-  )
+					<TableBody >
+						{rows.map((row) => (
+							<TableRow
+								key={row.id}
+								>
+								<TableCell component="th" scope='row' sx={{px: 2, width:''}}>
+									{row.subjNumber}
+								</TableCell>
+								<TableCell sx={{maxWidth: 0, px: 0}} size='small'>{row.teacher}</TableCell>
+								<TableCell  sx={{maxWidth: 0, px: 1.5}} size='small'>{row.subject}</TableCell>
+								<TableCell sx={{ px: 1, width:''}} size='small'>{row.room}</TableCell>
+							</TableRow>
+						))}
+					</TableBody>
+				</Table>
+			</TableContainer>
+		</Grid2>
+	)
 }
 
 export default DayGrid
