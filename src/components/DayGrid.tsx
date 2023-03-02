@@ -2,6 +2,7 @@ import React from 'react'
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import { Box, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, TableContainer } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import teacher from "../store/teacher";
 
 
 interface DayGridProps {
@@ -36,14 +37,15 @@ const DayGrid: React.FC<DayGridProps> =
 	}) => {
 
 
-	const bgColor = isSelected ? "primary.main" : "white";
+	const bgColor = isSelected ? "primary.main" : "background.default";
 	const fontColor = isSelected ? "white" : "primary.main";
 
 
 	return (
 		<Grid2 xs={xsNum} sm={xsNum} md={mdNum} lg={lNum} xl={xlNum} sx={{p: 2}}>
 
-			<Box sx={{width: "fit-content",
+			<Box sx={{
+				width: "fit-content",
 				height: 25,
 				border: "1px solid",
 				borderColor:"primary.pale",
@@ -73,6 +75,7 @@ const DayGrid: React.FC<DayGridProps> =
 						{rows.map((row) => (
 							<TableRow
 								key={row.id}
+								sx={ row.replacementDate ? {  boxShadow: 'inset 0px 0px 50px 12px rgba(3, 29, 96, 1)' } : null}
 								>
 								<TableCell component="th" scope='row' sx={{px: 2, width:''}}>
 									{row.subjNumber}

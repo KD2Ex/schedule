@@ -11,17 +11,16 @@ function NavBar() {
 		<AppBar position='static'>
 			<Toolbar sx={{
 				spacing: 3,
+
 			}}>
 
-
-
-				<Button component={link} to="/schedule" >
+				<Button sx={{color: 'white'}} component={link} to="/schedule" >
 					Расписание
 				</Button>
-				<Button component={link} to="/data" >
+				<Button sx={{color: 'white'}} component={link} to="/data" >
 					Списки
 				</Button>
-				<Button component={link} to="/profile">
+				<Button sx={{color: 'white'}} component={link} to="/profile">
 					Профиль
 				</Button>
 

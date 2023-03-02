@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {
 	Stack,
 	Autocomplete,
 	TextField,
 	ToggleButtonGroup,
 	ToggleButton,
-	Box, Container
+	Box, Container, Button
 } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {Typography} from '@mui/material'
@@ -15,6 +15,9 @@ import room from "../store/rooms";
 import group from "../store/group";
 import teacher from "../store/teacher";
 import schedule from "../store/schedule";
+import {getMode} from "../themes";
+import {ColorModeContext} from "../context";
+import toggleStyles from '../styles/toggleButtons.module.css'
 
 
 
@@ -161,19 +164,22 @@ const SchedulePage = observer(() => {
 		}
 	}
 
+	const changeMode = useContext(ColorModeContext);
+	console.log(changeMode)
 	return (
 		<>
-			{/*<Button onClick={(e) => addGroup('123')}>qwer</Button>*/}
+			<Button onClick={() => changeMode.toggleColorMode()}>qwe123r</Button>
 			{/*<Stack spacing={{lg: 2, md: 1, sm: 0}} direction='row' sx={{ml: '85px', mr: '10px', mt: '25px', flexWrap: 'wrap'}}>
 			</Stack>*/}
 			<Container sx={{display:'flex', justifyContent: 'flex-start', alignItems: 'center', flexWrap: 'wrap', mt: '25px'}}>
 
-				<Grid2 xs={4} sx={{mr: 2, mb: 2}}>
+				<Grid2 xs={4} sx={{mr: 2, mb: 2, }} >
 					<ToggleButtonGroup
 						size='small'
 						onChange={handelTypeAlignment}
 						value={filterType}
 						exclusive
+						className={toggleStyles.toggleButton}
 					>
 
 						<ToggleButton value={FILTER_TYPES.GROUPS} >
