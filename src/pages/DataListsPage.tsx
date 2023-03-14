@@ -9,9 +9,9 @@ const DataListsPage = () => {
 	}
 
 	const groupsColumns:  GridColDef[] = [
-		{ field: 'number', headerName: 'Номер группы', width: 100},
-		{ field: 'spec', headerName: 'Специальность', width: 100},
-		{ field: 'course', headerName: 'Курс', width: 100},
+		{ field: 'number', headerName: 'Номер группы', flex: 1},
+		{ field: 'spec', headerName: 'Специальность', flex: 2},
+		{ field: 'course', headerName: 'Курс', flex: 1},
 		{ field: 'label', headerName: 'Шифр', flex: 1, valueGetter: getGroupLabel},
 	];
 
@@ -23,11 +23,10 @@ const DataListsPage = () => {
 		{id: 5, number: '4', spec: 'ИСП', course: '4'},
 	]
 
-
 	return (
 		<Box>
 
-			<Box sx={{height: '400px', p: 4, flex: 1}}>
+			<Box sx={{height: '400px',py: '1rem', flex: 1}}>
 
 				<DataGrid
 					columns={groupsColumns}

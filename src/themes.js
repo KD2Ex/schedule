@@ -4,6 +4,8 @@ import SFPro from './styles/fonts/SFProText-Regular.ttf'
 import font1 from '../dist/assets/SFUIText-Regular-c5339ac0.ttf'
 //main: "rgba(3, 29, 96, 0.82)",
 
+//rgba(3, 29, 96, 0.50)
+
 
 export const getMode = (mode) => (
     mode === 'light'
@@ -48,7 +50,7 @@ export const getMode = (mode) => (
             },
             primary: {
                 main: "rgb(255,255,255)",
-                contrastText: 'rgba(255,255,255,0.82)',
+                contrastText: 'rgba(0,0,0,0.82)',
                 //main: "rgba(81,130,255,0.82)",
                 //index: "rgba(3, 29, 96, 0.05)",
                 pale: "rgba(224,224,224,0.82)",
@@ -99,7 +101,8 @@ export const themeObject = {
         MuiButton: {
             styleOverrides: {
                 root: {
-                    fontWeight: '400'
+                    fontWeight: '400',
+                    color: 'white'
                 }
             }
         },
@@ -112,7 +115,6 @@ export const themeObject = {
         MuiInputBase: {
             styleOverrides: {
                 root: {
-                    height: "36px",
                     fontSize: 14,
                 }
             }
@@ -120,7 +122,6 @@ export const themeObject = {
         MuiInputLabel: {
             styleOverrides: {
                 root: {
-                    height: "36px",
                     padding: "-1px",
                     fontSize: 14,
                 }
@@ -129,7 +130,6 @@ export const themeObject = {
         MuiTextField: {
             styleOverrides: {
                 InputProps: {
-                    height: "36px",
                     fontSize: 12,
                 }
             }
@@ -145,13 +145,15 @@ export const themeObject = {
                 root: {
                     '& .MuiToggleButtonGroup-grouped': {
                         height: 36,
-                        border: "1px solid rgba(3, 29, 96, 0.50)",
+                        border: "1px solid",
                         // color: "primary.main",
+
                         padding: 16,
                         transition: 'background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
                         '&.Mui-selected': {
-                            //backgroundColor: "rgba(3, 29, 96, 0.82)",
-                            //color: "white",
+                            backgroundColor: "rgba(3, 29, 96, 0.82)",
+                            border: "1px solid transparent",
+                            color: "white",
                             boxShadow: '0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%)',
                             '&:hover': {
                                 //backgroundColor: "rgba(3, 29, 96, 0.82)",

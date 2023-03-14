@@ -1,5 +1,5 @@
 import React from "react";
-import SchedulePage from './pages/SchedulePage'
+import SchedulePage from './pages/SchedulePage/SchedulePage'
 import ErrorPage from "./pages/ErrorPage";
 import ProfilePage from "./pages/ProfilePage";
 import DataListsPage from "./pages/DataListsPage";

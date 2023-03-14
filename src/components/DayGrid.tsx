@@ -38,7 +38,7 @@ const DayGrid: React.FC<DayGridProps> =
 
 
 	const bgColor = isSelected ? "primary.main" : "background.default";
-	const fontColor = isSelected ? "white" : "primary.main";
+	const fontColor = isSelected ? "primary.contrastText" : "primary.main";
 
 
 	return (
