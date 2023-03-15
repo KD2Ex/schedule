@@ -42,7 +42,7 @@ const DayGrid: React.FC<DayGridProps> =
 
 
 	return (
-		<Grid2 xs={xsNum} sm={xsNum} md={mdNum} lg={lNum} xl={xlNum} sx={{p: 2}}>
+		<Grid2 xs={xsNum} sm={xsNum} md={mdNum} lg={lNum} xl={xlNum} sx={{mb: {xs: 2, md: 0}}}>
 
 			<Box sx={{
 				width: "fit-content",

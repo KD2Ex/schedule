@@ -143,6 +143,7 @@ export const themeObject = {
         MuiToggleButtonGroup: {
             styleOverrides: {
                 root: {
+                    margin: 1,
                     '& .MuiToggleButtonGroup-grouped': {
                         height: 36,
                         border: "1px solid",

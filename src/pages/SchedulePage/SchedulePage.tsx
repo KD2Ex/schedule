@@ -164,100 +164,89 @@ const SchedulePage = observer(() => {
 	//console.log(changeMode)
 	return (
 		<>
-			{/*<Stack spacing={{lg: 2, md: 1, sm: 0}} direction='row' sx={{ml: '85px', mr: '10px', mt: '25px', flexWrap: 'wrap'}}>
-			</Stack>*/}
-			<Container sx={{display:'flex', justifyContent: 'flex-start', alignItems: 'center', flexWrap: 'wrap', mt: '25px'}}>
+			<Container sx={{display:'flex', justifyContent: 'center', alignItems: 'center', gap: 1, flexWrap: 'wrap', mt: '2rem'}}>
 
-				<Grid2 xs={4} sx={{mr: 2, mb: 2, }} >
-					<ToggleButtonGroup
-						size='small'
-						onChange={handelTypeAlignment}
-						value={filterType}
-						exclusive
-						className={toggleStyles.toggleButton}
-					>
-						<ToggleButton value={FILTER_TYPES.GROUPS} >
-							Группы
-						</ToggleButton>
-						<ToggleButton value={FILTER_TYPES.TEACHERS}>
-							Преподаватели
-						</ToggleButton>
-						<ToggleButton value={FILTER_TYPES.ROOMS}>
-							Аудитории
-						</ToggleButton>
-					</ToggleButtonGroup>
-				</Grid2>
+				<ToggleButtonGroup
+					size='small'
+					onChange={handelTypeAlignment}
+					value={filterType}
+					exclusive
+					className={toggleStyles.toggleButton}
+				>
+					<ToggleButton value={FILTER_TYPES.GROUPS} >
+						Группы
+					</ToggleButton>
+					<ToggleButton value={FILTER_TYPES.TEACHERS}>
+						Преподаватели
+					</ToggleButton>
+					<ToggleButton value={FILTER_TYPES.ROOMS}>
+						Аудитории
+					</ToggleButton>
+				</ToggleButtonGroup>
+
+				<ToggleButtonGroup
+					size='small'
+					onChange={handleWeekChange}
+					value={week}
+					exclusive
+				>
+					<ToggleButton value="Неделя" disabled>
+						Неделя
+					</ToggleButton>
+					<ToggleButton value={1} >
+						I
+					</ToggleButton>
+					<ToggleButton value={2}>
+						II
+					</ToggleButton>
+				</ToggleButtonGroup>
+				<ToggleButtonGroup
+					size="small"
+					aria-label="Small sizes"
+					onChange={handleReplacementAlignment}
+					value={isReplaceActive}
+					exclusive
+				>
+					<ToggleButton value="Замены" disabled>
+						Замены
+					</ToggleButton>
+					<ToggleButton value={true} >
+						Да
+					</ToggleButton>
+					<ToggleButton value={false}>
+						Нет
+					</ToggleButton>
+				</ToggleButtonGroup>
 
 
-				<Grid2 xs={2} sx={{mr: 2, mb: 2}}>
-					<ToggleButtonGroup
-						size='small'
-						onChange={handleWeekChange}
-						value={week}
-						exclusive
-					>
-						<ToggleButton value="Неделя" disabled>
-							Неделя
-						</ToggleButton>
-						<ToggleButton value={1} >
-							I
-						</ToggleButton>
-						<ToggleButton value={2}>
-							II
-						</ToggleButton>
-					</ToggleButtonGroup>
-				</Grid2>
-				<Grid2 xs={2} sx={{mr: 2, mb: 2}}>
-					<ToggleButtonGroup
-						size="small"
-						aria-label="Small sizes"
-						onChange={handleReplacementAlignment}
-						value={isReplaceActive}
-						exclusive
-					>
-						<ToggleButton value="Замены" disabled>
-							Замены
-						</ToggleButton>
-						<ToggleButton value={true} >
-							Да
-						</ToggleButton>
-						<ToggleButton value={false}>
-							Нет
-						</ToggleButton>
-					</ToggleButtonGroup>
-				</Grid2>
-
-				<Grid2 xs={4} sx={{mr: 2, mb: 2}}>
-
-					<Autocomplete
-						value={filterValue}
-						size='small'
-						open={open}
-						sx={{width: {xs:240, md: 300}}}
-						onOpen={() => {
-							setOpen(true);
+				<Autocomplete
+					value={filterValue}
+					size='small'
+					open={open}
+					sx={{width: {xs:240, md: 300}}}
+					onOpen={() => {
+						setOpen(true);
+					}}
+					onClose={() => {
+						setOpen(false);
+					}}
+					loading={loading}
+					options={filterOptions}
+					renderInput={(params) => (<TextField
+						{...params}
+						label={filterType}
+						InputProps={{
+							...params.InputProps,
 						}}
-						onClose={() => {
-							setOpen(false);
-						}}
-						loading={loading}
-						options={filterOptions}
-						renderInput={(params) => (<TextField
-							{...params}
-							label={filterType}
-							InputProps={{
-								...params.InputProps,
-							}}
-						/> )}
-						onChange={(event: any, newValue: Group | Teacher | null) => {
-							setFilterValue(newValue);
-						}}
-					/>
-				</Grid2>
+					/> )}
+					onChange={(event: any, newValue: Group | Teacher | null) => {
+						setFilterValue(newValue);
+					}}
+				/>
 
 			</Container>
 
-			<Grid2 container spacing={6} sx={{mx: 0, my: 2}}>
+			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2 }}>
 
 				{filterValue !== null && schedule.weekSchedule !== null ? schedule.weekSchedule.map((item, index) => (
 					<DayGrid xsNum={12}

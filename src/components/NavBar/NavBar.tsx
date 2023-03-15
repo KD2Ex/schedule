@@ -10,7 +10,6 @@ function NavBar() {
 
 	const changeMode = useContext(ColorModeContext);
 
-
 	return (
 		<StyledEngineProvider injectFirst>
 			<AppBar  position='static' sx={{flexDirection: "row", py: 2, px: "2rem"}} className={styles.appBar}>
