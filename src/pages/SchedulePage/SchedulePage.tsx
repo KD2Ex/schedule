@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {FC, useContext, useEffect, useState} from 'react'
 import {
 	Stack,
 	Autocomplete,
@@ -18,15 +18,15 @@ import schedule from "../../store/schedule";
 import {getMode} from "../../themes";
 import {ColorModeContext} from "../../context/index";
 import toggleStyles from '../../styles/toggleButtons.module.css'
+import {FILTER_TYPES} from '../../models/enums/FilterType'
+import TypeButtons from "../../components/TypeButtons";
 
 
-
-enum FILTER_TYPES {
+/*enum FILTER_TYPES {
 	GROUPS = 'Группы',
 	TEACHERS = 'Преподаватели',
 	ROOMS = 'Аудитории',
-}
-
+}*/
 
 interface Group {
 	id: number,
@@ -43,6 +43,11 @@ interface Teacher {
 interface Room {
 	id: number,
 	label: string,
+}
+
+interface AutocompleteOption {
+	id: number;
+	label: string;
 }
 
 
@@ -62,7 +67,6 @@ const SchedulePage = observer(() => {
 
 	useEffect(() => {
 
-		let active = true;
 
 		if (!loading) {
 			return undefined;
@@ -83,14 +87,10 @@ const SchedulePage = observer(() => {
 					break;
 				case FILTER_TYPES.ROOMS:
 					await room.fetchRooms();
-					options = room.roomCount;
-
+					options = room.rooms;
 					break;
 			}
-			if (active) {
-				console.log(options)
-				setOptions(options);
-			}
+			setFilterOptions(options);
 		})();
 
 		console.log(room);
@@ -100,7 +100,7 @@ const SchedulePage = observer(() => {
 
 	useEffect(() => {
 		if (!open) {
-			setOptions([]);
+			setFilterOptions([]);
 		}
 	}, [open]);
 
@@ -126,9 +126,6 @@ const SchedulePage = observer(() => {
 		}
 	}, [filterValue])
 
-	const setOptions = (value: any[]) => {
-		setFilterOptions(value);
-	}
 
 	const handleWeekChange = (event: React.MouseEvent<HTMLElement>, newFilter: number) => {
 		if (newFilter !== null) {
@@ -166,7 +163,15 @@ const SchedulePage = observer(() => {
 		<>
 			<Container sx={{display:'flex', justifyContent: 'center', alignItems: 'center', gap: 1, flexWrap: 'wrap', mt: '2rem'}}>
 
-				<ToggleButtonGroup
+				<TypeButtons
+					filterType={filterType}
+					setFilterType={setFilterType}
+					exclusive
+					size='small'
+					className={toggleStyles.toggleButton}
+				/>
+
+				{/*<ToggleButtonGroup
 					size='small'
 					onChange={handelTypeAlignment}
 					value={filterType}
@@ -182,7 +187,7 @@ const SchedulePage = observer(() => {
 					<ToggleButton value={FILTER_TYPES.ROOMS}>
 						Аудитории
 					</ToggleButton>
-				</ToggleButtonGroup>
+				</ToggleButtonGroup>*/}
 
 				<ToggleButtonGroup
 					size='small'
@@ -239,6 +244,7 @@ const SchedulePage = observer(() => {
 							...params.InputProps,
 						}}
 					/> )}
+					getOptionLabel={(option) => option.}
 					onChange={(event: any, newValue: Group | Teacher | null) => {
 						setFilterValue(newValue);
 					}}

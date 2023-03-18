@@ -1,9 +1,10 @@
 import {makeAutoObservable} from "mobx";
 import axios from "axios";
+import ITeacher from "../models/ITeacher";
 
 
 class Teacher {
-	teachers: any = []
+	teachers: ITeacher[] = []
 
 	constructor() {
 		makeAutoObservable(this);
@@ -13,8 +14,16 @@ class Teacher {
 		//const result = axios.get('');
 
 		this.teachers = [
-			{id: 1, label: 'Тесленко Н. Ф.'},
+			{id: 1, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна', label: ''},
+			{id: 2, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна', label: ''},
+			{id: 3, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна', label: ''},
+			{id: 4, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна', label: ''},
+			{id: 5, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна', label: ''},
 		]
+
+		this.teachers.map(teacher => {
+			teacher.label = `${teacher.lastName} ${teacher.firstName[0]}. ${teacher.surname[0]}.`
+		})
 	}
 
 }

@@ -1,27 +1,45 @@
-import React, {FC} from 'react';
-import {ToggleButton, ToggleButtonGroup} from "@mui/material";
+import React, {ComponentPropsWithoutRef, FC} from 'react';
+import {ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps} from "@mui/material";
+import toggleStyles from "../../styles/toggleButtons.module.css";
+import {FILTER_TYPES} from "../../models/enums/FilterType";
 
 interface ToggleButtons {
 	label: string,
 	isDisabled: boolean,
-	value:
 }
 
-interface TypeButtonsProps {
-	buttons: ToggleButtons[],
-	state: any;
+interface TypeButtonsProps extends ToggleButtonGroupProps {
+	filterType: FILTER_TYPES;
+	setFilterType: React.Dispatch<FILTER_TYPES>;
 }
 
 
 
-const TypeButtons: FC<TypeButtonsProps> = ({buttons, state, ...props}) => {
+const TypeButtons: FC<TypeButtonsProps> = ({filterType, setFilterType, ...props}) => {
+
+	const handelTypeAlignment = (event: React.MouseEvent<HTMLElement>, newFilter: FILTER_TYPES) => {
+		if (newFilter !== null) {
+			setFilterType(newFilter);
+			//setFilterValue(null);
+			//setT(null);
+		}
+	}
+
 	return (
-		<ToggleButtonGroup {...props}>
-			{buttons.map((button) => (
-				<ToggleButton value={true} >
-
-				</ToggleButton>
-			))}
+		<ToggleButtonGroup
+			onChange={handelTypeAlignment}
+			value={filterType}
+			{...props}
+		>
+			<ToggleButton value={FILTER_TYPES.GROUPS} >
+				Группы
+			</ToggleButton>
+			<ToggleButton value={FILTER_TYPES.TEACHERS}>
+				Преподаватели
+			</ToggleButton>
+			<ToggleButton value={FILTER_TYPES.ROOMS}>
+				Аудитории
+			</ToggleButton>
 		</ToggleButtonGroup>
 	);
 };
