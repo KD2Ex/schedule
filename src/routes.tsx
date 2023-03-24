@@ -4,6 +4,7 @@ import ErrorPage from "./pages/ErrorPage";
 import ProfilePage from "./pages/ProfilePage";
 import DataListsPage from "./pages/DataListsPage";
 import MainPage from "./pages/MainPage";
+import ScheduleEditPage from "./pages/ScheduleEditPage/ScheduleEditPage";
 
 const isAuth = true;
 
@@ -18,9 +19,13 @@ export const routes = [
                 element: <SchedulePage/>,
             },
             {
-                path: "/data",
+                path: "data",
                 element: <DataListsPage/>
             },
+            {
+                path: "schedule/edit",
+                element: <ScheduleEditPage/>
+            }
         ]
     },
     {

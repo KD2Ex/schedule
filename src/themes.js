@@ -36,7 +36,8 @@ export const getMode = (mode) => (
 
             },
             background: {
-                default: 'rgb(255,255,255)'
+                default: 'rgb(255,255,255)',
+                paper: 'rgb(0,0,0)',
             },
             mode: "light"
         }

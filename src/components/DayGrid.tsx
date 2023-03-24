@@ -4,7 +4,6 @@ import { Box, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typograph
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import teacher from "../store/teacher";
 
-
 interface DayGridProps {
 	xsNum: number,
 	mdNum: number,
@@ -14,6 +13,7 @@ interface DayGridProps {
 	columns: string[],
 	isSelected: boolean,
 	dayNumber: number,
+	isReplacementEnabled: boolean,
 }
 const WEEK_DAYS = [
 	'Понедельник',
@@ -33,12 +33,13 @@ const DayGrid: React.FC<DayGridProps> =
 		 rows,
 		 columns,
 		 isSelected,
-		 dayNumber: titleDay
+		 dayNumber: titleDay,
+		 isReplacementEnabled
 	}) => {
-
 
 	const bgColor = isSelected ? "primary.main" : "background.default";
 	const fontColor = isSelected ? "primary.contrastText" : "primary.main";
+
 
 
 	return (
@@ -58,14 +59,13 @@ const DayGrid: React.FC<DayGridProps> =
 
 			</Box>
 
-
 			<TableContainer  sx={{border: "1px solid", borderColor: "primary.pale", borderRadius: "0px 4px 4px 4px" }}>
-				<Table sx={{size: 'small'}}>
+				<Table sx={{ tableLayout: 'auto'}}>
 					<TableHead>
 						<TableRow sx={{borderBottom: "1px solid primary.main"}}>
 
 							{columns.map((value, index) => (
-								<TableCell sx={{px: 1, width: 0, fontSize: '18px'}} key={index}>{value}</TableCell>
+								<TableCell sx={{ fontSize: '18px', whiteSpace: 'nowrap'}} key={index}>{value}</TableCell>
 							))}
 
 						</TableRow>
@@ -75,14 +75,14 @@ const DayGrid: React.FC<DayGridProps> =
 						{rows.map((row) => (
 							<TableRow
 								key={row.id}
-								sx={ row.replacementDate ? {  boxShadow: 'inset 0px 0px 50px 12px rgba(3, 29, 96, 1)' } : null}
+								sx={ row.replacementDate && isReplacementEnabled ? {  boxShadow: 'inset 0px 0px 50px 12px rgba(3, 29, 96, 1)' } : null}
 								>
-								<TableCell component="th" scope='row' sx={{px: 2, width:''}}>
+								<TableCell component="th" scope='row' sx={{flex: 1}}>
 									{row.subjNumber}
 								</TableCell>
-								<TableCell sx={{maxWidth: 0, px: 0}} size='small'>{row.teacher}</TableCell>
-								<TableCell  sx={{maxWidth: 0, px: 1.5}} size='small'>{row.subject}</TableCell>
-								<TableCell sx={{ px: 1, width:''}} size='small'>{row.room}</TableCell>
+								<TableCell sx={{maxWidth: 0, flex: 1}} size='small'>{row.teacher}</TableCell>
+								<TableCell  sx={{maxWidth: 0, flex: 3}} size='small'>{row.subject}</TableCell>
+								<TableCell sx={{ flex: 1}} size='small'>{row.room}</TableCell>
 							</TableRow>
 						))}
 					</TableBody>

@@ -20,30 +20,10 @@ import {ColorModeContext} from "../../context/index";
 import toggleStyles from '../../styles/toggleButtons.module.css'
 import {FILTER_TYPES} from '../../models/enums/FilterType'
 import TypeButtons from "../../components/TypeButtons";
+import {getTeacherFullName} from "../../utils/stringFormatters";
+import {Link} from "react-router-dom";
+import { GridValidRowModel } from '@mui/x-data-grid';
 
-
-/*enum FILTER_TYPES {
-	GROUPS = 'Группы',
-	TEACHERS = 'Преподаватели',
-	ROOMS = 'Аудитории',
-}*/
-
-interface Group {
-	id: number,
-	groupNumber: number,
-	course: number,
-	label: string,
-}
-
-interface Teacher {
-	id: number,
-	label: string,
-}
-
-interface Room {
-	id: number,
-	label: string,
-}
 
 interface AutocompleteOption {
 	id: number;
@@ -55,8 +35,8 @@ const SchedulePage = observer(() => {
 
 	const [week, setWeek] = useState(1);
 	const [isReplaceActive, setIsReplaceActive] = useState(true);
-	const [filterValue, setFilterValue] = useState< Group | Teacher | Room | null>(null);
-	const [filterOptions, setFilterOptions] = useState<Group[] | Teacher[] | Room[]>([]);
+	const [filterValue, setFilterValue] = useState<AutocompleteOption | null>(null);
+	const [filterOptions, setFilterOptions] = useState<AutocompleteOption[]>([]);
 	const [filterType, setFilterType] = useState<FILTER_TYPES>(FILTER_TYPES.TEACHERS);
 
 	const [open, setOpen] = useState(false);
@@ -67,27 +47,42 @@ const SchedulePage = observer(() => {
 
 	useEffect(() => {
 
-
 		if (!loading) {
 			return undefined;
 		}
 
 		(async () => {
 
-			let options: any = [];
+			let options: AutocompleteOption[] = [];
 
-			switch(filterType) {
+			switch (filterType) {
 				case FILTER_TYPES.TEACHERS:
 					await teacher.fetchTeachers();
-					options = teacher.teachers;
+
+					teacher.teachers.map(teacher => {
+						options.push({id: teacher.id, label: getTeacherFullName(teacher)})
+					})
+
 					break;
 				case FILTER_TYPES.GROUPS:
 					await group.fetchGroups();
-					options = group.groups;
+
+					group.groups.map(group => {
+						options.push({
+							id: group.id,
+							label: `${group.groupNumber}-${group.commercial ? 'КД9' : 'Д9'}-${group.course}${group.spec}`
+						})
+					})
+
 					break;
 				case FILTER_TYPES.ROOMS:
 					await room.fetchRooms();
-					options = room.rooms;
+
+					room.rooms.map(room => {
+						options.push({id: room.id, label: room.number.toString()})
+					})
+
+
 					break;
 			}
 			setFilterOptions(options);
@@ -124,7 +119,7 @@ const SchedulePage = observer(() => {
 				//getRoomSchedule(filterValue.id);
 			}
 		}
-	}, [filterValue])
+	}, [filterValue, isReplaceActive])
 
 
 	const handleWeekChange = (event: React.MouseEvent<HTMLElement>, newFilter: number) => {
@@ -148,9 +143,9 @@ const SchedulePage = observer(() => {
 	}
 
 	const getColumns = (filterType: FILTER_TYPES) => {
-		switch(filterType) {
+		switch (filterType) {
 			case FILTER_TYPES.GROUPS:
-				return ['Пара', 'Преподаватель', 'Дисциплина', 'Аудитория'];
+				return ['Пара', 'Преподаватель', 'Дисциплина', 'Ауд.'];
 			case FILTER_TYPES.TEACHERS:
 				return ['Пара', 'Группа', 'Дисциплина', 'Аудитория'];
 			case FILTER_TYPES.ROOMS:
@@ -161,7 +156,14 @@ const SchedulePage = observer(() => {
 	//console.log(changeMode)
 	return (
 		<>
-			<Container sx={{display:'flex', justifyContent: 'center', alignItems: 'center', gap: 1, flexWrap: 'wrap', mt: '2rem'}}>
+			<Container sx={{
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
+				gap: 1,
+				flexWrap: 'wrap',
+				mt: '2rem'
+			}}>
 
 				<TypeButtons
 					filterType={filterType}
@@ -198,7 +200,7 @@ const SchedulePage = observer(() => {
 					<ToggleButton value="Неделя" disabled>
 						Неделя
 					</ToggleButton>
-					<ToggleButton value={1} >
+					<ToggleButton value={1}>
 						I
 					</ToggleButton>
 					<ToggleButton value={2}>
@@ -215,7 +217,7 @@ const SchedulePage = observer(() => {
 					<ToggleButton value="Замены" disabled>
 						Замены
 					</ToggleButton>
-					<ToggleButton value={true} >
+					<ToggleButton value={true}>
 						Да
 					</ToggleButton>
 					<ToggleButton value={false}>
@@ -228,7 +230,7 @@ const SchedulePage = observer(() => {
 					value={filterValue}
 					size='small'
 					open={open}
-					sx={{width: {xs:240, md: 300}}}
+					sx={{width: {xs: 240, md: 300}}}
 					onOpen={() => {
 						setOpen(true);
 					}}
@@ -239,22 +241,21 @@ const SchedulePage = observer(() => {
 					options={filterOptions}
 					renderInput={(params) => (<TextField
 						{...params}
-						label={filterType}
+						label={` ${filterType}`}
 						InputProps={{
 							...params.InputProps,
 						}}
-					/> )}
-					getOptionLabel={(option) => option.}
-					onChange={(event: any, newValue: Group | Teacher | null) => {
+					/>)}
+					onChange={(event: any, newValue: AutocompleteOption | null) => {
 						setFilterValue(newValue);
 					}}
 				/>
 
 			</Container>
 
-			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2 }}>
+			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
 
-				{filterValue !== null && schedule.weekSchedule !== null ? schedule.weekSchedule.map((item, index) => (
+				{filterValue !== null && schedule.weekSchedule !== null ? schedule.weekSchedule.map((item: readonly GridValidRowModel[], index: React.Key | null | undefined) => (
 					<DayGrid xsNum={12}
 							 key={index}
 							 columns={getColumns(filterType)}
@@ -263,10 +264,20 @@ const SchedulePage = observer(() => {
 							 xlNum={4}
 							 rows={item}
 							 isSelected={index === currentDay}
-							 dayNumber={index}/>
+							 dayNumber={Number(index)}
+							 isReplacementEnabled={isReplaceActive}
+					/>
 				)) : null}
 
 			</Grid2>
+
+			<Button
+				variant={'outlined'}
+				component={Link}
+				to={'/schedule/edit'}
+			>
+				Редактировать
+			</Button>
 		</>
 	)
 });

@@ -14,15 +14,15 @@ class Teacher {
 		//const result = axios.get('');
 
 		this.teachers = [
-			{id: 1, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна', label: ''},
-			{id: 2, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна', label: ''},
-			{id: 3, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна', label: ''},
-			{id: 4, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна', label: ''},
-			{id: 5, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна', label: ''},
+			{id: 1, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна'},
+			// {id: 2, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна', label: ''},
+			// {id: 3, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна', label: ''},
+			// {id: 4, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна', label: ''},
+			// {id: 5, firstName: 'Наталья', lastName: 'Тесленко', surname: 'Федоровна', label: ''},
 		]
 
 		this.teachers.map(teacher => {
-			teacher.label = `${teacher.lastName} ${teacher.firstName[0]}. ${teacher.surname[0]}.`
+			//teacher.label = `${teacher.lastName} ${teacher.firstName[0]}. ${teacher.surname[0]}.`
 		})
 	}
 

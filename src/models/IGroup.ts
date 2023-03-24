@@ -5,5 +5,5 @@ export interface IGroup {
     spec: string,
     groupNumber: number,
     commercial: boolean,
-    label: string,
+    //label: string,
 }
