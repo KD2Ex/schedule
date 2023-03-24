@@ -256,12 +256,13 @@ const SchedulePage = observer(() => {
 			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
 
 				{filterValue !== null && schedule.weekSchedule !== null ? schedule.weekSchedule.map((item: readonly GridValidRowModel[], index: React.Key | null | undefined) => (
-					<DayGrid xsNum={12}
+					<DayGrid
+						// xsNum={12}
+						// 	 mdNum={6}
+						// 	 lNum={6}
+						// 	 xlNum={4}
 							 key={index}
 							 columns={getColumns(filterType)}
-							 mdNum={6}
-							 lNum={6}
-							 xlNum={4}
 							 rows={item}
 							 isSelected={index === currentDay}
 							 dayNumber={Number(index)}

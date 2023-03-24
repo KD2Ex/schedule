@@ -5,10 +5,10 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import teacher from "../store/teacher";
 
 interface DayGridProps {
-	xsNum: number,
-	mdNum: number,
-	lNum: number,
-	xlNum: number,
+	// xsNum: number,
+	// mdNum: number,
+	// lNum: number,
+	// xlNum: number,
 	rows: GridRowsProp,
 	columns: string[],
 	isSelected: boolean,
@@ -26,10 +26,10 @@ const WEEK_DAYS = [
 
 const DayGrid: React.FC<DayGridProps> =
 	({
-		 xsNum,
-		 mdNum,
-		 lNum,
-		 xlNum,
+		 // xsNum,
+		 // mdNum,
+		 // lNum,
+		 // xlNum,
 		 rows,
 		 columns,
 		 isSelected,
@@ -43,7 +43,7 @@ const DayGrid: React.FC<DayGridProps> =
 
 
 	return (
-		<Grid2 xs={xsNum} sm={xsNum} md={mdNum} lg={lNum} xl={xlNum} sx={{mb: {xs: 2, md: 0}}}>
+		<Grid2 xs={12}  md={6} lg={4} sx={{mb: {xs: 2, md: 0}}}>
 
 			<Box sx={{
 				width: "fit-content",
