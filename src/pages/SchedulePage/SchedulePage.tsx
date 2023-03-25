@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {Typography} from '@mui/material'
-import DayGrid from '../../components/DayGrid';
+import DayGrid from '../../components/DayGrid/DayGrid';
 import {observer} from "mobx-react-lite";
 import room from "../../store/rooms";
 import group from "../../store/group";
