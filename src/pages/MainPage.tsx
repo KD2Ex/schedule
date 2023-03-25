@@ -9,7 +9,7 @@ const MainPage = () => {
 	return (
 		<div>
 			<NavBar/>
-			<div style={{paddingLeft: '2rem', paddingRight: '2rem'}}>
+			<div style={{paddingLeft: '1rem', paddingRight: '1rem'}}>
 				<Outlet/>
 			</div>
 		</div>

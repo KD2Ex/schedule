@@ -1,8 +1,10 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import { Box, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, TableContainer } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import teacher from "../store/teacher";
+import { WEEK_DAYS } from '../models/enums/WeekDays';
+import ScheduleDayHeader from "./UI/ScheduleDayHeader/ScheduleDayHeader";
 
 interface DayGridProps {
 	// xsNum: number,
@@ -15,14 +17,8 @@ interface DayGridProps {
 	dayNumber: number,
 	isReplacementEnabled: boolean,
 }
-const WEEK_DAYS = [
-	'Понедельник',
-	'Вторник',
-	'Среда',
-	'Четверг',
-	'Пятница',
-	'Суббота',
-]
+
+
 
 const DayGrid: React.FC<DayGridProps> =
 	({
@@ -33,40 +29,26 @@ const DayGrid: React.FC<DayGridProps> =
 		 rows,
 		 columns,
 		 isSelected,
-		 dayNumber: titleDay,
+		 dayNumber,
 		 isReplacementEnabled
 	}) => {
-
-	const bgColor = isSelected ? "primary.main" : "background.default";
-	const fontColor = isSelected ? "primary.contrastText" : "primary.main";
-
 
 
 	return (
 		<Grid2 xs={12}  md={6} lg={4} sx={{mb: {xs: 2, md: 0}}}>
 
-			<Box sx={{
-				width: "fit-content",
-				height: 25,
-				border: "1px solid",
-				borderColor:"primary.pale",
-				borderRadius: "4px 4px 0px 0px",
-				borderBottom: "0px",
-				backgroundColor: bgColor}}>
-				<Typography sx={{color: fontColor, px: 1,}} >
-					{WEEK_DAYS[titleDay]}
-				</Typography>
-
-			</Box>
+			<ScheduleDayHeader isSelected={isSelected} dayNumber={dayNumber}/>
 
 			<TableContainer  sx={{border: "1px solid", borderColor: "primary.pale", borderRadius: "0px 4px 4px 4px" }}>
 				<Table sx={{ tableLayout: 'auto'}}>
 					<TableHead>
 						<TableRow sx={{borderBottom: "1px solid primary.main"}}>
 
-							{columns.map((value, index) => (
-								<TableCell sx={{ fontSize: '18px', whiteSpace: 'nowrap'}} key={index}>{value}</TableCell>
-							))}
+
+							<TableCell sx={{width: '10%', px: 1}}>{columns[0]}</TableCell>
+							<TableCell sx={{width: '25%', px: 1}}>{columns[1]}</TableCell>
+							<TableCell sx={{width: 'auto', px: 1}}>{columns[2]}</TableCell>
+							<TableCell sx={{width: '10%', px: 1}}>{columns[3]}</TableCell>
 
 						</TableRow>
 					</TableHead>
@@ -77,12 +59,12 @@ const DayGrid: React.FC<DayGridProps> =
 								key={row.id}
 								sx={ row.replacementDate && isReplacementEnabled ? {  boxShadow: 'inset 0px 0px 50px 12px rgba(3, 29, 96, 1)' } : null}
 								>
-								<TableCell component="th" scope='row' sx={{flex: 1}}>
+								<TableCell component="th" scope='row' sx={{p: 2}}>
 									{row.subjNumber}
 								</TableCell>
 								<TableCell sx={{maxWidth: 0, flex: 1}} size='small'>{row.teacher}</TableCell>
 								<TableCell  sx={{maxWidth: 0, flex: 3}} size='small'>{row.subject}</TableCell>
-								<TableCell sx={{ flex: 1}} size='small'>{row.room}</TableCell>
+								<TableCell sx={{justifyContent: 'center', flex: 1}} size='small'>{row.room}</TableCell>
 							</TableRow>
 						))}
 					</TableBody>

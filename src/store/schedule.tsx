@@ -7,6 +7,7 @@ class Schedule {
 		makeAutoObservable(this);
 	}
 
+
 	async fetchWeekSchedule() {
 		this.weekSchedule = [
 			[

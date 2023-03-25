@@ -12,7 +12,7 @@ function NavBar() {
 
 	return (
 		<StyledEngineProvider injectFirst>
-			<AppBar  position='static' sx={{flexDirection: "row", py: 2, px: "2rem"}} className={styles.appBar}>
+			<AppBar  position='static' sx={{flexDirection: "row", py: 2, px: "1rem"}} className={styles.appBar}>
 					<Button  component={link} to="/schedule" >
 						Расписание
 					</Button>
