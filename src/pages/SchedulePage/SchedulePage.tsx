@@ -1,28 +1,21 @@
-import React, {FC, useContext, useEffect, useState} from 'react'
-import {
-	Stack,
-	Autocomplete,
-	TextField,
-	ToggleButtonGroup,
-	ToggleButton,
-	Box, Container, Button
-} from '@mui/material'
+import React, {useEffect, useState} from 'react'
+import {Autocomplete, Button, Container, TextField, ToggleButton, ToggleButtonGroup} from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import {Typography} from '@mui/material'
 import DayGrid from '../../components/DayGrid/DayGrid';
 import {observer} from "mobx-react-lite";
 import room from "../../store/rooms";
 import group from "../../store/group";
 import teacher from "../../store/teacher";
-import schedule from "../../store/schedule";
-import {getMode} from "../../themes";
-import {ColorModeContext} from "../../context/index";
 import toggleStyles from '../../styles/toggleButtons.module.css'
 import {FILTER_TYPES} from '../../models/enums/FilterType'
 import TypeButtons from "../../components/TypeButtons";
 import {getTeacherFullName} from "../../utils/stringFormatters";
 import {Link} from "react-router-dom";
-import { GridValidRowModel } from '@mui/x-data-grid';
+import {GridValidRowModel} from '@mui/x-data-grid';
+import {ScheduleType} from "../../models/enums/ScheduleType";
+import {fetchSchedule} from "../../api/ScheduleService";
+import IScheduleDay from "../../models/IScheduleDay";
+import {scheduleTypeConvert} from "../../utils/converters";
 
 
 interface AutocompleteOption {
@@ -38,6 +31,8 @@ const SchedulePage = observer(() => {
 	const [filterValue, setFilterValue] = useState<AutocompleteOption | null>(null);
 	const [filterOptions, setFilterOptions] = useState<AutocompleteOption[]>([]);
 	const [filterType, setFilterType] = useState<FILTER_TYPES>(FILTER_TYPES.TEACHERS);
+	const [schedule, setSchedule] = useState<IScheduleDay[]>([]);
+
 
 	const [open, setOpen] = useState(false);
 	const loading = open && filterOptions?.length === 0;
@@ -101,25 +96,35 @@ const SchedulePage = observer(() => {
 
 	useEffect(() => {
 		if (filterValue !== null) {
-			if (filterType === FILTER_TYPES.GROUPS) {
-				schedule.fetchWeekSchedule().then(() => {
 
-				})
-			}
-			if (filterType === FILTER_TYPES.TEACHERS) {
-				schedule.fetchWeekSchedule().then(() => {
 
-				})
-				//getTeacherSchedule(filterValue.id);
-			}
-			if (filterType === FILTER_TYPES.ROOMS) {
-				schedule.fetchWeekSchedule().then(() => {
+			(async () => {
+				//await schedule.fetchWeekSchedule(1, isReplaceActive, ScheduleType.GROUP, filterValue.id);
 
-				})
-				//getRoomSchedule(filterValue.id);
-			}
+
+
+				const newSchedule = await fetchSchedule(week, isReplaceActive, scheduleTypeConvert(filterType), filterValue.id);
+				setSchedule(newSchedule);
+			})();
+			// if (filterType === FILTER_TYPES.GROUPS) {
+			// 	schedule.fetchWeekSchedule().then(() => {
+			//
+			// 	})
+			// }
+			// if (filterType === FILTER_TYPES.TEACHERS) {
+			// 	schedule.fetchWeekSchedule().then(() => {
+			//
+			// 	})
+			// 	//getTeacherSchedule(filterValue.id);
+			// }
+			// if (filterType === FILTER_TYPES.ROOMS) {
+			// 	schedule.fetchWeekSchedule().then(() => {
+			//
+			// 	})
+			// 	//getRoomSchedule(filterValue.id);
+			// }
 		}
-	}, [filterValue, isReplaceActive])
+	}, [filterValue, isReplaceActive, week])
 
 
 	const handleWeekChange = (event: React.MouseEvent<HTMLElement>, newFilter: number) => {
@@ -149,9 +154,22 @@ const SchedulePage = observer(() => {
 			case FILTER_TYPES.TEACHERS:
 				return ['Пара', 'Группа', 'Дисциплина', 'Аудитория'];
 			case FILTER_TYPES.ROOMS:
-				return ['Пара', 'Группа', 'Преподаватель', 'Дисциплина'];
+				return ['Пара',  'Преподаватель', 'Дисциплина', 'Группа'];
 		}
 	}
+
+	const getMaxPairsNumber = () => {
+
+
+		let maxPairs = 0;
+		schedule.forEach(day => {
+			if (day.pairs.length === 0) return;
+			day.pairs[day.pairs.length - 1].number > maxPairs ? maxPairs = day.pairs[day.pairs.length - 1].number : null
+		})
+		return maxPairs;
+	}
+
+	const maxPairsNumber = getMaxPairsNumber();
 
 	//console.log(changeMode)
 	return (
@@ -168,6 +186,7 @@ const SchedulePage = observer(() => {
 				<TypeButtons
 					filterType={filterType}
 					setFilterType={setFilterType}
+					setFilterValue={setFilterValue}
 					exclusive
 					size='small'
 					className={toggleStyles.toggleButton}
@@ -253,20 +272,20 @@ const SchedulePage = observer(() => {
 
 			</Container>
 
+
+
 			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
 
-				{filterValue !== null && schedule.weekSchedule !== null ? schedule.weekSchedule.map((item: readonly GridValidRowModel[], index: React.Key | null | undefined) => (
+				{filterValue !== null && schedule.length !== 0 ? schedule.map((item: IScheduleDay, index: React.Key | null | undefined) => (
 					<DayGrid
-						// xsNum={12}
-						// 	 mdNum={6}
-						// 	 lNum={6}
-						// 	 xlNum={4}
-							 key={index}
-							 columns={getColumns(filterType)}
-							 rows={item}
-							 isSelected={index === currentDay}
-							 dayNumber={Number(index)}
-							 isReplacementEnabled={isReplaceActive}
+						key={index}
+						columns={getColumns(filterType)}
+						rows={item}
+						isSelected={index === currentDay}
+						dayNumber={Number(index)}
+						isReplacementEnabled={isReplaceActive}
+						filterType={filterType}
+						maxPairsNumber={maxPairsNumber}
 					/>
 				)) : null}
 

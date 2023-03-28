@@ -22,6 +22,9 @@ class Group {
 	async fetchGroups() {
 		this.groups = [
 			{id: 1, course: 4, spec: 'ИСП', commercial: false, groupNumber: 4},
+			{id: 2, course: 4, spec: 'ИНС', commercial: false, groupNumber: 3},
+			{id: 3, course: 4, spec: 'ИСП', commercial: true, groupNumber: 12},
+			{id: 4, course: 4, spec: 'ИНС', commercial: true, groupNumber: 11},
 			// {id: 2, course: 4, spec: 'ИСП', commercial: false, groupNumber: 4, label: ``},
 			// {id: 3, course: 4, spec: 'ИСП', commercial: false, groupNumber: 4, label: ``},
 			// {id: 4, course: 4, spec: 'ИСП', commercial: false, groupNumber: 4, label: ``},

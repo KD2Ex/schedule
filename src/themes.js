@@ -1,7 +1,7 @@
 import {createTheme} from '@mui/material';
 import font from './styles/fonts/SFUIText-Regular.ttf'
 import SFPro from './styles/fonts/SFProText-Regular.ttf'
-import font1 from '../dist/assets/SFUIText-Regular-c5339ac0.ttf'
+import font1 from './styles/fonts/SFUIText-Regular.ttf'
 //main: "rgba(3, 29, 96, 0.82)",
 
 //rgba(3, 29, 96, 0.50)
@@ -37,7 +37,7 @@ export const getMode = (mode) => (
             },
             background: {
                 default: 'rgb(255,255,255)',
-                paper: 'rgb(0,0,0)',
+                paper: 'rgb(255,255,255)',
             },
             mode: "light"
         }

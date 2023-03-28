@@ -11,16 +11,17 @@ interface ToggleButtons {
 interface TypeButtonsProps extends ToggleButtonGroupProps {
 	filterType: FILTER_TYPES;
 	setFilterType: React.Dispatch<FILTER_TYPES>;
+	setFilterValue: React.Dispatch<any>
 }
 
 
 
-const TypeButtons: FC<TypeButtonsProps> = ({filterType, setFilterType, ...props}) => {
+const TypeButtons: FC<TypeButtonsProps> = ({filterType, setFilterType, setFilterValue, ...props}) => {
 
 	const handelTypeAlignment = (event: React.MouseEvent<HTMLElement>, newFilter: FILTER_TYPES) => {
 		if (newFilter !== null) {
 			setFilterType(newFilter);
-			//setFilterValue(null);
+			setFilterValue(null);
 			//setT(null);
 		}
 	}

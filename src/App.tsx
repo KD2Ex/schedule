@@ -5,7 +5,7 @@ import {RouterProvider} from "react-router-dom";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {getMode, themeObject} from "./themes";
 import CssBaseline from "@mui/material/CssBaseline";
-import {ColorModeContext} from "./context";
+import {ColorContext, ColorModeContext} from "./context";
 
 function App() {
 
@@ -29,10 +29,13 @@ function App() {
 	return (
 		<>
 			<ColorModeContext.Provider value={colorMode}>
-				<ThemeProvider theme={theme}>
-					<CssBaseline/>
-					<RouterProvider router={router}/>
-				</ThemeProvider>
+				<ColorContext.Provider value={mode}>
+					<ThemeProvider theme={theme}>
+						<CssBaseline/>
+						<RouterProvider router={router}/>
+					</ThemeProvider>
+				</ColorContext.Provider>
+
 			</ColorModeContext.Provider>
 
 		</>

@@ -1,45 +1,218 @@
-import React, {useEffect} from 'react'
-import { DataGrid, GridRowsProp, GridColDef } from '@mui/x-data-grid';
-import { Box, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, TableContainer } from '@mui/material'
+import React, {useContext} from 'react'
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import teacher from "../../store/teacher";
-import { WEEK_DAYS } from '../../models/enums/WeekDays';
 import ScheduleDayHeader from "../UI/ScheduleDayHeader/ScheduleDayHeader";
 import Css from './DayGrid.module.css'
+import IScheduleDay from "../../models/IScheduleDay";
+import {LessonType} from "../../models/enums/LessonType";
+import {FILTER_TYPES} from "../../models/enums/FilterType";
+import IPair from "../../models/IPair";
+import {ColorContext} from "../../context";
 
 interface DayGridProps {
-	// xsNum: number,
-	// mdNum: number,
-	// lNum: number,
-	// xlNum: number,
-	rows: GridRowsProp,
+	rows: IScheduleDay,
 	columns: string[],
 	isSelected: boolean,
 	dayNumber: number,
 	isReplacementEnabled: boolean,
+	filterType: FILTER_TYPES;
+	maxPairsNumber: number;
 }
 
+//const mode = useContext(ColorContext);
+
+//(85, 194, 252, 0.82)
+
+//const boxShadowColor = mode === 'dark' ?  'rgba(3,29,96,0.82)' : 'rgba(65,129,255,0.82)'
+const color = `rgba(0, 68, 255, 0.82)`
 
 const tableRowStyle = {
-	'& MuiTableCell-root': {
-		py: 0
-	}
+	boxShadow: `inset 0px 0px 25px 2px ${color}`,
+
+	// '& MuiTableCell-root': {
+	// }
 }
 
-let doubleCount: number = 0;
+
 
 const DayGrid: React.FC<DayGridProps> =
 	({
-		 // xsNum,
-		 // mdNum,
-		 // lNum,
-		 // xlNum,
-		 rows,
-		 columns,
-		 isSelected,
-		 dayNumber,
-		 isReplacementEnabled
+		rows,
+		columns,
+		isSelected,
+		dayNumber,
+		isReplacementEnabled,
+		filterType,
+		maxPairsNumber
 	}) => {
+
+
+
+	const tableRowDefault = (cells, isReplacement: boolean) => {
+		return <TableRow
+			sx={  (isReplacement ? {  ...tableRowStyle } : null)}
+		>
+			<TableCell>
+				{cells[0][0]}
+			</TableCell>
+			<TableCell size='small'>
+				{cells[0][1]}
+			</TableCell>
+			<TableCell size='small'>
+				{cells[0][2]}
+			</TableCell>
+			<TableCell size='small'>
+				{cells[0][3]}
+			</TableCell>
+		</TableRow>
+	}
+
+	const tableRowDouble = (cells, firstReplacement: boolean, secondReplacement: boolean) => {
+		return <>
+
+			<TableRow
+				sx={  (firstReplacement ? {  ...tableRowStyle } : null)}
+			>
+				<TableCell sx={{p: 2, py: 0}} rowSpan={2}>
+					{cells[0][0]}
+				</TableCell>
+				<TableCell sx={{ py: 0.3}} size='small'>
+					<div className={Css.textContainer}>
+						{cells[0][1]}
+					</div>
+				</TableCell>
+				<TableCell  sx={{ py: 0}} size='small'>
+					<div className={Css.textContainer}>
+						{cells[0][2]}
+					</div>
+
+				</TableCell>
+				<TableCell  sx={{ py: 0}} size='small'>
+					{cells[0][3]}
+				</TableCell>
+			</TableRow>
+
+
+			<TableRow
+				sx={  (secondReplacement ? {  ...tableRowStyle } : null)}
+			>
+				<TableCell sx={{p: 2, py: 0}}>
+					{cells[1][0]}
+				</TableCell>
+				<TableCell  sx={{ py: 0}} size='small'>
+					{cells[1][1] || "Нет пары"}
+				</TableCell>
+				<TableCell  sx={{ py: 0.3}} size='small'>
+					{cells[1][2]}
+				</TableCell>
+
+			</TableRow>
+
+		</>
+	}
+
+	const tableRowEmpty = (number: number) => {
+		return <TableRow
+			//key={pair.number}
+			//sx={  (pair.lessons[0]?.replacement && isReplacementEnabled ? {  boxShadow: 'inset 0px 0px 50px 12px rgba(3, 29, 96, 1)' } : null)}
+		>
+			<TableCell component="th" scope='row' sx={{p: 2}} rowSpan={1}>
+				{number}
+			</TableCell>
+			<TableCell size='small'>
+			</TableCell>
+			<TableCell size='small'>
+				<Typography sx={{fontStyle: 'italic',  fontSize: '1em'}}>
+					Нет занятия
+				</Typography>
+			</TableCell>
+			<TableCell size='small'>
+			</TableCell>
+		</TableRow>
+	}
+
+
+	const getTableRow = (pair: IPair) => {
+
+		const cells: any[] = [[pair.number], []];
+
+		pair.lessons.forEach((lesson, index) => {
+			console.log(index)
+			switch (filterType) {
+				case FILTER_TYPES.GROUPS: {
+					cells[index].push(pair.lessons[index].teacher);
+					cells[index].push(pair.lessons[index].subject);
+					cells[index].push(pair.lessons[index].room);
+					break;
+				}
+				case FILTER_TYPES.TEACHERS: {
+					cells[index].push(pair.lessons[index].group);
+					cells[index].push(pair.lessons[index].subject);
+					cells[index].push(pair.lessons[index].room);
+					break;
+				}
+				case FILTER_TYPES.ROOMS: {
+					cells[index].push(pair.lessons[index].teacher);
+					cells[index].push(pair.lessons[index].subject);
+					cells[index].push(pair.lessons[index].group);
+					break;
+				}
+			}
+		})
+
+		switch (pair.type) {
+			case LessonType.DOUBLE:{
+				return tableRowDouble(cells, isReplacementEnabled && pair.lessons[0].replacement, isReplacementEnabled && pair.lessons[1].replacement);
+			}
+			case LessonType.EMPTY: {
+				return tableRowEmpty(pair.number);
+			}
+			case LessonType.ONE: {
+				return tableRowDefault(cells, isReplacementEnabled && pair.lessons[0].replacement);
+			}
+			case LessonType.FIRST: {
+				return tableRowDouble(cells, isReplacementEnabled && pair.lessons[0].replacement, isReplacementEnabled && pair.lessons[0].replacement);
+			}
+		}
+
+		/*if (pair.type === LessonType.DOUBLE) {
+
+		}*/
+
+
+	}
+
+
+	const fillStartingPairs = () => {
+
+		const firstPairNumber = rows.pairs[0].number;
+		const resultRows: any[] = []
+
+
+		for (let i = 1; i < firstPairNumber; i++) {
+
+			resultRows.push(tableRowEmpty(i))
+		}
+
+		return resultRows;
+	}
+
+
+	const fillEndingPairs = () => {
+
+			let lastPairNumber = 0;
+			if (rows.pairs.length !== 0) {
+				lastPairNumber = rows.pairs[rows.pairs.length - 1].number;
+			}
+			const resultRows: any[] = []
+
+			for (let i = lastPairNumber + 1; i <= maxPairsNumber; i++) {
+
+				resultRows.push(tableRowEmpty(i))
+			}
+
+			return resultRows;
+		}
 
 
 	return (
@@ -54,85 +227,47 @@ const DayGrid: React.FC<DayGridProps> =
 
 
 							<TableCell sx={{width: '10%', px: 1}}>{columns[0]}</TableCell>
-							<TableCell sx={{width: '25%', px: 1}}>{columns[1]}</TableCell>
+							<TableCell sx={{width: '30%', px: 1}}>{columns[1]}</TableCell>
 							<TableCell sx={{width: 'auto', px: 1}}>{columns[2]}</TableCell>
-							<TableCell sx={{width: '10%', px: 1}}>{columns[3]}</TableCell>
+							<TableCell sx={{width: '13%', px: 1}}>{columns[3]}</TableCell>
 
 						</TableRow>
 					</TableHead>
 
-					<TableBody >
-						{rows.map((row, index, arr) => {
+					<TableBody>
+
+
+						{rows.pairs.length !== 0 && fillStartingPairs()}
+
+						{rows.pairs.map((pair, index, arr) => {
 							//index !== 0 && arr[index - 1].subjNumber === arr[index].subjNumber
-								if (row.double === true) {
-									doubleCount += 1;
-									return <>
-										<TableRow
-											key={row.id}
-											sx={  (row.replacementDate && isReplacementEnabled ? {  boxShadow: 'inset 0px 0px 50px 12px rgba(3, 29, 96, 1)' } : null)}
-										>
-											{doubleCount === 2 ? null :
-												<TableCell  sx={{p: 2, py: 0}} rowSpan={2}>
-													{row.subjNumber}
-												</TableCell>
-											}
 
-											<TableCell sx={{maxWidth: 0, flex: 1, py: 0}} >
 
-												<div className={Css.textContainer}>
-													{row.teacher}
-												</div>
-											</TableCell>
-											<TableCell sx={{maxWidth: 0, flex: 3, py: 0}} component="th" scope="row">
-												<div className={Css.textContainer}>
-													{row.subject}
-												</div>
-											</TableCell>
-											<TableCell sx={{justifyContent: 'center', flex: 1, py: '2.5px'}}>
-												{row.room}
-											</TableCell>
-										</TableRow>
-										{/*<TableRow
-											key={row.id}
-											sx={  (row.replacementDate && isReplacementEnabled ? {  boxShadow: 'inset 0px 0px 50px 12px rgba(3, 29, 96, 1)' } : null)}
-										>
-											<TableCell component="th" scope='row' sx={{p: 2, py: 1}} rowSpan={1}>
-												{row.subjNumber}
-											</TableCell>
-											<TableCell sx={{maxWidth: 0, flex: 1}} size='small'>
-												{row.teacher}
-											</TableCell>
-											<TableCell sx={{maxWidth: 0, flex: 3}} size='small'>
-												{row.subject}
-											</TableCell>
-											<TableCell sx={{justifyContent: 'center', flex: 1}} size='small'>
-												{row.room}
-											</TableCell>
-										</TableRow>*/}
-									</>
-								} else {
-									doubleCount = 0;
-									return <TableRow
-										key={row.id}
-										sx={  (row.replacementDate && isReplacementEnabled ? {  boxShadow: 'inset 0px 0px 50px 12px rgba(3, 29, 96, 1)' } : null)}
-									>
-										<TableCell component="th" scope='row' sx={{p: 2}} rowSpan={1}>
-											{row.subjNumber}
-										</TableCell>
-										<TableCell sx={{maxWidth: 0, flex: 1}} size='small'>
-											{row.teacher}
-										</TableCell>
-										<TableCell sx={{maxWidth: 0, flex: 3}} size='small'>
-											{row.subject}
-										</TableCell>
-										<TableCell sx={{justifyContent: 'center', flex: 1}} size='small'>
-											{row.room}
-										</TableCell>
-									</TableRow>
-								}
+							return getTableRow(pair)
+
+								/*<TableRow
+									key={pair.number}
+									//sx={  (pair.lessons[0]?.replacement && isReplacementEnabled ? {  boxShadow: 'inset 0px 0px 50px 12px rgba(3, 29, 96, 1)' } : null)}
+								>
+									<TableCell>
+										{pair.number}
+									</TableCell>
+									<TableCell size='small'>
+										{pair.lessons[0].teacher}
+									</TableCell>
+									<TableCell size='small'>
+										{pair.lessons[0].subject}
+									</TableCell>
+									<TableCell size='small'>
+										{pair.lessons[0].room}
+									</TableCell>
+								</TableRow>*/
+
 
 							}
 						)}
+
+						{fillEndingPairs()}
 					</TableBody>
 				</Table>
 			</TableContainer>
