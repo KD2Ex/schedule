@@ -6,4 +6,5 @@ export interface IGroup {
     groupNumber: number,
     commercial: boolean,
     //label: string,
+    fullName: string,
 }

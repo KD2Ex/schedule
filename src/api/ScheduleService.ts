@@ -19,5 +19,6 @@ export const fetchSchedule = async (weekNumber: number, isReplacement: boolean, 
 		return result.data.response.days;
 	} catch (e) {
 		console.log(e.message)
+		return [];
 	}
 }

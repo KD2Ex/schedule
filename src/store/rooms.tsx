@@ -1,5 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import IRoom from "../models/IRoom";
+import {fetchEntities} from "../api/EntitiesService";
+import {ScheduleType} from "../models/enums/ScheduleType";
 
 
 class Room {
@@ -11,18 +13,15 @@ class Room {
 	}
 
 	async fetchRooms() {
-		const res = await fetch('https://jsonplaceholder.typicode.com/posts')
+		const res = await fetchEntities(ScheduleType.ROOM);
 
-		this.rooms = [
-			{id: 1, number: 46},
-			{id: 2, number: 416},
-			{id: 3, number: 146},
-			{id: 4, number: 460},
-		]
+		this.rooms = res.filter(item => item.fullName !== '-');
+		console.log(res);
+
 	}
 
 	getRoomsNumbers() {
-		return this.rooms.map(room => room.number.toString())
+		return this.rooms.map(room => room.fullName.toString())
 	}
 
 }

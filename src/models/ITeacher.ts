@@ -4,4 +4,5 @@ export default interface ITeacher {
 	firstName: string,
 	lastName: string,
 	surname: string,
+	fullName: string,
 }

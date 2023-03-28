@@ -55,11 +55,17 @@ const DayGrid: React.FC<DayGridProps> =
 			<TableCell>
 				{cells[0][0]}
 			</TableCell>
-			<TableCell size='small'>
+			<TableCell component="th" scope="row" size='small'>
+				<div className={Css.textContainer}>
+
+				</div>
 				{cells[0][1]}
 			</TableCell>
-			<TableCell size='small'>
+			<TableCell component="th" scope="row" sx={{}} size='small'>
+				<div className={Css.textContainer}>
+				</div>
 				{cells[0][2]}
+
 			</TableCell>
 			<TableCell size='small'>
 				{cells[0][3]}
@@ -81,7 +87,7 @@ const DayGrid: React.FC<DayGridProps> =
 						{cells[0][1]}
 					</div>
 				</TableCell>
-				<TableCell  sx={{ py: 0}} size='small'>
+				<TableCell component="th" scope="row"  sx={{ py: 0}} size='small'>
 					<div className={Css.textContainer}>
 						{cells[0][2]}
 					</div>
@@ -227,9 +233,9 @@ const DayGrid: React.FC<DayGridProps> =
 
 
 							<TableCell sx={{width: '10%', px: 1}}>{columns[0]}</TableCell>
-							<TableCell sx={{width: '30%', px: 1}}>{columns[1]}</TableCell>
+							<TableCell sx={{width: '20%', px: 1}}>{columns[1]}</TableCell>
 							<TableCell sx={{width: 'auto', px: 1}}>{columns[2]}</TableCell>
-							<TableCell sx={{width: '13%', px: 1}}>{columns[3]}</TableCell>
+							<TableCell sx={{width: '10%', px: 1}}>{columns[3]}</TableCell>
 
 						</TableRow>
 					</TableHead>

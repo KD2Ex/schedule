@@ -55,7 +55,7 @@ const SchedulePage = observer(() => {
 					await teacher.fetchTeachers();
 
 					teacher.teachers.map(teacher => {
-						options.push({id: teacher.id, label: getTeacherFullName(teacher)})
+						options.push({id: teacher.id, label: teacher.fullName})
 					})
 
 					break;
@@ -65,7 +65,7 @@ const SchedulePage = observer(() => {
 					group.groups.map(group => {
 						options.push({
 							id: group.id,
-							label: `${group.groupNumber}-${group.commercial ? 'КД9' : 'Д9'}-${group.course}${group.spec}`
+							label: group.fullName,
 						})
 					})
 
@@ -74,7 +74,7 @@ const SchedulePage = observer(() => {
 					await room.fetchRooms();
 
 					room.rooms.map(room => {
-						options.push({id: room.id, label: room.number.toString()})
+						options.push({id: room.id, label: room.fullName})
 					})
 
 
