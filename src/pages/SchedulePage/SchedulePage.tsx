@@ -291,13 +291,13 @@ const SchedulePage = observer(() => {
 
 			</Grid2>
 
-			<Button
+			{/*<Button
 				variant={'outlined'}
 				component={Link}
 				to={'/schedule/edit'}
 			>
 				Редактировать
-			</Button>
+			</Button>*/}
 		</>
 	)
 });

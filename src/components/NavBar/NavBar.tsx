@@ -1,9 +1,10 @@
 import React, {useContext} from 'react'
-import {  Button, AppBar, Toolbar, StyledEngineProvider } from '@mui/material'
+import {Button, AppBar, Toolbar, StyledEngineProvider, IconButton} from '@mui/material'
 import {Link as link} from 'react-router-dom';
 import styles from './NavBar.module.css';
 import {ColorModeContext} from "../../context";
-
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
 
 
 function NavBar() {
@@ -22,7 +23,12 @@ function NavBar() {
 					<Button sx={{color: 'white'}} component={link} to="/profile">
 						Профиль
 					</Button>
-				<Button onClick={() => changeMode.toggleColorMode()}>qwe123r</Button>
+				{/*<Button onClick={() => changeMode.toggleColorMode()}>
+					qwe123r
+				</Button>*/}
+				<IconButton onClick={() => changeMode.toggleColorMode()} aria-label="delete">
+					<Brightness4Icon/>
+				</IconButton>
 
 			</AppBar>
 		</StyledEngineProvider>
