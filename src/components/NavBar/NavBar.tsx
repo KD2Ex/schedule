@@ -17,12 +17,12 @@ function NavBar() {
 					<Button  component={link} to="/schedule" >
 						Расписание
 					</Button>
-					<Button sx={{color: 'white'}} component={link} to="/data" >
+					{/*<Button sx={{color: 'white'}} component={link} to="/data" >
 						Списки
 					</Button>
 					<Button sx={{color: 'white'}} component={link} to="/profile">
 						Профиль
-					</Button>
+					</Button>*/}
 				{/*<Button onClick={() => changeMode.toggleColorMode()}>
 					qwe123r
 				</Button>*/}
