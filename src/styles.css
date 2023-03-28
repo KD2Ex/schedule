@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'SF UI Text Regular', sans-serif;
+    font-family: 'SFUIText', sans-serif;
 }
 
 
@@ -10,7 +10,7 @@
 @font-face {
     font-family: 'SFUIText';
     src: local("SFUIText"),
-     url("./styles/fonts/SFUIText-Regular.ttf") format("ttf");
+     url("./styles/fonts/SFUIText-Regular.ttf") format("truetype");
      font-weight: 400;
 }
 

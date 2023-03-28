@@ -55,15 +55,15 @@ const DayGrid: React.FC<DayGridProps> =
 			<TableCell>
 				{cells[0][0]}
 			</TableCell>
-			<TableCell component="th" scope="row" size='small'>
-				<div className={Css.textContainer}>
+			<TableCell component="th" scope="row" sx={{px: 1}} size='small'>
+				{/*<div className={Css.textContainer}>
 
-				</div>
+				</div>*/}
 				{cells[0][1]}
 			</TableCell>
-			<TableCell component="th" scope="row" sx={{}} size='small'>
-				<div className={Css.textContainer}>
-				</div>
+			<TableCell component="th" scope="row" sx={{px: 1}} size='small'>
+				{/*<div className={Css.textContainer}>
+				</div>*/}
 				{cells[0][2]}
 
 			</TableCell>
@@ -82,12 +82,12 @@ const DayGrid: React.FC<DayGridProps> =
 				<TableCell sx={{p: 2, py: 0}} rowSpan={2}>
 					{cells[0][0]}
 				</TableCell>
-				<TableCell sx={{ py: 0.3}} size='small'>
+				<TableCell sx={{ py: 0, px: 1}} size='small'>
 					<div className={Css.textContainer}>
 						{cells[0][1]}
 					</div>
 				</TableCell>
-				<TableCell component="th" scope="row"  sx={{ py: 0}} size='small'>
+				<TableCell component="th" scope="row"  sx={{ px: 1}} size='small'>
 					<div className={Css.textContainer}>
 						{cells[0][2]}
 					</div>
@@ -102,13 +102,13 @@ const DayGrid: React.FC<DayGridProps> =
 			<TableRow
 				sx={  (secondReplacement ? {  ...tableRowStyle } : null)}
 			>
-				<TableCell sx={{p: 2, py: 0}}>
+				<TableCell sx={{py: 0, px: 1}}>
 					{cells[1][0]}
 				</TableCell>
-				<TableCell  sx={{ py: 0}} size='small'>
+				<TableCell  sx={{ py: 0, px: 1}} size='small'>
 					{cells[1][1] || "Нет пары"}
 				</TableCell>
-				<TableCell  sx={{ py: 0.3}} size='small'>
+				<TableCell  sx={{ py: 0}} size='small'>
 					{cells[1][2]}
 				</TableCell>
 
@@ -168,7 +168,11 @@ const DayGrid: React.FC<DayGridProps> =
 
 		switch (pair.type) {
 			case LessonType.DOUBLE:{
-				return tableRowDouble(cells, isReplacementEnabled && pair.lessons[0].replacement, isReplacementEnabled && pair.lessons[1].replacement);
+				if (pair.lessons.length > 1) {
+
+					return tableRowDouble(cells, isReplacementEnabled && pair.lessons[0].replacement, isReplacementEnabled && pair.lessons[1].replacement);
+				}
+				return tableRowDouble(cells, false,false);
 			}
 			case LessonType.EMPTY: {
 				return tableRowEmpty(pair.number);
@@ -229,11 +233,11 @@ const DayGrid: React.FC<DayGridProps> =
 			<TableContainer  sx={{border: "1px solid", borderColor: "primary.pale", borderRadius: "0px 4px 4px 4px" }}>
 				<Table sx={{ tableLayout: 'auto'}}>
 					<TableHead>
-						<TableRow sx={{borderBottom: "1px solid primary.main"}}>
+						<TableRow sx={{borderBottom: "1px solid primary.main",}}>
 
 
-							<TableCell sx={{width: '10%', px: 1}}>{columns[0]}</TableCell>
-							<TableCell sx={{width: '20%', px: 1}}>{columns[1]}</TableCell>
+							<TableCell sx={{width: '10%', px: 1.5}}>{columns[0]}</TableCell>
+							<TableCell sx={{width: '23%', px: 1}}>{columns[1]}</TableCell>
 							<TableCell sx={{width: 'auto', px: 1}}>{columns[2]}</TableCell>
 							<TableCell sx={{width: '10%', px: 1}}>{columns[3]}</TableCell>
 
@@ -241,34 +245,11 @@ const DayGrid: React.FC<DayGridProps> =
 					</TableHead>
 
 					<TableBody>
-
-
 						{rows.pairs.length !== 0 && fillStartingPairs()}
 
 						{rows.pairs.map((pair, index, arr) => {
-							//index !== 0 && arr[index - 1].subjNumber === arr[index].subjNumber
-
 
 							return getTableRow(pair)
-
-								/*<TableRow
-									key={pair.number}
-									//sx={  (pair.lessons[0]?.replacement && isReplacementEnabled ? {  boxShadow: 'inset 0px 0px 50px 12px rgba(3, 29, 96, 1)' } : null)}
-								>
-									<TableCell>
-										{pair.number}
-									</TableCell>
-									<TableCell size='small'>
-										{pair.lessons[0].teacher}
-									</TableCell>
-									<TableCell size='small'>
-										{pair.lessons[0].subject}
-									</TableCell>
-									<TableCell size='small'>
-										{pair.lessons[0].room}
-									</TableCell>
-								</TableRow>*/
-
 
 							}
 						)}
