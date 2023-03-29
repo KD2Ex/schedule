@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {Autocomplete, Button, Container, TextField, ToggleButton, ToggleButtonGroup} from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import DayGrid from '../../components/DayGrid/DayGrid';
+import ScheduleDayTable from '../../components/ScheduleDayTable/ScheduleDayTable';
 import {observer} from "mobx-react-lite";
 import room from "../../store/rooms";
 import group from "../../store/group";
@@ -150,11 +150,11 @@ const SchedulePage = observer(() => {
 	const getColumns = (filterType: FILTER_TYPES) => {
 		switch (filterType) {
 			case FILTER_TYPES.GROUPS:
-				return ['Пара', 'Преподаватель', 'Дисциплина', 'Ауд.'];
+				return ['№', 'Преподаватель', 'Дисциплина', 'Ауд.'];
 			case FILTER_TYPES.TEACHERS:
-				return ['Пара', 'Группа', 'Дисциплина', 'Аудитория'];
+				return ['№', 'Группа', 'Дисциплина', 'Аудитория'];
 			case FILTER_TYPES.ROOMS:
-				return ['Пара',  'Преподаватель', 'Дисциплина', 'Группа'];
+				return ['№',  'Преподаватель', 'Дисциплина', 'Группа'];
 		}
 	}
 
@@ -220,10 +220,10 @@ const SchedulePage = observer(() => {
 						Неделя
 					</ToggleButton>
 					<ToggleButton value={1}>
-						I
+						1
 					</ToggleButton>
 					<ToggleButton value={2}>
-						II
+						2
 					</ToggleButton>
 				</ToggleButtonGroup>
 				<ToggleButtonGroup
@@ -277,7 +277,7 @@ const SchedulePage = observer(() => {
 			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
 
 				{filterValue !== null && schedule.length !== 0 ? schedule.map((item: IScheduleDay, index: React.Key | null | undefined) => (
-					<DayGrid
+					<ScheduleDayTable
 						key={index}
 						columns={getColumns(filterType)}
 						rows={item}

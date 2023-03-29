@@ -2,7 +2,7 @@ import React, {useContext} from 'react'
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import ScheduleDayHeader from "../UI/ScheduleDayHeader/ScheduleDayHeader";
-import Css from './DayGrid.module.css'
+import Css from './ScheduleDayTable.module.css'
 import IScheduleDay from "../../models/IScheduleDay";
 import {LessonType} from "../../models/enums/LessonType";
 import {FILTER_TYPES} from "../../models/enums/FilterType";
@@ -35,7 +35,7 @@ const tableRowStyle = {
 
 
 
-const DayGrid: React.FC<DayGridProps> =
+const ScheduleDayTable: React.FC<DayGridProps> =
 	({
 		rows,
 		columns,
@@ -52,22 +52,22 @@ const DayGrid: React.FC<DayGridProps> =
 		return <TableRow
 			sx={  (isReplacement ? {  ...tableRowStyle } : null)}
 		>
-			<TableCell>
+			<TableCell sx={{px: 1, textAlign: 'center'}}>
 				{cells[0][0]}
 			</TableCell>
-			<TableCell component="th" scope="row" sx={{px: 1}} size='small'>
+			<TableCell component="th" scope="row" sx={{px: 1, }} size='small'>
 				{/*<div className={Css.textContainer}>
 
 				</div>*/}
 				{cells[0][1]}
 			</TableCell>
-			<TableCell component="th" scope="row" sx={{px: 1}} size='small'>
+			<TableCell component="th" scope="row" sx={{px: 1, pr:2}} size='small'>
 				{/*<div className={Css.textContainer}>
 				</div>*/}
 				{cells[0][2]}
 
 			</TableCell>
-			<TableCell size='small'>
+			<TableCell sx={{px: 1}} size='small'>
 				{cells[0][3]}
 			</TableCell>
 		</TableRow>
@@ -79,21 +79,22 @@ const DayGrid: React.FC<DayGridProps> =
 			<TableRow
 				sx={  (firstReplacement ? {  ...tableRowStyle } : null)}
 			>
-				<TableCell sx={{p: 2, py: 0}} rowSpan={2}>
+				<TableCell sx={{p: 1, py: 0, textAlign: 'center'}} rowSpan={2}>
 					{cells[0][0]}
 				</TableCell>
-				<TableCell sx={{ py: 0, px: 1}} size='small'>
+				<TableCell component="th" scope="row"   sx={{ py: 0, px: 1}} size='small'>
 					<div className={Css.textContainer}>
-						{cells[0][1]}
 					</div>
+					{cells[0][1]}
+
 				</TableCell>
 				<TableCell component="th" scope="row"  sx={{ px: 1}} size='small'>
 					<div className={Css.textContainer}>
-						{cells[0][2]}
 					</div>
+					{cells[0][2]}
 
 				</TableCell>
-				<TableCell  sx={{ py: 0}} size='small'>
+				<TableCell  sx={{ py: 0, px: 1}} size='small'>
 					{cells[0][3]}
 				</TableCell>
 			</TableRow>
@@ -102,13 +103,19 @@ const DayGrid: React.FC<DayGridProps> =
 			<TableRow
 				sx={  (secondReplacement ? {  ...tableRowStyle } : null)}
 			>
-				<TableCell sx={{py: 0, px: 1}}>
+				<TableCell component="th" scope="row"   sx={{py: 0, px: 1}}>
+					<div className={Css.textContainer}>
+					</div>
 					{cells[1][0]}
+
 				</TableCell>
-				<TableCell  sx={{ py: 0, px: 1}} size='small'>
+				<TableCell component="th" scope="row"    sx={{ py: 0, px: 1}} size='small'>
+					<div className={Css.textContainer}>
+					</div>
 					{cells[1][1] || "Нет пары"}
+
 				</TableCell>
-				<TableCell  sx={{ py: 0}} size='small'>
+				<TableCell  sx={{ py: 0, px:1}} size='small'>
 					{cells[1][2]}
 				</TableCell>
 
@@ -122,7 +129,7 @@ const DayGrid: React.FC<DayGridProps> =
 			//key={pair.number}
 			//sx={  (pair.lessons[0]?.replacement && isReplacementEnabled ? {  boxShadow: 'inset 0px 0px 50px 12px rgba(3, 29, 96, 1)' } : null)}
 		>
-			<TableCell component="th" scope='row' sx={{p: 2}} rowSpan={1}>
+			<TableCell component="th" scope='row' sx={{px: 1, textAlign: 'center'}} rowSpan={1}>
 				{number}
 			</TableCell>
 			<TableCell size='small'>
@@ -231,15 +238,14 @@ const DayGrid: React.FC<DayGridProps> =
 			<ScheduleDayHeader isSelected={isSelected} dayNumber={dayNumber}/>
 
 			<TableContainer  sx={{border: "1px solid", borderColor: "primary.pale", borderRadius: "0px 4px 4px 4px" }}>
-				<Table sx={{ tableLayout: 'auto'}}>
+				<Table sx={{ tableLayout: 'fixed'}}>
 					<TableHead>
 						<TableRow sx={{borderBottom: "1px solid primary.main",}}>
 
-
-							<TableCell sx={{width: '10%', px: 1.5}}>{columns[0]}</TableCell>
-							<TableCell sx={{width: '23%', px: 1}}>{columns[1]}</TableCell>
-							<TableCell sx={{width: 'auto', px: 1}}>{columns[2]}</TableCell>
-							<TableCell sx={{width: '10%', px: 1}}>{columns[3]}</TableCell>
+							<TableCell sx={{width: '6%', px: 1, pr: 0, textAlign: 'center'}}>{columns[0]}</TableCell>
+							<TableCell sx={{width: '21%', px: 1}}>{columns[1]}</TableCell>
+							<TableCell sx={{width: {xs: '25%', sm: '60%'}, px: 1}}>{columns[2]}</TableCell>
+							<TableCell sx={{width: '11%', px: 0}}>{columns[3]}</TableCell>
 
 						</TableRow>
 					</TableHead>
@@ -262,4 +268,4 @@ const DayGrid: React.FC<DayGridProps> =
 	)
 }
 
-export default DayGrid
+export default ScheduleDayTable
