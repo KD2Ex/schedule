@@ -1,5 +1,5 @@
 import axios from "axios";
-import {ScheduleType} from "../models/enums/ScheduleType";
+import {ScheduleType} from "../../models/enums/ScheduleType";
 
 
 export const fetchSchedule = async (weekNumber: number, isReplacement: boolean, type: ScheduleType, id: number) => {

@@ -1,5 +1,13 @@
 .appBar > MuiButton-root {
-    padding-left: 2rem;
-    padding-right: 2rem;
-    color: red;
+    padding-left: 0rem;
+    padding-right: 1rem;
+    color: white;
+}
+
+.appBar {
+    padding-left: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    color: white;
+
 }

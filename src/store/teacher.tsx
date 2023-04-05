@@ -1,7 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import ITeacher from "../models/ITeacher";
 import {getTeacherFullName} from "../utils/stringFormatters";
-import {fetchEntities} from "../api/EntitiesService";
+import {fetchEntities} from "../api/services/EntitiesService";
 import {ScheduleType} from "../models/enums/ScheduleType";
 
 

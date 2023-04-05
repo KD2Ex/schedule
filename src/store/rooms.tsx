@@ -1,6 +1,6 @@
 import {makeAutoObservable} from "mobx";
 import IRoom from "../models/IRoom";
-import {fetchEntities} from "../api/EntitiesService";
+import {fetchEntities} from "../api/services/EntitiesService";
 import {ScheduleType} from "../models/enums/ScheduleType";
 
 

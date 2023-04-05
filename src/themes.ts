@@ -74,9 +74,6 @@ export const getMode = (mode: any) => (
 export const themeObject = {
     typography: {
         fontFamily: 'SFUIText',
-        allVariants: {
-
-        },
         button: {
             textTransform: 'none',
             fontWeight: 'bold',
@@ -101,7 +98,6 @@ export const themeObject = {
             styleOverrides: {
                 root: {
                     fontWeight: '400',
-                    color: 'white'
                 }
             }
         },

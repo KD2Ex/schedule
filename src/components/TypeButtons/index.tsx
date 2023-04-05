@@ -1,6 +1,5 @@
 import React, {ComponentPropsWithoutRef, FC} from 'react';
 import {ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps} from "@mui/material";
-import toggleStyles from "../../styles/toggleButtons.module.css";
 import {FILTER_TYPES} from "../../models/enums/FilterType";
 
 interface ToggleButtons {

@@ -6,14 +6,13 @@ import {observer} from "mobx-react-lite";
 import room from "../../store/rooms";
 import group from "../../store/group";
 import teacher from "../../store/teacher";
-import toggleStyles from '../../styles/toggleButtons.module.css'
 import {FILTER_TYPES} from '../../models/enums/FilterType'
 import TypeButtons from "../../components/TypeButtons";
 import {getTeacherFullName} from "../../utils/stringFormatters";
 import {Link} from "react-router-dom";
 import {GridValidRowModel} from '@mui/x-data-grid';
 import {ScheduleType} from "../../models/enums/ScheduleType";
-import {fetchSchedule} from "../../api/ScheduleService";
+import {fetchSchedule} from "../../api/services/ScheduleService";
 import IScheduleDay from "../../models/IScheduleDay";
 import {scheduleTypeConvert} from "../../utils/converters";
 
@@ -189,7 +188,7 @@ const SchedulePage = observer(() => {
 					setFilterValue={setFilterValue}
 					exclusive
 					size='small'
-					className={toggleStyles.toggleButton}
+
 				/>
 
 				{/*<ToggleButtonGroup

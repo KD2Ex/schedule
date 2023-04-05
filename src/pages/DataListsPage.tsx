@@ -9,7 +9,6 @@ import {
 } from "@mui/x-data-grid";
 import {Box} from "@mui/material";
 import TypeButtons from "../components/TypeButtons";
-import toggleStyles from "../styles/toggleButtons.module.css";
 import {FILTER_TYPES} from "../models/enums/FilterType";
 import {observer} from "mobx-react-lite";
 import group from "../store/group";
@@ -116,7 +115,6 @@ const DataListsPage = observer( () => {
 				setFilterType={setFilterType}
 				exclusive
 				size='small'
-				className={toggleStyles.toggleButton}
 			/>
 
 			<Box sx={{height: '400px', py: '1rem', flex: 1}}>
