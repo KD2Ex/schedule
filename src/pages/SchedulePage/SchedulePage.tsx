@@ -1,5 +1,14 @@
 import React, {useEffect, useState} from 'react'
-import {Autocomplete, Button, Container, TextField, ToggleButton, ToggleButtonGroup} from '@mui/material'
+import {
+	Autocomplete,
+	Box,
+	Button, Checkbox,
+	Container, FormControlLabel, FormGroup,
+	TextField,
+	ToggleButton,
+	ToggleButtonGroup,
+	Typography
+} from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import ScheduleDayTable from '../../components/ScheduleDayTable/ScheduleDayTable';
 import {observer} from "mobx-react-lite";
@@ -15,6 +24,8 @@ import {ScheduleType} from "../../models/enums/ScheduleType";
 import {fetchSchedule} from "../../api/services/ScheduleService";
 import IScheduleDay from "../../models/IScheduleDay";
 import {scheduleTypeConvert} from "../../utils/converters";
+import {themeObject} from "../../themes";
+import {CheckOutlined, CheckRounded} from "@mui/icons-material";
 
 
 interface AutocompleteOption {
@@ -132,10 +143,11 @@ const SchedulePage = observer(() => {
 		console.log(week);
 	}
 
-	const handleReplacementAlignment = (event: React.MouseEvent<HTMLElement>, newFilter: boolean) => {
-		if (newFilter !== null) {
+	const handleReplacementChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+		/*if (newFilter !== null) {
 			setIsReplaceActive(newFilter);
-		}
+		}*/
+		setIsReplaceActive(event.target.checked);
 	}
 
 	const handelTypeAlignment = (event: React.MouseEvent<HTMLElement>, newFilter: FILTER_TYPES) => {
@@ -145,18 +157,6 @@ const SchedulePage = observer(() => {
 		}
 	}
 
-
-
-	// const getColumns = (filterType: FILTER_TYPES) => {
-	// 	switch (filterType) {
-	// 		case FILTER_TYPES.GROUPS:
-	// 			return ['№', 'Преподаватель', 'Дисциплина', 'Ауд.'];
-	// 		case FILTER_TYPES.TEACHERS:
-	// 			return ['№', 'Группа', 'Дисциплина', 'Аудитория'];
-	// 		case FILTER_TYPES.ROOMS:
-	// 			return ['№',  'Преподаватель', 'Дисциплина', 'Группа'];
-	// 	}
-	// }
 
 	const getMaxPairsNumber = () => {
 		let maxPairs = 0;
@@ -200,7 +200,6 @@ const SchedulePage = observer(() => {
 		return scheduleDays;
 	}
 
-	//console.log(changeMode)
 	return (
 		<>
 			<Container sx={{
@@ -220,23 +219,7 @@ const SchedulePage = observer(() => {
 
 				/>
 
-				{/*<ToggleButtonGroup
-					size='small'
-					onChange={handelTypeAlignment}
-					value={filterType}
-					exclusive
-					className={toggleStyles.toggleButton}
-				>
-					<ToggleButton value={FILTER_TYPES.GROUPS} >
-						Группы
-					</ToggleButton>
-					<ToggleButton value={FILTER_TYPES.TEACHERS}>
-						Преподаватели
-					</ToggleButton>
-					<ToggleButton value={FILTER_TYPES.ROOMS}>
-						Аудитории
-					</ToggleButton>
-				</ToggleButtonGroup>*/}
+
 
 				<ToggleButtonGroup
 					size='small'
@@ -254,24 +237,6 @@ const SchedulePage = observer(() => {
 						2
 					</ToggleButton>
 				</ToggleButtonGroup>
-				<ToggleButtonGroup
-					size="small"
-					aria-label="Small sizes"
-					onChange={handleReplacementAlignment}
-					value={isReplaceActive}
-					exclusive
-				>
-					<ToggleButton value="Замены" disabled>
-						Замены
-					</ToggleButton>
-					<ToggleButton value={true}>
-						Да
-					</ToggleButton>
-					<ToggleButton value={false}>
-						Нет
-					</ToggleButton>
-				</ToggleButtonGroup>
-
 
 				<Autocomplete
 					value={filterValue}
@@ -297,6 +262,29 @@ const SchedulePage = observer(() => {
 						setFilterValue(newValue);
 					}}
 				/>
+
+				<FormGroup>
+					<FormControlLabel
+						sx={{m: 0}}
+						control={
+							<Checkbox
+								checked={isReplaceActive}
+								onChange={handleReplacementChanged}
+								sx={{
+									color: 'primary.main',
+									'&.Mui-checked': {
+										color: (theme) => theme.palette.mode === 'light' ? `${theme.palette.primary.main} ` : `${theme.palette.primary.main}`
+									}
+								}}
+							/>
+						}
+						label={'С учётом замен'}
+						labelPlacement={"start"}
+					/>
+
+				</FormGroup>
+
+
 
 			</Container>
 

@@ -156,7 +156,6 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 		const cells: string[][] = [[pair.number.toString()], []];
 
 		pair.lessons.forEach((lesson, index) => {
-			console.log(index)
 			switch (filterType) {
 				case FILTER_TYPES.GROUPS: {
 					cells[index].push(pair.lessons[index].teacher);
@@ -245,7 +244,7 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 
 
 	return (
-		<Grid2 xs={12} md={6} lg={4} sx={{mb: {xs: 2, md: 0}}} component={Paper}>
+		<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
 
 			<ScheduleDayHeader isSelected={isSelected} dayNumber={dayNumber}/>
 
@@ -257,7 +256,7 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 							<TableCell sx={{width: {xs: '7%', sm: '8%'}, px: 1, pr: 0, textAlign: 'center'}}>{columns[0]}</TableCell>
 							<TableCell sx={{width: '25%', px: 1}}>{columns[1]}</TableCell>
 							<TableCell sx={{width: {xs: '40%', sm: '60%'}, px: 1}}>{columns[2]}</TableCell>
-							<TableCell sx={{width: '11%', px: 0}}>{columns[3]}</TableCell>
+							<TableCell sx={{width: {xs: '15%', sm: '12%'}, px: 0}}>{columns[3]}</TableCell>
 
 						</TableRow>
 					</TableHead>
