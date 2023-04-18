@@ -56,7 +56,10 @@ export const routes = [
     },
     {
         path: "*",
-        element: <div>error</div>
+        element: <div>error</div>,
+        loader: () => {
+            return redirect('/')
+        }
     },
 ];
 

@@ -20,17 +20,17 @@ const OAuth2RedirectHandler = () => {
 	}
 
 	console.log(window.location.toString().split('=')[1]);
-
-	user.setAuth(true);
 	localStorage.setItem('token',window.location.toString().split('=')[1])
+	user.setAuth(true);
 /*
 	const func = async () => {
 		await UserService.getLoggedUser();
 	}*/
 
 
+
 	return (
-		<Navigate to={"/schedule"}/>
+		<Navigate to={"/"}/>
 	);
 };
 

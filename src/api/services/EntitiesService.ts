@@ -13,9 +13,9 @@ export const fetchEntities = async (type: ScheduleType) => {
 		})
 		console.log(result.data.response)
 
-		if (type === ScheduleType.ROOM) {
-			result.data.response.entities = result.data.response.entities.filter((item) => )
-		}
+		// if (type === ScheduleType.ROOM) {
+		// 	result.data.response.entities = result.data.response.entities.filter((item) => )
+		// }
 
 		return result.data.response.entities;
 	} catch (e) {
