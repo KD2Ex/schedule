@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {TableCell, TableRow} from "@mui/material";
 import {tableRowStyle} from "./TableRowsMuiStyles";
 import Css from './TableRowsStyles.module.css'
+import TooltippedCell from "../styled/TooltippedCell";
 
 interface ScheduleRowDoubleProps {
 	cells: string[][],
@@ -14,23 +15,15 @@ const ScheduleRowDouble: FC<ScheduleRowDoubleProps> = ({cells, replacings}) => {
 			<TableRow
 				sx={  (replacings[0] ? {  ...tableRowStyle } : null)}
 			>
-				<TableCell sx={{p: 1, py: 0, textAlign: 'center'}} rowSpan={2}>
+				<TableCell sx={{p: 1, py: 0, textAlign: 'center', }} rowSpan={2}>
 					{cells[0][0]}
 				</TableCell>
-				<TableCell component="th" scope="row"   sx={{ py: 0, px: 1}} size='small'>
-					<div className={Css.textContainer}>
-						{cells[0][1]}
-
-					</div>
-
-				</TableCell>
-				<TableCell component="th" scope="row"  sx={{ px: 1}} size='small'>
-					<div className={Css.textContainer}>
-						{cells[0][2]}
-
-					</div>
-
-				</TableCell>
+				<TooltippedCell component="th" scope="row"   sx={{ py: 0, px: 1, height: '26.5px'}} size='small'>
+					{cells[0][1]}
+				</TooltippedCell>
+				<TooltippedCell component="th" scope="row"  sx={{py: 0, px: 1}} size='small'>
+					{cells[0][2]}
+				</TooltippedCell>
 				<TableCell  sx={{ py: 0, px: 1}} size='small'>
 					{cells[0][3]}
 				</TableCell>
@@ -41,19 +34,16 @@ const ScheduleRowDouble: FC<ScheduleRowDoubleProps> = ({cells, replacings}) => {
 				sx={  (replacings[1] ? {  ...tableRowStyle } : null)}
 			>
 
-				<TableCell component="th" scope="row"   sx={{py: 0, px: 1}}>
-					<div className={Css.textContainer}>
-						{cells[1][0]}
+				<TooltippedCell component="th" scope="row"   sx={{py: 0, px: 1}}>
 
-					</div>
+					{cells[1][0]}
 
-				</TableCell>
-				<TableCell component="th" scope="row"    sx={{ py: 0, px: 1}} size='small'>
-					<div className={Css.textContainer}>
-						{cells[1][1] || "Нет пары"}
-					</div>
+				</TooltippedCell>
+				<TooltippedCell sx={{ py: 0, px: 1, height: '26.5px'}} size='small'>
 
-				</TableCell>
+					{cells[1][1]}
+
+				</TooltippedCell>
 				<TableCell  sx={{ py: 0, px:1}} size='small'>
 					{cells[1][2]}
 				</TableCell>

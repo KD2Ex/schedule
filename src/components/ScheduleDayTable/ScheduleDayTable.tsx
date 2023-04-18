@@ -1,5 +1,5 @@
 import React from 'react'
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from '@mui/material'
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography} from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import ScheduleDayHeader from "../UI/ScheduleDayHeader/ScheduleDayHeader";
 import Css from './ScheduleDayTable.module.css'
@@ -183,8 +183,8 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 
 		if (isReplacementEnabled) {
 			replacings = [
-				pair.lessons[0].replacement,
-				pair.type === LessonType.DOUBLE && pair.lessons[1].replacement
+				pair.lessons[0]?.replacement,
+				pair.type === LessonType.DOUBLE && pair.lessons[1]?.replacement
 			]
 		}
 
@@ -245,7 +245,7 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 
 
 	return (
-		<Grid2 xs={12} md={6} lg={4} sx={{mb: {xs: 2, md: 0}}}>
+		<Grid2 xs={12} md={6} lg={4} sx={{mb: {xs: 2, md: 0}}} component={Paper}>
 
 			<ScheduleDayHeader isSelected={isSelected} dayNumber={dayNumber}/>
 

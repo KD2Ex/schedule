@@ -5,6 +5,7 @@ import IPair from "../../models/IPair";
 import {FILTER_TYPES} from "../../models/enums/FilterType";
 import {tableRowStyle} from "./TableRowsMuiStyles";
 import Css from './TableRowsStyles.module.css'
+import TooltippedCell from "../styled/TooltippedCell";
 
 
 interface TableRowOneProps {
@@ -23,17 +24,14 @@ const ScheduleRowOne: React.FC<TableRowOneProps> = ({cells, isReplaced}) => {
 			<TableCell sx={{px: 1, textAlign: 'center'}}>
 				{cells[0][0]}
 			</TableCell>
-			<TableCell component="th" scope="row" sx={{px: 1 }} size='small'>
-				<div className={Css.textContainer}>
-					{cells[0][1]}
-				</div>
-			</TableCell>
-			<TableCell component="th" scope="row" sx={{px: 1, pr:2, py: 0}} size='small'>
-				<div className={Css.textContainer}>
-					{cells[0][2]}
-				</div>
+			<TooltippedCell sx={{px: 1 }} size='small'>
+				{cells[0][1]}
+			</TooltippedCell>
+			<TooltippedCell  sx={{px: 1, pr:2, py: 0}} size='small'>
 
-			</TableCell>
+				{cells[0][2]}
+
+			</TooltippedCell>
 			<TableCell sx={{px: 1}} size='small'>
 				{cells[0][3]}
 			</TableCell>
