@@ -1,0 +1,67 @@
+import React, {FC} from 'react';
+import {TableCell, TableRow} from "@mui/material";
+import {tableRowStyle} from "./TableRowsMuiStyles";
+import Css from './TableRowsStyles.module.css'
+
+interface ScheduleRowDoubleProps {
+	cells: string[][],
+	replacings: boolean[],
+}
+
+const ScheduleRowDouble: FC<ScheduleRowDoubleProps> = ({cells, replacings}) => {
+	return (
+		<>
+			<TableRow
+				sx={  (replacings[0] ? {  ...tableRowStyle } : null)}
+			>
+				<TableCell sx={{p: 1, py: 0, textAlign: 'center'}} rowSpan={2}>
+					{cells[0][0]}
+				</TableCell>
+				<TableCell component="th" scope="row"   sx={{ py: 0, px: 1}} size='small'>
+					<div className={Css.textContainer}>
+						{cells[0][1]}
+
+					</div>
+
+				</TableCell>
+				<TableCell component="th" scope="row"  sx={{ px: 1}} size='small'>
+					<div className={Css.textContainer}>
+						{cells[0][2]}
+
+					</div>
+
+				</TableCell>
+				<TableCell  sx={{ py: 0, px: 1}} size='small'>
+					{cells[0][3]}
+				</TableCell>
+			</TableRow>
+
+
+			<TableRow
+				sx={  (replacings[1] ? {  ...tableRowStyle } : null)}
+			>
+
+				<TableCell component="th" scope="row"   sx={{py: 0, px: 1}}>
+					<div className={Css.textContainer}>
+						{cells[1][0]}
+
+					</div>
+
+				</TableCell>
+				<TableCell component="th" scope="row"    sx={{ py: 0, px: 1}} size='small'>
+					<div className={Css.textContainer}>
+						{cells[1][1] || "Нет пары"}
+					</div>
+
+				</TableCell>
+				<TableCell  sx={{ py: 0, px:1}} size='small'>
+					{cells[1][2]}
+				</TableCell>
+
+			</TableRow>
+
+		</>
+	);
+};
+
+export default ScheduleRowDouble;

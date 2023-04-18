@@ -24,14 +24,8 @@ import user from '../../store/user'
 function NavBar() {
 
 	const changeMode = useContext(ColorModeContext);
-	const changeAuth = useContext(AuthContext);
-
-
-
-
 
 	return (
-		<StyledEngineProvider injectFirst>
 			<Box sx={{flexGrow: 1}}>
 				<AppBar position='static' sx={{}} className={styles.appBar}>
 					<Toolbar disableGutters>
@@ -40,25 +34,20 @@ function NavBar() {
 							<NavBarButton component={link} to="/schedule" >
 								Расписание
 							</NavBarButton>
-							<NavBarButton  onClick={() => changeAuth.changeAuth()}>
-								Авторизация
-							</NavBarButton>
-							{/*<Button sx={{color: 'white'}} component={link} to="/data" >
+							<Button sx={{color: 'white'}} component={link} to="/edit" >
 								Списки
 							</Button>
 							<Button sx={{color: 'white'}} component={link} to="/profile">
 								Профиль
-							</Button>*/}
-						{/*<Button onClick={() => changeMode.toggleColorMode()}>
-							qwe123r
-						</Button>*/}
+							</Button>
+
 							<IconButton onClick={() => changeMode.toggleColorMode()} aria-label="delete">
 								<Brightness4Icon/>
 							</IconButton>
 						</Box>
 
 						<Box sx={{flexGrow: 0}}>
-							<NavBarButton onClick={() => user.setAuth(false)}>Выйти</NavBarButton>
+							<NavBarButton onClick={() => user.logout()}>Выйти</NavBarButton>
 
 						</Box>
 					</Toolbar>
@@ -66,7 +55,6 @@ function NavBar() {
 				</AppBar>
 			</Box>
 
-		</StyledEngineProvider>
 
 	)
 }

@@ -1,10 +1,13 @@
 import axios from "axios";
 import {ScheduleType} from "../../models/enums/ScheduleType";
+import $api from "../http";
 
 
 export const fetchEntities = async (type: ScheduleType) => {
+	console.log()
+
 	try {
-		const result = await axios.get(`http://91.223.199.62:8080/api/schedule/entities`, {
+		const result = await $api.get(`/schedule/entities`, {
 			params: {
 				type: type
 			}

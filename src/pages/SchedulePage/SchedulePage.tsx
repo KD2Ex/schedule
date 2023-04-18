@@ -8,7 +8,7 @@ import group from "../../store/group";
 import teacher from "../../store/teacher";
 import {FILTER_TYPES} from '../../models/enums/FilterType'
 import TypeButtons from "../../components/TypeButtons";
-import {getTeacherFullName} from "../../utils/stringFormatters";
+import {getColumns, getTeacherFullName} from "../../utils/stringFormatters";
 import {Link} from "react-router-dom";
 import {GridValidRowModel} from '@mui/x-data-grid';
 import {ScheduleType} from "../../models/enums/ScheduleType";
@@ -32,12 +32,16 @@ const SchedulePage = observer(() => {
 	const [filterType, setFilterType] = useState<FILTER_TYPES>(FILTER_TYPES.TEACHERS);
 	const [schedule, setSchedule] = useState<IScheduleDay[]>([]);
 
-
 	const [open, setOpen] = useState(false);
 	const loading = open && filterOptions?.length === 0;
 
 	const date = new Date();
 	const currentDay = date.getDay() - 1;
+
+	const emptyDay = {
+		number: 0,
+		pairs: []
+	}
 
 	useEffect(() => {
 
@@ -53,6 +57,16 @@ const SchedulePage = observer(() => {
 				case FILTER_TYPES.TEACHERS:
 					await teacher.fetchTeachers();
 
+					teacher.teachers.sort(function(a, b) {
+						if (a.fullName > b.fullName) {
+							return 1;
+						}
+						if (a.fullName < b.fullName) {
+							return -1;
+						}
+						return 0;
+					})
+
 					teacher.teachers.map(teacher => {
 						options.push({id: teacher.id, label: teacher.fullName})
 					})
@@ -60,6 +74,10 @@ const SchedulePage = observer(() => {
 					break;
 				case FILTER_TYPES.GROUPS:
 					await group.fetchGroups();
+
+					group.groups.sort(function (a, b) {
+						return Number(a.fullName.split('-')[0]) - Number(b.fullName.split('-')[0]);
+					})
 
 					group.groups.map(group => {
 						options.push({
@@ -71,6 +89,10 @@ const SchedulePage = observer(() => {
 					break;
 				case FILTER_TYPES.ROOMS:
 					await room.fetchRooms();
+
+					room.rooms.sort(function (a, b) {
+						return +a.fullName - +b.fullName
+					})
 
 					room.rooms.map(room => {
 						options.push({id: room.id, label: room.fullName})
@@ -95,33 +117,10 @@ const SchedulePage = observer(() => {
 
 	useEffect(() => {
 		if (filterValue !== null) {
-
-
 			(async () => {
-				//await schedule.fetchWeekSchedule(1, isReplaceActive, ScheduleType.GROUP, filterValue.id);
-
-
-
 				const newSchedule = await fetchSchedule(week, isReplaceActive, scheduleTypeConvert(filterType), filterValue.id);
 				setSchedule(newSchedule);
 			})();
-			// if (filterType === FILTER_TYPES.GROUPS) {
-			// 	schedule.fetchWeekSchedule().then(() => {
-			//
-			// 	})
-			// }
-			// if (filterType === FILTER_TYPES.TEACHERS) {
-			// 	schedule.fetchWeekSchedule().then(() => {
-			//
-			// 	})
-			// 	//getTeacherSchedule(filterValue.id);
-			// }
-			// if (filterType === FILTER_TYPES.ROOMS) {
-			// 	schedule.fetchWeekSchedule().then(() => {
-			//
-			// 	})
-			// 	//getRoomSchedule(filterValue.id);
-			// }
 		}
 	}, [filterValue, isReplaceActive, week])
 
@@ -146,20 +145,20 @@ const SchedulePage = observer(() => {
 		}
 	}
 
-	const getColumns = (filterType: FILTER_TYPES) => {
-		switch (filterType) {
-			case FILTER_TYPES.GROUPS:
-				return ['№', 'Преподаватель', 'Дисциплина', 'Ауд.'];
-			case FILTER_TYPES.TEACHERS:
-				return ['№', 'Группа', 'Дисциплина', 'Аудитория'];
-			case FILTER_TYPES.ROOMS:
-				return ['№',  'Преподаватель', 'Дисциплина', 'Группа'];
-		}
-	}
+
+
+	// const getColumns = (filterType: FILTER_TYPES) => {
+	// 	switch (filterType) {
+	// 		case FILTER_TYPES.GROUPS:
+	// 			return ['№', 'Преподаватель', 'Дисциплина', 'Ауд.'];
+	// 		case FILTER_TYPES.TEACHERS:
+	// 			return ['№', 'Группа', 'Дисциплина', 'Аудитория'];
+	// 		case FILTER_TYPES.ROOMS:
+	// 			return ['№',  'Преподаватель', 'Дисциплина', 'Группа'];
+	// 	}
+	// }
 
 	const getMaxPairsNumber = () => {
-
-
 		let maxPairs = 0;
 		schedule.forEach(day => {
 			if (day.pairs.length === 0) return;
@@ -168,7 +167,38 @@ const SchedulePage = observer(() => {
 		return maxPairs;
 	}
 
+	const getMinPairNumber = () => {
+		let minPair = 1;
+		schedule.forEach(day => {
+			if (day.pairs.length === 0) return;
+			day.pairs[0].number === 0 ? minPair = 0 : null
+		})
+
+		return minPair;
+	}
+
+
 	const maxPairsNumber = getMaxPairsNumber();
+	const minPairNumber = getMinPairNumber();
+
+	const fillDays = () => {
+		const scheduleDays = [];
+
+		for(let i = schedule.length; i < 6; i++) {
+			scheduleDays.push(<ScheduleDayTable
+				key={i}
+				columns={getColumns(filterType)}
+				rows={emptyDay}
+				isSelected={i === currentDay}
+				dayNumber={Number(i)}
+				isReplacementEnabled={isReplaceActive}
+				filterType={filterType}
+				maxPairNumber={maxPairsNumber}
+				minPairNumber={minPairNumber}
+			/>)
+		}
+		return scheduleDays;
+	}
 
 	//console.log(changeMode)
 	return (
@@ -179,7 +209,6 @@ const SchedulePage = observer(() => {
 				alignItems: 'center',
 				gap: 1,
 				flexWrap: 'wrap',
-				mt: '2rem'
 			}}>
 
 				<TypeButtons
@@ -284,19 +313,20 @@ const SchedulePage = observer(() => {
 						dayNumber={Number(index)}
 						isReplacementEnabled={isReplaceActive}
 						filterType={filterType}
-						maxPairsNumber={maxPairsNumber}
+						maxPairNumber={maxPairsNumber}
+						minPairNumber={minPairNumber}
 					/>
 				)) : null}
 
+
+				{filterValue !== null && fillDays()}
+
+
 			</Grid2>
 
-			{/*<Button
-				variant={'outlined'}
-				component={Link}
-				to={'/schedule/edit'}
-			>
-				Редактировать
-			</Button>*/}
+
+
+
 		</>
 	)
 });

@@ -20,9 +20,10 @@ const App = observer(() => {
 	const [mode, setMode] = useState<'light' | 'dark'>(prefersDarkMode ? 'dark' : 'light');
 
 	useEffect(() => {
-		// if (localStorage.getItem('token')) {
-		// 	user.checkAuth()
-		// }
+		//console.log(window.location.toString().split());
+		if (localStorage.getItem('token')) {
+			user.checkAuth()
+		}
 		console.log('effect')
 
 	}, [])

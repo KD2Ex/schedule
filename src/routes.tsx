@@ -4,11 +4,12 @@ import ErrorPage from "./pages/ErrorPage";
 import ProfilePage from "./pages/ProfilePage";
 import DataListsPage from "./pages/DataListsPage";
 import MainPage from "./pages/MainPage";
-import ScheduleEditPage from "./pages/ScheduleEditPage/ScheduleEditPage";
+import AdminPage from "./pages/AdminPage/AdminPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import {redirect} from 'react-router-dom'
 import ValidationErrorPage from "./pages/ValidationErrorPage/ValidationErrorPage";
 import OAuth2RedirectHandler from "./pages/OAuth2RedirectHandler/OAuth2RedirectHandler";
+import EditSchedulePage from "./pages/EditSchedulePage/EditSchedulePage";
 
 const isAuth = true;
 
@@ -27,8 +28,14 @@ export const routes = [
                 element: <DataListsPage/>
             },
             {
-                path: "schedule/edit",
-                element: <ScheduleEditPage/>
+                path: "edit",
+                element: <AdminPage/>,
+                children: [
+                    {
+                        path: "schedule",
+                        element: <EditSchedulePage/>
+                    }
+                ]
             }
         ]
     },

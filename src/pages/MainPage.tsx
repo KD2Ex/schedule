@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import NavBar from "../components/NavBar/NavBar";
+import {Box} from "@mui/material";
 
 const MainPage = () => {
 
@@ -9,9 +10,9 @@ const MainPage = () => {
 	return (
 		<div>
 			<NavBar/>
-			<div style={{paddingLeft: '1rem', paddingRight: '1rem'}}>
+			<Box sx={{padding: '1rem'}}>
 				<Outlet/>
-			</div>
+			</Box>
 		</div>
 	);
 };

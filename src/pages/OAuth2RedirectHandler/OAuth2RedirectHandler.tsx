@@ -19,12 +19,10 @@ const OAuth2RedirectHandler = () => {
 		return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 	}
 
-	console.log(location.search.slice(7));
+	console.log(window.location.toString().split('=')[1]);
 
 	user.setAuth(true);
-
-	console.log(jwtDecode(location.search.slice(7)))
-
+	localStorage.setItem('token',window.location.toString().split('=')[1])
 /*
 	const func = async () => {
 		await UserService.getLoggedUser();

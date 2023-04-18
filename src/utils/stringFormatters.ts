@@ -1,5 +1,6 @@
 import ITeacher from "../models/ITeacher";
 import {GridValueGetterParams} from "@mui/x-data-grid";
+import {FILTER_TYPES} from "../models/enums/FilterType";
 
 
 export const getTeacherFullName = (teacher: ITeacher) : string => {
@@ -13,4 +14,15 @@ export const formatTeacherFullName = (teacher: GridValueGetterParams) : string =
 
 export const getGroupLabel = (params: GridValueGetterParams) => {
 	return `${params.row.groupNumber || ''}-Д9-${params.row.course}${params.row.spec}`
+}
+
+export const getColumns = (type: FILTER_TYPES) => {
+	switch (type) {
+		case FILTER_TYPES.GROUPS:
+			return ['№', 'Преподаватель', 'Дисциплина', 'Ауд.'];
+		case FILTER_TYPES.TEACHERS:
+			return ['№', 'Группа', 'Дисциплина', 'Аудитория'];
+		case FILTER_TYPES.ROOMS:
+			return ['№',  'Преподаватель', 'Дисциплина', 'Группа'];
+	}
 }

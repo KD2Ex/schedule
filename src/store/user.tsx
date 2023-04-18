@@ -37,27 +37,36 @@ class User {
 
 	async checkAuth() {
 		try {
-			const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, {withCredentials: true});
-			console.log()
-			localStorage.setItem('token', response.data.accessToken);
+			//const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, {withCredentials: true});
+			//console.log()
+			//localStorage.setItem('token', response.data.accessToken);
 			this.setAuth(true);
-			this.setUser(response.data.user);
+			this.setUser('');
 		} catch (e) {
 			console.log()
 		}
 	}
 
-	loginWithServices(url: string) {
+	async loginWithServices(url: string) {
 		try {
-			window.open(url);
+			await window.location.replace(url);
+			//window.open(url)
+			console.log(window.location.toString());
+			//localStorage.setItem('token', )
 			this.setAuth(true);
 			this.setUser({id: '1', email:'qwer@mail.ru', isAcitvated: true});
+
 		} catch (e) {
 
 		}
 	}
 
-	getLoggedUser()
+	// getLoggedUser()
+
+	logout() {
+		this.setAuth(false);
+		localStorage.clear();
+	}
 
 }
 

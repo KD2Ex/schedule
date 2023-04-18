@@ -19,7 +19,7 @@ const ScheduleDayDataGrid: FC<ScheduleDayDataGridProps> = observer(({isToday, da
 
 	return (
 		<>
-			<Grid item xs={12} md={6} sx={{  flex: 1}}>
+			<Grid item xs={12} md={12} sx={{ width: '100%', p: 4}}>
 
 				<ScheduleDayHeader isSelected={isToday} dayNumber={date.getDay()}/>
 				{rows &&

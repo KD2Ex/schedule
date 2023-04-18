@@ -1,12 +1,13 @@
 import axios from "axios";
 import {ScheduleType} from "../../models/enums/ScheduleType";
+import $api from "../http";
 
 
 export const fetchSchedule = async (weekNumber: number, isReplacement: boolean, type: ScheduleType, id: number) => {
 	const firstWeek: boolean = weekNumber === 1;
 
 	try {
-		const result = await axios.get(`http://91.223.199.62:8080/api/schedule`, {
+		const result = await $api.get(`/schedule`, {
 			params: {
 				firstWeek: firstWeek,
 				replacement: isReplacement,
