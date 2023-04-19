@@ -345,10 +345,6 @@ const SchedulePage = observer(() => {
 			</Grid2>
 
 
-			<Button onClick={() => UserScheduleService.getUserSchedule()}>
-					12312312
-			</Button>
-
 		</>
 	)
 });
