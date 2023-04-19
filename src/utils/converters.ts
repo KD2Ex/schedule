@@ -17,3 +17,18 @@ export const scheduleTypeConvert = (filterType: FILTER_TYPES) => {
 	}
 
 }
+
+
+export const scheduleTypeToFilterValue = (type: ScheduleType) => {
+	switch (type) {
+		case ScheduleType.GROUP:{
+			return FILTER_TYPES.GROUPS;
+		}
+		case ScheduleType.TEACHER:{
+			return FILTER_TYPES.TEACHERS;
+		}
+		case ScheduleType.ROOM:{
+			return FILTER_TYPES.ROOMS;
+		}
+	}
+}

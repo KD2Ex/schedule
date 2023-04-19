@@ -26,8 +26,8 @@ class User {
 
 	async login(email: string, password: string) {
 		try {
-			// const response = await AuthService.login(email, password);
-			// localStorage.setItem('token', response.data.accessToken);
+			const response = await AuthService.login(email, password);
+			localStorage.setItem('token', response.data.accessToken);
 			this.setAuth(true);
 			this.setUser({id: '1', email:'qwer@mail.ru', isAcitvated: true});
 		} catch (e) {

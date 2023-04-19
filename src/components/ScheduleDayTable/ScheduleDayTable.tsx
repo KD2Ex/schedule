@@ -17,7 +17,6 @@ interface DayGridProps {
 	rows: IScheduleDay,
 	columns: string[],
 	isSelected: boolean,
-	dayNumber: number,
 	isReplacementEnabled: boolean,
 	filterType: FILTER_TYPES;
 	maxPairNumber: number;
@@ -45,7 +44,6 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 		rows,
 		columns,
 		isSelected,
-		dayNumber,
 		isReplacementEnabled,
 		filterType,
 		maxPairNumber,
@@ -242,11 +240,12 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 		return resultRows;
 	}
 
+		console.log(isSelected)
 
 	return (
 		<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
 
-			<ScheduleDayHeader isSelected={isSelected} dayNumber={dayNumber}/>
+			<ScheduleDayHeader isSelected={isSelected} dayNumber={rows.number - 1} date={rows.date} isReplaced={isReplacementEnabled} />
 
 			<TableContainer  sx={{border: "1px solid", borderColor: "primary.pale", borderRadius: "0px 4px 4px 4px" }}>
 				<Table sx={{ tableLayout: 'fixed'}}>

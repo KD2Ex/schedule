@@ -23,9 +23,10 @@ import {GridValidRowModel} from '@mui/x-data-grid';
 import {ScheduleType} from "../../models/enums/ScheduleType";
 import {fetchSchedule} from "../../api/services/ScheduleService";
 import IScheduleDay from "../../models/IScheduleDay";
-import {scheduleTypeConvert} from "../../utils/converters";
+import {scheduleTypeConvert, scheduleTypeToFilterValue} from "../../utils/converters";
 import {themeObject} from "../../themes";
 import {CheckOutlined, CheckRounded} from "@mui/icons-material";
+import UserScheduleService from "../../api/services/UserScheduleService";
 
 
 interface AutocompleteOption {
@@ -134,6 +135,36 @@ const SchedulePage = observer(() => {
 			})();
 		}
 	}, [filterValue, isReplaceActive, week])
+
+	useEffect(() => {
+
+
+		(async () => {
+			const userData = await UserScheduleService.getUserSchedule();
+			console.log(userData)
+			setWeek(userData.firstWeek ? 1 : 2);
+			setFilterType(scheduleTypeToFilterValue(userData.type));
+			switch (userData.type) {
+				case ScheduleType.GROUP: {
+					if (group.groups.length === 0) {
+						await group.fetchGroups();
+					}
+					setFilterValue({label: group.groups.find((group) => group.id === userData.entityId).fullName, id: userData.entityId} as AutocompleteOption)
+					break;
+				}
+				case ScheduleType.TEACHER: {
+					if (teacher.teachers.length === 0) {
+						await teacher.fetchTeachers();
+					}
+					setFilterValue({label: teacher.teachers.find((teacher) => teacher.id === userData.entityId).fullName, id: userData.entityId} as AutocompleteOption)
+					break;
+				}
+			}
+
+		})()
+
+
+	}, [])
 
 
 	const handleWeekChange = (event: React.MouseEvent<HTMLElement>, newFilter: number) => {
@@ -290,6 +321,8 @@ const SchedulePage = observer(() => {
 
 
 
+
+
 			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
 
 				{filterValue !== null && schedule.length !== 0 ? schedule.map((item: IScheduleDay, index: React.Key | null | undefined) => (
@@ -297,8 +330,7 @@ const SchedulePage = observer(() => {
 						key={index}
 						columns={getColumns(filterType)}
 						rows={item}
-						isSelected={index === currentDay}
-						dayNumber={Number(index)}
+						isSelected={new Date(item.date * 1000).toLocaleDateString() === new Date().toLocaleDateString()}
 						isReplacementEnabled={isReplaceActive}
 						filterType={filterType}
 						maxPairNumber={maxPairsNumber}
@@ -313,7 +345,9 @@ const SchedulePage = observer(() => {
 			</Grid2>
 
 
-
+			<Button onClick={() => UserScheduleService.getUserSchedule()}>
+					12312312
+			</Button>
 
 		</>
 	)

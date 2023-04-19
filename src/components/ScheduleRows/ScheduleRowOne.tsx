@@ -32,9 +32,9 @@ const ScheduleRowOne: React.FC<TableRowOneProps> = ({cells, isReplaced}) => {
 				{cells[0][2]}
 
 			</TooltippedCell>
-			<TableCell sx={{px: 1}} size='small'>
+			<TooltippedCell sx={{px: 1}} size='small'>
 				{cells[0][3]}
-			</TableCell>
+			</TooltippedCell>
 		</TableRow>
 	);
 };

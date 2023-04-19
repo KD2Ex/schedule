@@ -28,9 +28,9 @@ const ScheduleRowFirst: FC<ScheduleRowFirst> = ({cells, replacings}) => {
 					{cells[0][2]}
 
 				</TooltippedCell>
-				<TableCell sx={{py: 0, px: 1}} size='small'>
+				<TooltippedCell sx={{py: 0, px: 1}} size='small'>
 					{cells[0][3]}
-				</TableCell>
+				</TooltippedCell>
 			</TableRow>
 
 			<TableRow sx={  (replacings[0] ? {  ...tableRowStyle } : null) }>

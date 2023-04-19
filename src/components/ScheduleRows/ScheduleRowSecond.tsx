@@ -45,9 +45,9 @@ const ScheduleRowSecond: FC<ScheduleRowSecondProps> = ({cells, replacings}) => {
 				<TooltippedCell component="th" scope="row" sx={{py:0,px: 1, pr:2, py: 0}} size='small'>
 					{cells[0][2]}
 				</TooltippedCell>
-				<TableCell sx={{py:0,px: 1}} size='small'>
+				<TooltippedCell sx={{py:0,px: 1}} size='small'>
 					{cells[0][3]}
-				</TableCell>
+				</TooltippedCell>
 			</TableRow>
 
 		</>

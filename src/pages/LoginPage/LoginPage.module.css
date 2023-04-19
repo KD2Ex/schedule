@@ -5,13 +5,15 @@
     align-items: center;
     flex-direction: column;
     padding: 2em;
-    border: 2px solid;
+    border: 0.1em solid;
     border-radius: 0.5em;
+    width: 350px;
 }
 
 .loginBox * {
     margin-bottom: 1em;
 }
+
 .loginBox span{
     margin-top: 1em;
 }

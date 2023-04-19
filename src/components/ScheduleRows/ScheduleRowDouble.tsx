@@ -44,9 +44,9 @@ const ScheduleRowDouble: FC<ScheduleRowDoubleProps> = ({cells, replacings}) => {
 					{cells[1][1]}
 
 				</TooltippedCell>
-				<TableCell  sx={{ py: 0, px:1}} size='small'>
+				<TooltippedCell  sx={{ py: 0, px:1}} size='small'>
 					{cells[1][2]}
-				</TableCell>
+				</TooltippedCell>
 
 			</TableRow>
 
