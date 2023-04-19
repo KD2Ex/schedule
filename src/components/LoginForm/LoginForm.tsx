@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react';
 import styles from "../../pages/LoginPage/LoginPage.module.css";
-import {Box, Button, Divider, IconButton, TextField, Typography} from "@mui/material";
+import {Box, Button, Divider, IconButton, InputAdornment, TextField, Typography} from "@mui/material";
 import GoogleIcon from '@mui/icons-material/Google'
 import GitHubIcon from '@mui/icons-material/GitHub';
 import {Link} from "react-router-dom";
@@ -10,16 +10,26 @@ import vklogo from '../../styles/logos/VK_Compact_Logo.png'
 import gllogo from '../../styles/logos/google.png'
 import kkeplogo from '../../styles/logos/kkep.svg'
 import {GITHUB_AUTH_URL, GOOGLE_AUTH_URL, VK_AUTH_URL} from "../../api/http/urls";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
+import css from './LoginForm.module.css';
 
 const LoginForm: FC = observer(() => {
 
-	const [username, setUsername] = useState<string>('123');
+	const [username, setUsername] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
+	const [showPassword, setShowPassword] = React.useState(false);
 
 
 	const handleLogin = () => {
 		user.login(username, password);
 	}
+
+	const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+
+	const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+	};
 
 	return (
 
@@ -27,7 +37,7 @@ const LoginForm: FC = observer(() => {
 
 
 				<TextField
-					placeholder={'Имя пользователя'}
+					placeholder={'Email'}
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
 					size={'small'}
@@ -37,13 +47,29 @@ const LoginForm: FC = observer(() => {
 
 				</TextField>
 				<TextField
-					type={'password'}
+					type={showPassword ? 'text' : 'password'}
 					sx={{width: '100%'}}
-					placeholder={'Пароль'} value={password} onChange={(e) => setPassword(e.target.value)} size={'small'} variant="outlined" >
+					placeholder={'Пароль'} value={password} onChange={(e) => setPassword(e.target.value)}
+					size={'small'}
+					variant="outlined"
+
+					InputProps={{endAdornment:
+						<InputAdornment position="end" sx={{m: 0}}>
+							<IconButton
+
+								onClick={handleClickShowPassword}
+								onMouseDown={handleMouseDownPassword}
+								edge="end"
+							>
+								{showPassword ? <VisibilityOff sx={{m: 0}}/> : <Visibility sx={{m: 0}}/>}
+							</IconButton>
+						</InputAdornment>
+					}}
+				>
 
 				</TextField>
 
-				<Button onClick={handleLogin} size={'small'} variant={'contained'} sx={{width: '100%'}}>
+				<Button type={"submit"} onClick={handleLogin} size={'small'} variant={'contained'} sx={{width: '100%'}}>
 					Войти
 				</Button>
 

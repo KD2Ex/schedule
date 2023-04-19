@@ -1,5 +1,4 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import './styles.css'
 //import {router} from "./components/AppRouter";
 import {createBrowserRouter, RouterProvider, useNavigate} from "react-router-dom";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
@@ -18,6 +17,7 @@ const App = observer(() => {
 
 	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 	const [mode, setMode] = useState<'light' | 'dark'>(prefersDarkMode ? 'dark' : 'light');
+
 
 	useEffect(() => {
 		//console.log(window.location.toString().split());
@@ -45,12 +45,12 @@ const App = observer(() => {
 	})
 
 	console.log(user.isAuth)
+	console.log(localStorage.getItem('token') )
 
-	const currentRoutes = user.isAuth ? routes : publicRoutes;
+	const currentRoutes = user.isAuth && localStorage.getItem('token') ? routes : publicRoutes;
 	const router = createBrowserRouter(currentRoutes);
 	console.log(router);
 
-	//const navigate = useNavigate()
 
 
 	return (

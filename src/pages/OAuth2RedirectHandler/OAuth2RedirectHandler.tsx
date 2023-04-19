@@ -27,10 +27,8 @@ const OAuth2RedirectHandler = () => {
 		await UserService.getLoggedUser();
 	}*/
 
-
-
 	return (
-		<Navigate to={"/"}/>
+		<Navigate to={"/schedule"}/>
 	);
 };
 

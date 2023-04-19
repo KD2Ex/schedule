@@ -27,6 +27,7 @@ class User {
 	async login(email: string, password: string) {
 		try {
 			const response = await AuthService.login(email, password);
+			console.log(response)
 			localStorage.setItem('token', response.data.accessToken);
 			this.setAuth(true);
 			this.setUser({id: '1', email:'qwer@mail.ru', isAcitvated: true});
@@ -41,7 +42,7 @@ class User {
 			//console.log()
 			//localStorage.setItem('token', response.data.accessToken);
 			this.setAuth(true);
-			this.setUser('');
+			//this.setUser('');
 		} catch (e) {
 			console.log()
 		}
@@ -53,8 +54,8 @@ class User {
 			//window.open(url)
 			console.log(window.location.toString());
 			//localStorage.setItem('token', )
-			this.setAuth(true);
-			this.setUser({id: '1', email:'qwer@mail.ru', isAcitvated: true});
+			/*this.setAuth(true);
+			this.setUser({id: '1', email:'qwer@mail.ru', isAcitvated: true});*/
 
 		} catch (e) {
 

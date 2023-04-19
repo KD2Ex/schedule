@@ -17,3 +17,8 @@
 .loginBox span{
     margin-top: 1em;
 }
+
+input:-webkit-autofill,
+.MuiInputBase-root:has(+ input:-webkit-autofill) {
+    -webkit-text-fill-color: blue;
+}
