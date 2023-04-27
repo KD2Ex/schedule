@@ -34,12 +34,12 @@ function NavBar() {
 							<NavBarButton component={link} to="/schedule" >
 								Расписание
 							</NavBarButton>
-							{/*<Button sx={{color: 'white'}} component={link} to="/edit" >
+							<Button sx={{color: 'white'}} component={link} to="/edit" >
 								Списки
 							</Button>
 							<Button sx={{color: 'white'}} component={link} to="/profile">
 								Профиль
-							</Button>*/}
+							</Button>
 
 							<IconButton onClick={() => changeMode.toggleColorMode()} aria-label="delete">
 								<Brightness4Icon sx={{color:'white'}}/>
