@@ -1,0 +1,22 @@
+
+
+.vk_button {
+    width: 100px;
+    color: black;
+    background-color: black;
+    margin: 0;
+}
+
+.wrapper {
+    padding: 0 1rem 0 1rem;
+    max-width: 1200px;
+}
+
+.wrapper h5 {
+    padding: 0rem 0 1rem 0;
+}
+
+.wrapper h6 {
+    padding: 0 0 0.5rem 0;
+}
+

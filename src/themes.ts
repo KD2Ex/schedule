@@ -1,5 +1,6 @@
 import {createTheme} from '@mui/material';
 import font from './styles/fonts/SFUIText-Regular.ttf'
+import fontLight from './styles/fonts/SFUIText-Light.ttf'
 //main: "rgba(3, 29, 96, 0.82)",
 
 //rgba(3, 29, 96, 0.50)
@@ -21,7 +22,8 @@ export const getMode = (mode: any) => (
                 contrastText: 'rgba(255,255,255,0.82)',
                 //main: "rgba(81,130,255,0.82)",
                 //index: "rgba(3, 29, 96, 0.05)",
-                pale: "rgba(24,24,24,0.82)",
+                pale: "rgba(182,182,182,0.82)",
+                contrastPale: "rgba(255,255,255,0.82)",
             },
             secondary: {
                 //main: "rgb(255, 255, 255)",
@@ -52,7 +54,8 @@ export const getMode = (mode: any) => (
                 contrastText: 'rgba(0,0,0,0.82)',
                 //main: "rgba(81,130,255,0.82)",
                 //index: "rgba(3, 29, 96, 0.05)",
-                pale: "rgba(224,224,224,0.82)",
+                pale: "rgba(78,78,78,0.82)",
+                contrastPale: 'rgba(24,24,24,0.82)',
             },
             secondary: {
                 //main: "rgb(255, 255, 255)",
@@ -83,13 +86,14 @@ export const themeObject = {
     },
     components: {
         MuiCssBaseline: {
-            styleOverrides: `
-                @font-face {
+            styleOverrides:
+
+                `@font-face {
                     font-family: 'SFUIText';
                     font-style: normal;
                     font-display: swap;
                     font-weight: 400;
-                    src: local('SFUIText'), local('SFUIText-Regular'), url(${font}) format('truetype');
+                    src: local('SFUIText'), local('SFUIText-Regular'), local('SFUIText-Light'),url(${fontLight}) format('truetype'), url(${font}) format('truetype');
                     unicodeRange: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF;          
                 }
             `,

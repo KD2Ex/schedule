@@ -1,7 +1,7 @@
 import React from "react";
 import SchedulePage from './pages/SchedulePage/SchedulePage'
 import ErrorPage from "./pages/ErrorPage";
-import ProfilePage from "./pages/ProfilePage";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import DataListsPage from "./pages/DataListsPage";
 import MainPage from "./pages/MainPage";
 import AdminPage from "./pages/AdminPage/AdminPage";
@@ -36,13 +36,14 @@ export const routes = [
                         element: <EditSchedulePage/>
                     }
                 ]
-            }
+            },
+            {
+                path: "/profile",
+                element: <ProfilePage/>,
+            },
         ]
     },
-    {
-        path: "/profile",
-        element: <ProfilePage/>,
-    },
+
     isAuth && {
         path: '/profile/page',
         element: <div>123</div>

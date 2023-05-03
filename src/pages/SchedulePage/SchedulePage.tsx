@@ -27,12 +27,9 @@ import {scheduleTypeConvert, scheduleTypeToFilterValue} from "../../utils/conver
 import {themeObject} from "../../themes";
 import {CheckOutlined, CheckRounded} from "@mui/icons-material";
 import UserScheduleService from "../../api/services/UserScheduleService";
+import {AutocompleteOption} from "../../models/IAutocompleteOption";
 
 
-interface AutocompleteOption {
-	id: number;
-	label: string;
-}
 
 
 const SchedulePage = observer(() => {
@@ -43,7 +40,6 @@ const SchedulePage = observer(() => {
 	const [filterOptions, setFilterOptions] = useState<AutocompleteOption[]>([]);
 	const [filterType, setFilterType] = useState<FILTER_TYPES>(FILTER_TYPES.TEACHERS);
 	const [schedule, setSchedule] = useState<IScheduleDay[]>([]);
-
 	const [open, setOpen] = useState(false);
 	const loading = open && filterOptions?.length === 0;
 
