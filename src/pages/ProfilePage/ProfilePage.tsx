@@ -10,6 +10,10 @@ import TypeButtons from "../../components/TypeButtons";
 import {SettingsBox} from "../../components/styled/SettingsBox";
 import {isEmailValid} from "../../utils/validators";
 import {SettingTypography} from "../../components/styled/SettingTypography";
+import UserService from "../../api/services/UserService";
+import {scheduleTypeToFilterValue} from "../../utils/converters";
+import user from "../../store/user";
+import {useNavigate} from "react-router-dom";
 
 function ProfilePage() {
 
@@ -24,6 +28,28 @@ function ProfilePage() {
 	const isEmailCorrect = isEmailValid(email);
 	const loading = openList && filterOptions?.length === 0;
 
+	const navigate = useNavigate();
+
+	useEffect(() => {
+
+		if (localStorage.getItem('token')) {
+			user.checkAuth()
+		} else {
+			user.setPretendingToAuth(true);
+			navigate("/login")
+		}
+
+		(async () => {
+				const user = await UserService.getProfileInfo();
+				console.log(user.mail)
+				setEmail(user.mail)
+				if (user.linkedSchedule.contain) {
+					setFilterType(scheduleTypeToFilterValue(user.linkedSchedule.linkedEntityType))
+					setFilterValue(user.linkedSchedule.linkedEntityId)
+				}
+			}
+		)()
+	}, [])
 
 	useEffect(() => {
 
@@ -53,7 +79,11 @@ function ProfilePage() {
 	}, [filterValue])
 
 
-	const handleAlertClose = () => {
+	const handleAlertClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+
 		setOpenAlerts(false);
 	}
 
@@ -79,7 +109,7 @@ function ProfilePage() {
 	}
 
   return (
-    <div className={styles.wrapper}>
+    <Grid>
 
         <Box>
             <Typography sx={{marginBottom: 2}} variant={'h3'} fontWeight={700}>
@@ -239,7 +269,7 @@ function ProfilePage() {
 						placeholder={'E-mail'}
 						value={email}
 						onChange={handleEmailChange}
-						error={isEmailCorrect}
+						error={!isEmailCorrect}
 					>
 
 					</OutlinedInput>
@@ -266,6 +296,7 @@ function ProfilePage() {
 			open={openAlerts}
 			autoHideDuration={3000}
 			onClose={handleAlertClose}
+			anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
 		>
 			<Alert
 				variant={'filled'}
@@ -277,7 +308,7 @@ function ProfilePage() {
 			</Alert>
 		</Snackbar>
 
-    </div>
+    </Grid>
   )
 }
 

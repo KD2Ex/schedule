@@ -10,7 +10,7 @@ import {
 	Box
 } from '@mui/material'
 import {styled} from '@mui/material/styles';
-import {Link as link} from 'react-router-dom';
+import {Link as link, useNavigate} from 'react-router-dom';
 import styles from './NavBar.module.css';
 import {AuthContext, ColorModeContext} from "../../context";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
@@ -24,6 +24,12 @@ import user from '../../store/user'
 function NavBar() {
 
 	const changeMode = useContext(ColorModeContext);
+	const navigate = useNavigate();
+
+	const handleLogout = () => {
+		user.logout()
+		//navigate('/login')
+	}
 
 	return (
 			<Box sx={{flexGrow: 1}}>
@@ -34,20 +40,25 @@ function NavBar() {
 							<NavBarButton component={link} to="/schedule" >
 								Расписание
 							</NavBarButton>
-							<Button sx={{color: 'white'}} component={link} to="/edit" >
+							{/*<Button sx={{color: 'white'}} component={link} to="/edit" >
 								Списки
-							</Button>
-							<Button sx={{color: 'white'}} component={link} to="/profile">
-								Профиль
-							</Button>
+							</Button>*/}
+
+
+
+						</Box>
+
+						<Box sx={{flexGrow: 0}}>
 
 							<IconButton onClick={() => changeMode.toggleColorMode()} aria-label="delete">
 								<Brightness4Icon sx={{color:'white'}}/>
 							</IconButton>
-						</Box>
-
-						<Box sx={{flexGrow: 0}}>
-							<NavBarButton onClick={() => user.logout()}>Выйти</NavBarButton>
+							<Button sx={{color: 'white'}} component={link} to="/profile">
+								Профиль
+							</Button>
+							<NavBarButton onClick={handleLogout}>
+								Выйти
+							</NavBarButton>
 
 						</Box>
 					</Toolbar>

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Box, Button, Container, TextField, Typography, useTheme} from "@mui/material";
 import {NavBarButton} from "../../components/UI/NavBarButton/NavBarButton";
 import {AuthContext} from "../../context";
@@ -6,12 +6,23 @@ import {Link, redirect, useNavigate} from "react-router-dom";
 import LoginForm from "../../components/LoginForm/LoginForm";
 import kkeplogo from "../../styles/logos/kkep.svg";
 import kkeplogoWhite from "../../styles/logos/kkep_white.svg";
+import {observer} from "mobx-react-lite";
+import user from '../../store/user'
 
-const LoginPage = () => {
+const LoginPage = observer(() => {
 
 	const navigate = useNavigate();
-
 	const theme = useTheme();
+
+
+	useEffect(() => {
+
+		if (!user.isPretendedToAuth) {
+			navigate('/schedule')
+			console.log('login')
+		}
+	}, [])
+
 
 	return (
 		<Box sx={{display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'}}>
@@ -26,6 +37,6 @@ const LoginPage = () => {
 		</Box>
 
 	);
-};
+});
 
 export default LoginPage;

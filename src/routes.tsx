@@ -51,9 +51,6 @@ export const routes = [
     {
         path: 'login',
         element: <LoginPage/>,
-        loader: () => {
-            return redirect('/')
-        }
     },
     {
         path: "*",
@@ -61,6 +58,10 @@ export const routes = [
         loader: () => {
             return redirect('/')
         }
+    },
+    {
+        path: 'oauth2',
+        element: <OAuth2RedirectHandler/>
     },
 ];
 
@@ -73,10 +74,7 @@ export const publicRoutes = [
         path: 'validationError',
         element: <ValidationErrorPage type={"student"}/>
     },
-    {
-        path: 'oauth2',
-        element: <OAuth2RedirectHandler/>
-    },
+
     {
         path: '*',
         element: <ErrorPage/>,

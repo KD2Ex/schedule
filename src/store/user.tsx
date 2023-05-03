@@ -10,10 +10,15 @@ import {VK_AUTH_URL} from "../api/http/urls";
 class User {
 	user = {} as IUser;
 	isAuth = false;
+	isPretendedToAuth = false;
 
 
 	constructor() {
 		makeAutoObservable(this)
+	}
+
+	setPretendingToAuth(pretending: boolean) {
+		this.isPretendedToAuth = pretending;
 	}
 
 	setAuth(isAuth: boolean) {
@@ -42,6 +47,7 @@ class User {
 			//console.log()
 			//localStorage.setItem('token', response.data.accessToken);
 			this.setAuth(true);
+			this.setPretendingToAuth(false);
 			//this.setUser('');
 		} catch (e) {
 			console.log()
@@ -66,7 +72,12 @@ class User {
 
 	logout() {
 		this.setAuth(false);
+		this.setPretendingToAuth(false);
 		localStorage.clear();
+	}
+
+	loginPretending() {
+		this.setPretendingToAuth(true);
 	}
 
 }

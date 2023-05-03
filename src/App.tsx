@@ -21,9 +21,7 @@ const App = observer(() => {
 
 	useEffect(() => {
 		//console.log(window.location.toString().split());
-		if (localStorage.getItem('token')) {
-			user.checkAuth()
-		}
+
 		console.log('effect')
 
 	}, [])
@@ -48,7 +46,7 @@ const App = observer(() => {
 	console.log(localStorage.getItem('token') )
 
 	const currentRoutes = user.isAuth && localStorage.getItem('token') ? routes : publicRoutes;
-	const router = createBrowserRouter(currentRoutes);
+	const router = createBrowserRouter(routes);
 	console.log(router);
 
 

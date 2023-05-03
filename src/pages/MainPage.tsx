@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Outlet } from 'react-router-dom';
 import NavBar from "../components/NavBar/NavBar";
 import {Box} from "@mui/material";
@@ -7,6 +7,10 @@ import {useNavigate} from 'react-router-dom'
 const MainPage = () => {
 
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		navigate('/schedule')
+	}, [])
 
 	return (
 		<div>
