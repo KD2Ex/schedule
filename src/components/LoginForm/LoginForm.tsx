@@ -1,5 +1,6 @@
 import React, {FC, useState} from 'react';
 import styles from "../../pages/LoginPage/LoginPage.module.css";
+import {useNavigation, useNavigate} from 'react-router-dom'
 import {Box, Button, Divider, IconButton, InputAdornment, TextField, Typography} from "@mui/material";
 import GoogleIcon from '@mui/icons-material/Google'
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -18,10 +19,12 @@ const LoginForm: FC = observer(() => {
 	const [username, setUsername] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 	const [showPassword, setShowPassword] = React.useState(false);
+	const navigate = useNavigate();
 
 
-	const handleLogin = () => {
-		user.login(username, password);
+	const handleLogin = async () => {
+		await user.login(username, password);
+		navigate('/schedule')
 	}
 
 	const handleClickShowPassword = () => setShowPassword((show) => !show);

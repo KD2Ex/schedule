@@ -28,6 +28,8 @@ export const getMode = (mode: any) => (
             secondary: {
                 //main: "rgb(255, 255, 255)",
                 main: "rgb(3, 29, 96, 0.82)",
+                linked: 'rgba(32,163,45,0.82)',
+                nonLinked: 'rgb(255,44,44)'
             },
             text: {
                 primary: 'rgba(0,0,0,0.82)',
@@ -60,6 +62,8 @@ export const getMode = (mode: any) => (
             secondary: {
                 //main: "rgb(255, 255, 255)",
                 main: "rgb(3, 29, 96, 0.82)",
+                linked: 'rgba(104,252,140,0.91)',
+                nonLinked: 'rgb(255,44,44)'
             },
             text: {
                 primary: 'rgba(255,255,255,0.82)',

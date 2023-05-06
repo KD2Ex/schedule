@@ -4,7 +4,6 @@ import React, {ComponentProps, FC, ReactNode, useState} from 'react';
 
 const StyledProfileButton = styled(Button)<ButtonProps>( ({theme}) => ({
 	width: '180px',
-
 }))
 
 interface ProfileButtonProps extends ButtonProps{

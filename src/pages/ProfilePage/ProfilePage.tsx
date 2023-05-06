@@ -1,7 +1,18 @@
 import React, {useEffect, useState} from 'react'
 import styles from './ProfilePage.module.css'
 import './ProfilePage.css'
-import {Alert, Autocomplete, Box, Grid, OutlinedInput, Snackbar, TextField, Typography, useTheme} from "@mui/material";
+import {
+	Alert,
+	Autocomplete,
+	Box,
+	Button,
+	Grid,
+	OutlinedInput,
+	Snackbar,
+	TextField,
+	Typography,
+	useTheme
+} from "@mui/material";
 import ProfileButton from "../../components/styled/ProfileButton";
 import {AutocompleteOption} from "../../models/IAutocompleteOption";
 import {useFilterOptions} from "../../hooks/useFilterOptions";
@@ -14,6 +25,7 @@ import UserService from "../../api/services/UserService";
 import {scheduleTypeToFilterValue} from "../../utils/converters";
 import user from "../../store/user";
 import {useNavigate} from "react-router-dom";
+import LinkedAccount from "../../components/LinkedAccount/LinkedAccount";
 
 function ProfilePage() {
 
@@ -108,207 +120,230 @@ function ProfilePage() {
 		setIsAccountLinked(false);
 	}
 
+	const linkedAccounts = [
+		{type: "VK", contain: false, needMailing: true, enabledMailing: true},
+		{type: "GITHUB", contain: true, needMailing: true, enabledMailing: true},
+		{type: "TELEGRAM", contain: false, needMailing: true, enabledMailing: true},
+		{type: "GOOGLE", contain: true, needMailing: true, enabledMailing: true},
+	]
+
   return (
-    <Grid>
-
-        <Box>
-            <Typography sx={{marginBottom: 2}} variant={'h3'} fontWeight={700}>
-                Настройки
-            </Typography>
-
-            <Typography variant={'h5'}  fontWeight={400}>
-                Расслыка
-            </Typography>
-
-			<SettingsBox>
-
-				<Grid container spacing={2}>
-
-					<Grid item xs={12}>
-						<ProfileButton
-							onClick={handleLinkingOn}
-							sx={{display: isAccountLinked ? 'none' : 'flex'}}
-						>
-							Привязать аккаунт
-						</ProfileButton>
-						<ProfileButton
-							onClick={handleLinkingOff}
-							sx={{display: isAccountLinked ? 'flex' : 'none'}}
-						>
-							Отвязать аккаунт
-						</ProfileButton>
-					</Grid>
-
-					<Grid item xs={12}>
-						<ProfileButton
-							onClick={handleMailingOn}
-							sx={{display: isMailingActive ? 'none' : 'flex'}}
-						>
-							Включить расслыку
-						</ProfileButton>
-						<ProfileButton
-							onClick={handleMailingOff}
-							sx={{display: isMailingActive ? 'flex' : 'none'}}
-						>
-							Отключить расслыку
-						</ProfileButton>
-					</Grid>
-
-					<Grid item xs={12}>
-
-						<div className={styles.vk_button} id="vk_allow_messages_from_community">
-
-						</div>
-					</Grid>
-
-				</Grid>
-
-
-
-
-
-
-
-			</SettingsBox>
-
-		</Box>
-
-
-		<Typography variant={'h5'}>
-			Расписание
+  	<>
+		<Typography sx={{marginBottom: 2}} variant={'h3'} fontWeight={700}>
+			Настройки
 		</Typography>
 
-		<SettingsBox>
+		<Grid container spacing={2}>
 
-			<Typography sx={{fontSize: 18, marginBottom: 2}}>
-				Выберите, какое расписание вы хотите получать:
-			</Typography>
+			<Grid item xs={12} lg={8}>
 
-			<Grid container spacing={2}>
+				<Typography variant={'h4'}  fontWeight={400}>
+					Расслыка
+				</Typography>
 
-				<Grid item xs={12} md={2}>
+				<SettingsBox>
 
-					<SettingTypography>
-						Тип расписания
-					</SettingTypography>
+					<Grid container spacing={2}>
 
-				</Grid>
-				<Grid item xs={12} md={10}>
-					<TypeButtons
-						filterType={filterType}
-						setFilterType={setFilterType}
-						setFilterValue={setFilterValue}
-						exclusive
-						size='small'
+						<Grid item xs={12}>
+							<ProfileButton
+								onClick={handleLinkingOn}
+								sx={{display: isAccountLinked ? 'none' : 'flex'}}
+							>
+								Привязать аккаунт
+							</ProfileButton>
+							<ProfileButton
+								onClick={handleLinkingOff}
+								sx={{display: isAccountLinked ? 'flex' : 'none'}}
+							>
+								Отвязать аккаунт
+							</ProfileButton>
+						</Grid>
 
-					/>
-				</Grid>
+						<Grid item xs={12}>
+							<ProfileButton
+								onClick={handleMailingOn}
+								sx={{display: isMailingActive ? 'none' : 'flex'}}
+							>
+								Включить расслыку
+							</ProfileButton>
+							<ProfileButton
+								onClick={handleMailingOff}
+								sx={{display: isMailingActive ? 'flex' : 'none'}}
+							>
+								Отключить расслыку
+							</ProfileButton>
+						</Grid>
 
-				<Grid item xs={12} md={2}>
+						<Grid item xs={12}>
 
-					<SettingTypography>
-						Сущность
-					</SettingTypography>
+							<div className={styles.vk_button} id="vk_allow_messages_from_community">
 
-				</Grid>
-				<Grid item xs={12} md={10}>
+							</div>
+						</Grid>
+
+					</Grid>
+
+				</SettingsBox>
 
 
-					<Autocomplete
-						value={filterValue}
-						size='small'
-						open={openList}
-						sx={{width: {xs: 240, md: 315}}}
-						onOpen={() => {
-							setOpenList(true);
-						}}
-						onClose={() => {
-							setOpenList(false);
-						}}
-						loading={loading}
-						options={filterOptions}
-						renderInput={(params) => (<TextField
-							{...params}
-							label={` ${filterType}`}
-							InputProps={{
-								...params.InputProps,
-							}}
-						/>)}
-						onChange={(event: any, newValue: AutocompleteOption | null) => {
-							setFilterValue(newValue);
-						}}
-					/>
-				</Grid>
+
+				<Typography variant={'h4'}>
+					Расписание
+				</Typography>
+
+				<SettingsBox>
+
+					<Typography sx={{fontSize: 18, marginBottom: 2}}>
+						Выберите, какое расписание вы хотите получать:
+					</Typography>
+
+					<Grid container spacing={2}>
+
+						<Grid item xs={12} md={2}>
+
+							<SettingTypography>
+								Тип расписания
+							</SettingTypography>
+
+						</Grid>
+						<Grid item xs={12} md={10}>
+							<TypeButtons
+								filterType={filterType}
+								setFilterType={setFilterType}
+								setFilterValue={setFilterValue}
+								exclusive
+								size='small'
+
+							/>
+						</Grid>
+
+						<Grid item xs={12} md={2}>
+
+							<SettingTypography>
+								Сущность
+							</SettingTypography>
+
+						</Grid>
+						<Grid item xs={12} md={10}>
+
+
+							<Autocomplete
+								value={filterValue}
+								size='small'
+								open={openList}
+								sx={{width: {xs: 315}}}
+								onOpen={() => {
+									setOpenList(true);
+								}}
+								onClose={() => {
+									setOpenList(false);
+								}}
+								loading={loading}
+								options={filterOptions}
+								renderInput={(params) => (<TextField
+									{...params}
+									label={` ${filterType}`}
+									InputProps={{
+										...params.InputProps,
+									}}
+								/>)}
+								onChange={(event: any, newValue: AutocompleteOption | null) => {
+									setFilterValue(newValue);
+								}}
+							/>
+						</Grid>
+
+					</Grid>
+
+				</SettingsBox>
+
+				<Typography variant={'h4'}>
+					Аккаунт
+
+				</Typography>
+
+				<SettingsBox>
+					<Typography sx={{fontWeight: 200, fontSize: 16, marginBottom :2}}>
+
+						Изменить персональные данные учетной записи
+
+					</Typography>
+					<Grid container spacing={2}>
+
+						<Grid item xs={12} md={2}>
+							<SettingTypography>
+								Электронная почта
+							</SettingTypography>
+						</Grid>
+						<Grid item xs={12} md={10}>
+							<OutlinedInput
+								sx={{width: '100%'}}
+								size={"small"}
+								placeholder={'E-mail'}
+								value={email}
+								onChange={handleEmailChange}
+								error={!isEmailCorrect}
+							>
+
+							</OutlinedInput>
+						</Grid>
+						<Grid item xs={12} md={2}>
+							<SettingTypography>
+								Новый пароль
+							</SettingTypography>
+						</Grid>
+						<Grid item xs={12} md={10}>
+							<OutlinedInput
+								sx={{width: '100%'}}
+								size={"small"}
+								placeholder={'Введите пароль'}
+							>
+							</OutlinedInput>
+						</Grid>
+					</Grid>
+				</SettingsBox>
+			</Grid>
+
+
+			<Grid item xs={12} lg={4}>
+				<Typography variant={"h4"}>
+					Привязанные аккаунты
+				</Typography>
+
+				<SettingsBox>
+					<Grid container spacing={3}>
+						{linkedAccounts.map((account, index) => (
+							<Grid item xs={12}>
+								<LinkedAccount
+									type={account.type}
+									isLinked={account.contain}
+								/>
+							</Grid>
+						))}
+
+					</Grid>
+				</SettingsBox>
 
 			</Grid>
 
-		</SettingsBox>
-
-		<Typography variant={'h5'}>
-			Аккаунт
-
-		</Typography>
-
-		<SettingsBox>
-			<Typography sx={{fontWeight: 200, fontSize: 16, marginBottom :2}}>
-
-				Изменить персональные данные учетной записи
-
-			</Typography>
-			<Grid container spacing={2}>
-
-				<Grid item xs={12} md={2}>
-					<SettingTypography>
-						Электронная почта
-					</SettingTypography>
-				</Grid>
-				<Grid item xs={12} md={10}>
-					<OutlinedInput
-						sx={{width: '100%'}}
-						size={"small"}
-						placeholder={'E-mail'}
-						value={email}
-						onChange={handleEmailChange}
-						error={!isEmailCorrect}
-					>
-
-					</OutlinedInput>
-				</Grid>
-				<Grid item xs={12} md={2}>
-					<SettingTypography>
-						Новый пароль
-					</SettingTypography>
-				</Grid>
-				<Grid item xs={12} md={10}>
-					<OutlinedInput
-						sx={{width: '100%'}}
-						size={"small"}
-						placeholder={'Введите пароль'}
-					>
-					</OutlinedInput>
-				</Grid>
-			</Grid>
-
-		</SettingsBox>
-
-
-		<Snackbar
-			open={openAlerts}
-			autoHideDuration={3000}
-			onClose={handleAlertClose}
-			anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-		>
-			<Alert
-				variant={'filled'}
+			<Snackbar
+				open={openAlerts}
+				autoHideDuration={3000}
 				onClose={handleAlertClose}
-				severity={"success"}
-				sx={{ width: '100%' }}
+				anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
 			>
-				Настройки расписания сохранены
-			</Alert>
-		</Snackbar>
-
-    </Grid>
+				<Alert
+					variant={'filled'}
+					onClose={handleAlertClose}
+					severity={"success"}
+					sx={{ width: '100%' }}
+				>
+					Настройки расписания сохранены
+				</Alert>
+			</Snackbar>
+		</Grid>
+	</>
   )
 }
 
