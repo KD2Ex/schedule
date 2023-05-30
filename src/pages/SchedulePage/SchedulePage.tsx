@@ -46,6 +46,7 @@ const SchedulePage = observer(() => {
 	const [filterType, setFilterType] = useState<FILTER_TYPES>(FILTER_TYPES.TEACHERS);
 	const [scheduleDays, setScheduleDays] = useState<IScheduleDay[]>([]);
 	const [open, setOpen] = useState(false);
+	const [isPrevWeek, setIsPrevWeek] = useState(false);
 	const loading = open && filterOptions?.length === 0;
 
 	const date = new Date();
@@ -184,6 +185,16 @@ const SchedulePage = observer(() => {
 
 	useEffect(() => {
 
+		setWeek(3)
+
+		if (!isPrevWeek) {
+			setWeek(schedule.currentData.firstWeek ? 1 : 2)
+		}
+
+	}, [isPrevWeek])
+
+	useEffect(() => {
+
 
 		(async () => {
 			await schedule.fetchCurrentData();
@@ -233,6 +244,15 @@ const SchedulePage = observer(() => {
 		}*/
 		setIsReplaceActive(event.target.checked);
 	}
+
+	const handlePrevWeek = (event: React.ChangeEvent<HTMLInputElement>) => {
+		/*if (newFilter !== null) {
+			setIsReplaceActive(newFilter);
+		}*/
+		setIsPrevWeek(event.target.checked);
+	}
+
+
 
 	const handelTypeAlignment = (event: React.MouseEvent<HTMLElement>, newFilter: FILTER_TYPES) => {
 		if (newFilter !== null) {
@@ -286,12 +306,12 @@ const SchedulePage = observer(() => {
 
 	return (
 		<>
-			<Container sx={{
+			<Box sx={{
 				display: 'flex',
 				justifyContent: 'center',
 				alignItems: 'center',
 				gap: 1,
-				flexWrap: 'wrap',
+				flexWrap: {xs: 'wrap', lg: 'nowrap'},
 			}}>
 
 				<TypeButtons
@@ -310,6 +330,7 @@ const SchedulePage = observer(() => {
 					onChange={handleWeekChange}
 					value={week}
 					exclusive
+					disabled={isPrevWeek}
 				>
 					<ToggleButton value="Неделя" disabled>
 						Неделя
@@ -368,12 +389,26 @@ const SchedulePage = observer(() => {
 
 				</FormGroup>
 
-
-
-			</Container>
-
-
-
+				{!schedule.currentData.firstWeek &&
+                <FormControlLabel
+                    sx={{m: 0}}
+                    control={
+						<Checkbox
+							checked={isPrevWeek}
+							onChange={handlePrevWeek}
+							sx={{
+								color: 'primary.main',
+								'&.Mui-checked': {
+									color: (theme) => theme.palette.mode === 'light' ? `${theme.palette.primary.main} ` : `${theme.palette.primary.main}`
+								}
+							}}
+						/>
+					}
+                    label={'Показать прошлю неделю'}
+                    labelPlacement={"start"}
+                />
+				}
+			</Box>
 
 
 			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
@@ -395,6 +430,8 @@ const SchedulePage = observer(() => {
 
 
 			</Grid2>
+
+
 
 
 		</>
