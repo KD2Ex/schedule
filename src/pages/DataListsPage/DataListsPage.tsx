@@ -8,13 +8,13 @@ import {
 	GridValidRowModel
 } from "@mui/x-data-grid";
 import {Box} from "@mui/material";
-import TypeButtons from "../components/TypeButtons";
-import {FILTER_TYPES} from "../models/enums/FilterType";
+import TypeButtons from "../../components/TypeButtons";
+import {FILTER_TYPES} from "../../models/enums/FilterType";
 import {observer} from "mobx-react-lite";
-import group from "../store/group";
-import rooms from "../store/rooms";
-import teacher from "../store/teacher";
-import {formatTeacherFullName, getGroupLabel} from "../utils/stringFormatters";
+import group from "../../store/group";
+import rooms from "../../store/rooms";
+import teacher from "../../store/teacher";
+import {formatTeacherFullName, getGroupLabel} from "../../utils/stringFormatters";
 import {createLogger} from "vite";
 
 const DataListsPage = observer( () => {

@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {ISubject} from "../models/ISubject";
+import {ISubject} from "../models/interfaces/ISubject";
 
 
 class Subject {

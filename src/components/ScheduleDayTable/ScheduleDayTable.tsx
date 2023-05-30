@@ -3,10 +3,10 @@ import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import ScheduleDayHeader from "../UI/ScheduleDayHeader/ScheduleDayHeader";
 import Css from './ScheduleDayTable.module.css'
-import IScheduleDay from "../../models/IScheduleDay";
+import IScheduleDay from "../../models/interfaces/IScheduleDay";
 import {LessonType} from "../../models/enums/LessonType";
 import {FILTER_TYPES} from "../../models/enums/FilterType";
-import IPair from "../../models/IPair";
+import IPair from "../../models/interfaces/IPair";
 import ScheduleRowDouble from "../ScheduleRows/ScheduleRowDouble";
 import ScheduleRowEmpty from "../ScheduleRows/ScheduleRowEmpty";
 import ScheduleRowOne from "../ScheduleRows/ScheduleRowOne";
@@ -51,6 +51,7 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 	}) => {
 
 
+/*
 
 	const tableRowDefault = (cells, isReplacement: boolean, isSmall: boolean) => {
 		return <TableRow
@@ -60,14 +61,14 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 				{cells[0][0]}
 			</TableCell>
 			<TableCell component="th" scope="row" sx={{px: 1 }} size='small'>
-				{/*<div className={Css.textContainer}>
+				{/!*<div className={Css.textContainer}>
 
-				</div>*/}
+				</div>*!/}
 				{cells[0][1]}
 			</TableCell>
 			<TableCell component="th" scope="row" sx={{px: 1, pr:2, py: 0}} size='small'>
-				{/*<div className={Css.textContainer}>
-				</div>*/}
+				{/!*<div className={Css.textContainer}>
+				</div>*!/}
 				{cells[0][2]}
 
 			</TableCell>
@@ -148,6 +149,7 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 		</TableRow>
 	}
 
+*/
 
 	const getTableRow = (pair: IPair) => {
 
@@ -183,6 +185,7 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 				pair.lessons[0]?.replacement,
 				pair.type === LessonType.DOUBLE && pair.lessons[1]?.replacement
 			]
+
 		}
 
 
@@ -197,10 +200,10 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 				return (<ScheduleRowOne cells={cells} isReplaced={replacings[0]}/>)
 			}
 			case LessonType.FIRST: {
-				return (<ScheduleRowFirst cells={cells} replacings={[replacings[0], true ]}/>)
+				return (<ScheduleRowFirst cells={cells} replacings={[replacings[0], replacings[1] ]}/>)
 			}
 			case LessonType.SECOND: {
-				return (<ScheduleRowSecond cells={cells} replacings={[true, replacings[0]]}/>)
+				return (<ScheduleRowSecond cells={cells} replacings={[replacings[0], replacings[1]]}/>)
 
 			}
 		}
@@ -240,7 +243,7 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 		return resultRows;
 	}
 
-		console.log(isSelected)
+		//console.log(isSelected)
 
 	return (
 		<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
@@ -255,7 +258,7 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 							<TableCell sx={{width: {xs: '7%', sm: '8%'}, px: 1, pr: 0, textAlign: 'center'}}>{columns[0]}</TableCell>
 							<TableCell sx={{width: '25%', px: 1}}>{columns[1]}</TableCell>
 							<TableCell sx={{width: {xs: '40%', sm: '60%'}, px: 1}}>{columns[2]}</TableCell>
-							<TableCell sx={{width: {xs: '15%', sm: '12%'}, px: 0}}>{columns[3]}</TableCell>
+							<TableCell sx={{width: {xs: '15%', sm: '15%'}, px: 0}}>{columns[3]}</TableCell>
 
 						</TableRow>
 					</TableHead>

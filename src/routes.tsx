@@ -1,9 +1,9 @@
 import React from "react";
-import SchedulePage from './pages/SchedulePage/SchedulePage'
-import ErrorPage from "./pages/ErrorPage";
+import SchedulePage, {loader} from './pages/SchedulePage/SchedulePage'
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
-import DataListsPage from "./pages/DataListsPage";
-import MainPage from "./pages/MainPage";
+import DataListsPage from "./pages/DataListsPage/DataListsPage";
+import MainPage from "./pages/MainPage/MainPage";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import {redirect} from 'react-router-dom'
@@ -18,6 +18,7 @@ export const routes = [
         path: "/",
         element: <MainPage/>,
         errorElement: <ErrorPage/>,
+        loader: loader,
         children: [
             {
                 path: "schedule",
@@ -38,7 +39,7 @@ export const routes = [
                 ]
             },
             {
-                path: "/profile",
+                path: "profile",
                 element: <ProfilePage/>,
             },
         ]

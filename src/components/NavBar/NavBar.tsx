@@ -31,6 +31,11 @@ function NavBar() {
 		//navigate('/login')
 	}
 
+	const handleLogin = () => {
+		navigate('/login')
+	}
+
+
 	return (
 			<Box sx={{flexGrow: 1}}>
 				<AppBar position='static' sx={{}} className={styles.appBar}>
@@ -53,12 +58,18 @@ function NavBar() {
 							<IconButton onClick={() => changeMode.toggleColorMode()} aria-label="delete">
 								<Brightness4Icon sx={{color:'white'}}/>
 							</IconButton>
-							<Button sx={{color: 'white'}} component={link} to="/profile">
-								Профиль
-							</Button>
-							<NavBarButton onClick={handleLogout}>
-								Выйти
-							</NavBarButton>
+							{user.isAuth
+								? <><NavBarButton sx={{color: 'white'}} component={link} to="/profile">
+									Профиль
+								</NavBarButton>
+								<NavBarButton onClick={handleLogout}>
+									Выйти
+								</NavBarButton></>
+								: <NavBarButton onClick={handleLogin}>
+									Войти
+								</NavBarButton>
+							}
+
 
 						</Box>
 					</Toolbar>

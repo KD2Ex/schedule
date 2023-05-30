@@ -1,5 +1,5 @@
 import ILesson from "./ILesson";
-import {LessonType} from "./enums/LessonType";
+import {LessonType} from "../enums/LessonType";
 
 
 export default interface IPair {

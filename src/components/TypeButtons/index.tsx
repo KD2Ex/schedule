@@ -30,8 +30,9 @@ const TypeButtons: FC<TypeButtonsProps> = ({filterType, setFilterType, setFilter
 			onChange={handelTypeAlignment}
 			value={filterType}
 			{...props}
+			sx={{padding: 0, '.MuiToggleButtonGroup-grouped': {padding: {xs: 1.5, sm: 2}}}}
 		>
-			<ToggleButton value={FILTER_TYPES.GROUPS} >
+			<ToggleButton value={FILTER_TYPES.GROUPS} sx={{padding: 0}} >
 				Группы
 			</ToggleButton>
 			<ToggleButton value={FILTER_TYPES.TEACHERS}>

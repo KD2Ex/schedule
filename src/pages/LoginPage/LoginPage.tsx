@@ -17,8 +17,9 @@ const LoginPage = observer(() => {
 
 	useEffect(() => {
 
-		if (!user.isPretendedToAuth) {
+		if (user.isAuth) {
 			navigate('/schedule')
+
 			console.log('login')
 		}
 	}, [])

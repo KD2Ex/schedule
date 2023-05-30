@@ -7,5 +7,8 @@ export interface UserScheduleResponse {
 		firstWeek: boolean,
 		entityId: number,
 		type: ScheduleType,
+		previousWeek: number[],
+		currentWeek: number[],
+		nextWeek: number[],
 	}
 }

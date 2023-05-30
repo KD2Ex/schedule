@@ -22,15 +22,20 @@ import {Link} from "react-router-dom";
 import {GridValidRowModel} from '@mui/x-data-grid';
 import {ScheduleType} from "../../models/enums/ScheduleType";
 import {fetchSchedule} from "../../api/services/ScheduleService";
-import IScheduleDay from "../../models/IScheduleDay";
+import IScheduleDay from "../../models/interfaces/IScheduleDay";
 import {scheduleTypeConvert, scheduleTypeToFilterValue} from "../../utils/converters";
 import {themeObject} from "../../themes";
 import {CheckOutlined, CheckRounded} from "@mui/icons-material";
 import UserScheduleService from "../../api/services/UserScheduleService";
-import {AutocompleteOption} from "../../models/IAutocompleteOption";
+import {AutocompleteOption} from "../../models/interfaces/IAutocompleteOption";
+import user from "../../store/user";
+import schedule from "../../store/schedule";
 
 
-
+export const loader = async () => {
+	console.log('loader')
+	return null
+}
 
 const SchedulePage = observer(() => {
 
@@ -39,7 +44,7 @@ const SchedulePage = observer(() => {
 	const [filterValue, setFilterValue] = useState<AutocompleteOption | null>(null);
 	const [filterOptions, setFilterOptions] = useState<AutocompleteOption[]>([]);
 	const [filterType, setFilterType] = useState<FILTER_TYPES>(FILTER_TYPES.TEACHERS);
-	const [schedule, setSchedule] = useState<IScheduleDay[]>([]);
+	const [scheduleDays, setScheduleDays] = useState<IScheduleDay[]>([]);
 	const [open, setOpen] = useState(false);
 	const loading = open && filterOptions?.length === 0;
 
@@ -124,22 +129,72 @@ const SchedulePage = observer(() => {
 	}, [open]);
 
 	useEffect(() => {
+
+		let date = [];
+
+		if (schedule.currentData.firstWeek) {
+			switch (week) {
+				case 1: {
+					date = schedule.currentData.currentWeek
+					break;
+				}
+				case 2: {
+					date = schedule.currentData.nextWeek;
+					break;
+				}
+				default: {
+					date = schedule.currentData.previousWeek;
+				}
+			}
+		} else {
+			switch (week) {
+				case 1: {
+					date = schedule.currentData.nextWeek
+					break;
+				}
+				case 2: {
+					date = schedule.currentData.currentWeek;
+					break;
+				}
+				default: {
+					date = schedule.currentData.previousWeek;
+				}
+			}
+		}
+
+		const dateCope = date?.filter(item => true);
+		if (dateCope) {
+			dateCope[2] += 1
+		} else {
+			return;
+		}
+		console.log(dateCope)
+		console.log(new Date([...date]).toISOString())
+
 		if (filterValue !== null) {
 			(async () => {
-				const newSchedule = await fetchSchedule(week, isReplaceActive, scheduleTypeConvert(filterType), filterValue.id);
-				setSchedule(newSchedule);
+				const newSchedule = await fetchSchedule(new Date([...dateCope]).toISOString(), isReplaceActive, scheduleTypeConvert(filterType), filterValue.id);
+				setScheduleDays(newSchedule);
 			})();
 		}
+
+		date = []
+
 	}, [filterValue, isReplaceActive, week])
 
 	useEffect(() => {
 
 
 		(async () => {
-			const userData = await UserScheduleService.getUserSchedule();
+			await schedule.fetchCurrentData();
+
+			const userData = await UserScheduleService.getCurrentData();
 			console.log(userData)
+
 			setWeek(userData.firstWeek ? 1 : 2);
-			setFilterType(scheduleTypeToFilterValue(userData.type));
+			if (userData.type) {
+				setFilterType(scheduleTypeToFilterValue(userData.type));
+			}
 			switch (userData.type) {
 				case ScheduleType.GROUP: {
 					if (group.groups.length === 0) {
@@ -157,17 +212,19 @@ const SchedulePage = observer(() => {
 				}
 			}
 
+
+
 		})()
 
 
 	}, [])
 
 
-	const handleWeekChange = (event: React.MouseEvent<HTMLElement>, newFilter: number) => {
-		if (newFilter !== null) {
-			setWeek(newFilter);
+	const handleWeekChange = (event: React.MouseEvent<HTMLElement>, newWeek: number) => {
+		if (newWeek !== null) {
+			setWeek(newWeek);
 		}
-		console.log(week);
+		console.log(newWeek);
 	}
 
 	const handleReplacementChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -187,7 +244,7 @@ const SchedulePage = observer(() => {
 
 	const getMaxPairsNumber = () => {
 		let maxPairs = 0;
-		schedule.forEach(day => {
+		scheduleDays.forEach(day => {
 			if (day.pairs.length === 0) return;
 			day.pairs[day.pairs.length - 1].number > maxPairs ? maxPairs = day.pairs[day.pairs.length - 1].number : null
 		})
@@ -196,7 +253,7 @@ const SchedulePage = observer(() => {
 
 	const getMinPairNumber = () => {
 		let minPair = 1;
-		schedule.forEach(day => {
+		scheduleDays.forEach(day => {
 			if (day.pairs.length === 0) return;
 			day.pairs[0].number === 0 ? minPair = 0 : null
 		})
@@ -209,10 +266,10 @@ const SchedulePage = observer(() => {
 	const minPairNumber = getMinPairNumber();
 
 	const fillDays = () => {
-		const scheduleDays = [];
+		const scheduleDaysCount = [];
 
-		for(let i = schedule.length; i < 6; i++) {
-			scheduleDays.push(<ScheduleDayTable
+		for(let i = scheduleDays.length; i < 6; i++) {
+			scheduleDaysCount.push(<ScheduleDayTable
 				key={i}
 				columns={getColumns(filterType)}
 				rows={emptyDay}
@@ -224,7 +281,7 @@ const SchedulePage = observer(() => {
 				minPairNumber={minPairNumber}
 			/>)
 		}
-		return scheduleDays;
+		return scheduleDaysCount;
 	}
 
 	return (
@@ -320,8 +377,7 @@ const SchedulePage = observer(() => {
 
 
 			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
-
-				{filterValue !== null && schedule.length !== 0 ? schedule.map((item: IScheduleDay, index: React.Key | null | undefined) => (
+				{filterValue !== null && scheduleDays.length !== 0 ? scheduleDays.map((item: IScheduleDay, index: React.Key | null | undefined) => (
 					<ScheduleDayTable
 						key={index}
 						columns={getColumns(filterType)}

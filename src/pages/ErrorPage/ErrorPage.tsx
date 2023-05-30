@@ -1,6 +1,6 @@
 import React from 'react'
 import {useRouteError} from 'react-router-dom'
-import logo from '../styles/anime.jpg'
+import logo from '../../styles/anime.jpg'
 import {Stack} from "@mui/material";
 
 

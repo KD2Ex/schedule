@@ -29,7 +29,8 @@ export const getMode = (mode: any) => (
                 //main: "rgb(255, 255, 255)",
                 main: "rgb(3, 29, 96, 0.82)",
                 linked: 'rgba(32,163,45,0.82)',
-                nonLinked: 'rgb(255,44,44)'
+                nonLinked: 'rgb(255,44,44)',
+
             },
             text: {
                 primary: 'rgba(0,0,0,0.82)',
@@ -63,7 +64,9 @@ export const getMode = (mode: any) => (
                 //main: "rgb(255, 255, 255)",
                 main: "rgb(3, 29, 96, 0.82)",
                 linked: 'rgba(104,252,140,0.91)',
-                nonLinked: 'rgb(255,44,44)'
+                nonLinked: 'rgb(255,44,44)',
+                hover: "rgba(22,47,118,0.84)",
+                lightMain: "rgba(3,29,96,0.82)",
             },
             text: {
                 primary: 'rgba(255,255,255,0.82)',

@@ -25,7 +25,7 @@ const ScheduleDayHeader: FC<ScheduleDayHeaderProps> = ({isSelected, dayNumber, d
 	const fontColor = isSelected ? "primary.contrastText" : "primary.main";
 
 	const currentDate = new Date(date * 1000);
-	console.log(currentDate)
+	//console.log(currentDate)
 
 	return (
 		<Box sx={{

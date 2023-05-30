@@ -4,7 +4,7 @@ import Css from './EditSchedulePage.module.css';
 import ScheduleDayDataGrid from "../../components/ScheduleDayDataGrid/ScheduleDayDataGrid";
 import {getColumns} from "../../utils/stringFormatters";
 import {FILTER_TYPES} from "../../models/enums/FilterType";
-import IScheduleDay from "../../models/IScheduleDay";
+import IScheduleDay from "../../models/interfaces/IScheduleDay";
 import {fetchSchedule} from "../../api/services/ScheduleService";
 import {scheduleTypeConvert} from "../../utils/converters";
 

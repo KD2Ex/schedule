@@ -3,7 +3,7 @@ import {FILTER_TYPES} from "../models/enums/FilterType";
 import teacher from "../store/teacher";
 import group from "../store/group";
 import room from "../store/rooms";
-import {AutocompleteOption} from "../models/IAutocompleteOption";
+import {AutocompleteOption} from "../models/interfaces/IAutocompleteOption";
 
 
 export const useFilterOptions = (filterType: FILTER_TYPES, setState: any) => {

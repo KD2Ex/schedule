@@ -4,7 +4,6 @@ import './ProfilePage.css'
 import {
 	Alert,
 	Autocomplete,
-	Box,
 	Button,
 	Grid,
 	OutlinedInput,
@@ -14,7 +13,7 @@ import {
 	useTheme
 } from "@mui/material";
 import ProfileButton from "../../components/styled/ProfileButton";
-import {AutocompleteOption} from "../../models/IAutocompleteOption";
+import {AutocompleteOption} from "../../models/interfaces/IAutocompleteOption";
 import {useFilterOptions} from "../../hooks/useFilterOptions";
 import {FILTER_TYPES} from "../../models/enums/FilterType";
 import TypeButtons from "../../components/TypeButtons";
@@ -22,12 +21,18 @@ import {SettingsBox} from "../../components/styled/SettingsBox";
 import {isEmailValid} from "../../utils/validators";
 import {SettingTypography} from "../../components/styled/SettingTypography";
 import UserService from "../../api/services/UserService";
-import {scheduleTypeToFilterValue} from "../../utils/converters";
+import {scheduleTypeConvert, scheduleTypeToFilterValue} from "../../utils/converters";
 import user from "../../store/user";
 import {useNavigate} from "react-router-dom";
 import LinkedAccount from "../../components/LinkedAccount/LinkedAccount";
+import {ISocial} from "../../models/interfaces/ISocial";
+import {ScheduleType} from "../../models/enums/ScheduleType";
+import {observer} from "mobx-react-lite";
+import {setLoadedOption} from "../../utils/setLoadedOption";
+import {ProfileResponse} from "../../models/response/ProfileResponse";
+import {AlertType} from "../../models/types/AlertType";
 
-function ProfilePage() {
+const ProfilePage = observer(() =>  {
 
 	const [isMailingActive, setIsMailingActive] = useState(false);
 	const [isAccountLinked, setIsAccountLinked] = useState(false);
@@ -37,10 +42,19 @@ function ProfilePage() {
 	const [filterType, setFilterType] = useState<FILTER_TYPES>(FILTER_TYPES.GROUPS);
 	const [filterValue, setFilterValue] = useState<AutocompleteOption | null>(null);
 	const [email, setEmail] = useState('');
+	const [profile, setProfile] = useState<ProfileResponse>({});
+	const [linkedAccounts, setLinkedAccounts] = useState<ISocial[]>([]);
+	const [emailEditing, setEmailEditing] = useState(false);
+	const [oldPassword, setOldPassword] = useState('');
+	const [newPassword, setNewPassword] = useState('');
+	const [alertStatus, setAlertStatus] = useState<AlertType>('success');
+	const [alertMessage, setAlertMessage] = useState('Успешно!');
 	const isEmailCorrect = isEmailValid(email);
 	const loading = openList && filterOptions?.length === 0;
 
+
 	const navigate = useNavigate();
+	const theme = useTheme();
 
 	useEffect(() => {
 
@@ -52,13 +66,17 @@ function ProfilePage() {
 		}
 
 		(async () => {
-				const user = await UserService.getProfileInfo();
-				console.log(user.mail)
-				setEmail(user.mail)
-				if (user.linkedSchedule.contain) {
-					setFilterType(scheduleTypeToFilterValue(user.linkedSchedule.linkedEntityType))
-					setFilterValue(user.linkedSchedule.linkedEntityId)
+				const profile = await UserService.getProfileInfo();
+				const user = await UserService.getUserInfo();
+				setProfile(profile);
+				console.log(profile.mail)
+				setEmail(profile.mail)
+				if (profile.linkedSchedule.contain) {
+					const newFilterType = scheduleTypeToFilterValue(profile.linkedSchedule.linkedEntityType);
+					setFilterType(newFilterType)
+					setFilterValue(await setLoadedOption(profile.linkedSchedule.linkedEntityType, profile.linkedSchedule.linkedEntityId))
 				}
+				setLinkedAccounts(profile.linkedSocial);
 			}
 		)()
 	}, [])
@@ -76,8 +94,8 @@ function ProfilePage() {
 	useEffect(() => {
 		if (!openList) {
 			setFilterOptions([]);
-
 		}
+
 	}, [openList])
 
 	useEffect(() => {
@@ -86,10 +104,15 @@ function ProfilePage() {
 
 		}
 
-		setOpenAlerts(true);
-
 	}, [filterValue])
 
+	const handleOldPasswordChange = (event) => {
+		setOldPassword(event.target.value)
+	}
+
+	const handleNewPasswordChange = (event) => {
+		setNewPassword(event.target.value)
+	}
 
 	const handleAlertClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
 		if (reason === 'clickaway') {
@@ -120,12 +143,74 @@ function ProfilePage() {
 		setIsAccountLinked(false);
 	}
 
-	const linkedAccounts = [
-		{type: "VK", contain: false, needMailing: true, enabledMailing: true},
-		{type: "GITHUB", contain: true, needMailing: true, enabledMailing: true},
-		{type: "TELEGRAM", contain: false, needMailing: true, enabledMailing: true},
-		{type: "GOOGLE", contain: true, needMailing: true, enabledMailing: true},
-	]
+	const handleLinkSchedule = async () => {
+		await UserService.setLinkedSchedule(ScheduleType.TEACHER, -1);
+		if (filterValue !== null) {
+			await UserService.setLinkedSchedule(scheduleTypeConvert(filterType), filterValue?.id);
+		} else {
+			//await UserService.setLinkedSchedule(ScheduleType.TEACHER, -1);
+		}
+		setAlertMessage('Настройки профиля обновлены');
+		setAlertStatus("success")
+		setOpenAlerts(true);
+	}
+
+	const handleClearLinkedSchedule = () => {
+		setFilterValue(null);
+	}
+
+	const handleEnableEmailEditing = async () => {
+		setEmailEditing(prev => !prev);
+		if (emailEditing) {
+			await UserService.updateEmail(email);
+		}
+	}
+
+	const handlePasswordChange = async () => {
+		if (oldPassword !== '' && newPassword !== '') {
+			try {
+				await UserService.updatePassword(oldPassword, newPassword).then(response => {
+
+					setAlertStatus("success")
+					setAlertMessage("Пароль успешно сменен")
+					setOldPassword('');
+					setNewPassword('');
+
+				}).catch(error => {
+					console.log(error.response.data.code)
+					const code = error.response.data.code;
+					switch (code) {
+						case 1: {
+							setAlertStatus("warning");
+							setAlertMessage("Введите старый пароль")
+							break;
+						}
+						case 2: {
+							setAlertStatus("warning");
+							setAlertMessage("Введите новый пароль")
+							break;
+						}
+						case 3: {
+							setAlertStatus("error");
+							setAlertMessage("Действующий пароль не совпадает с введенным")
+							break;
+						}case 4: {
+							setAlertStatus("warning");
+							setAlertMessage("Пароли совпадают")
+							break;
+						}
+					}
+				}).finally(() => {
+					setOpenAlerts(true)
+				});
+
+			}
+			catch (e) {
+				console.log(e.message)
+			}
+		}
+	}
+
 
   return (
   	<>
@@ -135,7 +220,7 @@ function ProfilePage() {
 
 		<Grid container spacing={2}>
 
-			<Grid item xs={12} lg={8}>
+			<Grid item xs={12} lg={8} sx={{'h4': {marginBottom: 1}}}>
 
 				<Typography variant={'h4'}  fontWeight={400}>
 					Расслыка
@@ -145,7 +230,7 @@ function ProfilePage() {
 
 					<Grid container spacing={2}>
 
-						<Grid item xs={12}>
+						{/*<Grid item xs={12}>
 							<ProfileButton
 								onClick={handleLinkingOn}
 								sx={{display: isAccountLinked ? 'none' : 'flex'}}
@@ -158,7 +243,7 @@ function ProfilePage() {
 							>
 								Отвязать аккаунт
 							</ProfileButton>
-						</Grid>
+						</Grid>*/}
 
 						<Grid item xs={12}>
 							<ProfileButton
@@ -227,12 +312,11 @@ function ProfilePage() {
 						</Grid>
 						<Grid item xs={12} md={10}>
 
-
 							<Autocomplete
 								value={filterValue}
 								size='small'
 								open={openList}
-								sx={{width: {xs: 315}}}
+								sx={{width: {xs: '100%', sm: 315}}}
 								onOpen={() => {
 									setOpenList(true);
 								}}
@@ -252,6 +336,28 @@ function ProfilePage() {
 									setFilterValue(newValue);
 								}}
 							/>
+						</Grid>
+
+						<Grid item xs={12} sx={{gap: 2, display: 'flex', justifyContent: 'flex-end'}}>
+							<Button
+								variant={'contained'}
+								sx={{width: '180px', bgcolor: theme.palette.secondary.main, color: 'white',
+									border:`1px solid ${theme.palette.primary.pale}`,
+									'&:hover': {bgcolor: theme.palette.secondary.hover}
+								}}
+
+								onClick={handleLinkSchedule}
+
+							>
+								Сохранить
+							</Button>
+							<Button
+								variant={'outlined'}
+								sx={{width: '100px'}}
+								onClick={handleClearLinkedSchedule}
+							>
+								Очистить
+							</Button>
 						</Grid>
 
 					</Grid>
@@ -284,10 +390,32 @@ function ProfilePage() {
 								value={email}
 								onChange={handleEmailChange}
 								error={!isEmailCorrect}
+								disabled={!emailEditing}
+								endAdornment={
+									<Button onClick={handleEnableEmailEditing}>
+										Изменить
+									</Button>
+								}
 							>
 
 							</OutlinedInput>
 						</Grid>
+						<Grid item xs={12} md={2}>
+							<SettingTypography>
+								Старый пароль
+							</SettingTypography>
+						</Grid>
+						<Grid item xs={12} md={10}>
+							<OutlinedInput
+								sx={{width: '100%'}}
+								size={"small"}
+								placeholder={'Введите пароль'}
+								value={oldPassword}
+								onChange={handleOldPasswordChange}
+							>
+							</OutlinedInput>
+						</Grid>
+
 						<Grid item xs={12} md={2}>
 							<SettingTypography>
 								Новый пароль
@@ -298,23 +426,35 @@ function ProfilePage() {
 								sx={{width: '100%'}}
 								size={"small"}
 								placeholder={'Введите пароль'}
+								value={newPassword}
+								onChange={handleNewPasswordChange}
 							>
 							</OutlinedInput>
 						</Grid>
+
+
+						<Grid item xs={12} sx={{display: 'flex', justifyContent: 'flex-end'}}>
+							<ProfileButton
+								onClick={handlePasswordChange}
+							>
+								Сменить пароль
+							</ProfileButton>
+						</Grid>
+
 					</Grid>
 				</SettingsBox>
 			</Grid>
 
 
 			<Grid item xs={12} lg={4}>
-				<Typography variant={"h4"}>
+				<Typography variant={"h4"} sx={{marginBottom: 1}}>
 					Привязанные аккаунты
 				</Typography>
 
 				<SettingsBox>
 					<Grid container spacing={3}>
 						{linkedAccounts.map((account, index) => (
-							<Grid item xs={12}>
+							<Grid item xs={12} key={index}>
 								<LinkedAccount
 									type={account.type}
 									isLinked={account.contain}
@@ -336,15 +476,15 @@ function ProfilePage() {
 				<Alert
 					variant={'filled'}
 					onClose={handleAlertClose}
-					severity={"success"}
+					severity={alertStatus}
 					sx={{ width: '100%' }}
 				>
-					Настройки расписания сохранены
+					{alertMessage}
 				</Alert>
 			</Snackbar>
 		</Grid>
 	</>
   )
-}
+})
 
 export default ProfilePage;

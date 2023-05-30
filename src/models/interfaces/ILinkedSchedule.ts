@@ -1,4 +1,4 @@
-import {ScheduleType} from "./enums/ScheduleType";
+import {ScheduleType} from "../enums/ScheduleType";
 
 
 export interface ILinkedSchedule {

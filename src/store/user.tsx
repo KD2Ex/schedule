@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {IUser} from "../models/IUser";
+import {IUser} from "../models/interfaces/IUser";
 import AuthService from "../api/services/AuthService";
 import axios from "axios";
 import {AuthResponse} from "../models/response/AuthResponse";
@@ -57,8 +57,8 @@ class User {
 	async loginWithServices(url: string) {
 		try {
 			await window.location.replace(url);
-			//window.open(url)
 			console.log(window.location.toString());
+			//window.open(url)
 			//localStorage.setItem('token', )
 			/*this.setAuth(true);
 			this.setUser({id: '1', email:'qwer@mail.ru', isAcitvated: true});*/

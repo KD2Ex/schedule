@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {TableCell, TableRow, Typography} from "@mui/material";
 import {tableRowStyle} from "./TableRowsMuiStyles";
 import Css from './TableRowsStyles.module.css'
@@ -10,6 +10,11 @@ interface ScheduleRowSecondProps {
 }
 
 const ScheduleRowSecond: FC<ScheduleRowSecondProps> = ({cells, replacings}) => {
+
+	useEffect(() => {
+		console.log(replacings)
+	}, [])
+
 	return (
 		<>
 
@@ -24,7 +29,7 @@ const ScheduleRowSecond: FC<ScheduleRowSecondProps> = ({cells, replacings}) => {
 
 				<TableCell size='small' sx={{py:0, height: '26.5px'}}>
 					<Typography sx={{fontStyle: 'italic',  fontSize: '1em'}}>
-						Нет занятия
+						Нет занятия1
 					</Typography>
 				</TableCell>
 
@@ -34,7 +39,7 @@ const ScheduleRowSecond: FC<ScheduleRowSecondProps> = ({cells, replacings}) => {
 			</TableRow>
 
 			<TableRow
-				sx={  (replacings[0] ? {  ...tableRowStyle } : null) }
+				sx={  (replacings[1] ? {  ...tableRowStyle } : null) }
 			>
 
 				<TooltippedCell component="th" scope="row" sx={{py:0,px: 1, height: '26.5px' }} size='small'>

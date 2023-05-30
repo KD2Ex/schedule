@@ -3,7 +3,7 @@ import $api from "../http";
 
 
 export const fetchEntities = async (type: ScheduleType) => {
-	console.log()
+	console.log('fetch')
 
 	try {
 		const result = await $api.get(`/schedule/entities`, {

@@ -1,9 +1,16 @@
-import {ILinkedSchedule} from "../ILinkedSchedule";
-import {ISocial} from "../ISocial";
+
 
 export interface UserResponse {
-	containPassword: boolean,
-	linkedSchedule: ILinkedSchedule,
-	linkedSocial: ISocial[],
-	mail: string,
+	id: number,
+	email: string,
+	password: string,
+	uuid: string,
+	authorities: [],
+	attributes: object,
+	name: string,
+	enabled: boolean,
+	username: string,
+	credentialsNonExpired: boolean,
+	accountNonExpired: boolean,
+	accountNonLocked: boolean
 }

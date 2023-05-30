@@ -1,4 +1,4 @@
-import ITeacher from "../models/ITeacher";
+import ITeacher from "../models/interfaces/ITeacher";
 import {GridValueGetterParams} from "@mui/x-data-grid";
 import {FILTER_TYPES} from "../models/enums/FilterType";
 

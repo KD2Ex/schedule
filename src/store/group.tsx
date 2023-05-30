@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {IGroup} from "../models/IGroup";
+import {IGroup} from "../models/interfaces/IGroup";
 import {fetchEntities} from "../api/services/EntitiesService";
 import {ScheduleType} from "../models/enums/ScheduleType";
 
@@ -24,9 +24,6 @@ class Group {
 	async fetchGroups() {
 
 		const result = await fetchEntities(ScheduleType.GROUP);
-
-
-
 		this.groups = result;
 
 	}

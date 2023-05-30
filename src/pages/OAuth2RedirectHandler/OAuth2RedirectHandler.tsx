@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useLocation, useNavigate, Navigate} from 'react-router-dom';
 
 import user from '../../store/user';
 import jwtDecode from "jwt-decode";
 import UserService from "../../api/services/UserService";
+import schedule from "../../store/schedule";
 
 const OAuth2RedirectHandler = () => {
 
@@ -19,9 +20,13 @@ const OAuth2RedirectHandler = () => {
 		return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 	}
 
-	console.log(window.location.toString().split('=')[1]);
-	localStorage.setItem('token',window.location.toString().split('=')[1])
-	user.setAuth(true);
+
+	useEffect(() => {
+		console.log(window.location.toString().split('=')[1]);
+		localStorage.setItem('token',window.location.toString().split('=')[1])
+		user.setAuth(true);
+
+	}, [])
 /*
 	const func = async () => {
 		await UserService.getLoggedUser();

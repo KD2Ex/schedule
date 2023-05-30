@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {TableCell, TableRow, TableRowProps} from "@mui/material";
-import ILesson from "../../models/ILesson";
-import IPair from "../../models/IPair";
+import ILesson from "../../models/interfaces/ILesson";
+import IPair from "../../models/interfaces/IPair";
 import {FILTER_TYPES} from "../../models/enums/FilterType";
 import {tableRowStyle} from "./TableRowsMuiStyles";
 import Css from './TableRowsStyles.module.css'
