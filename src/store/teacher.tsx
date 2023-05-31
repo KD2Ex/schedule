@@ -14,9 +14,7 @@ class Teacher {
 
 	async fetchTeachers() {
 		const result = await fetchEntities(ScheduleType.TEACHER)
-		this.teachers = result;
-
-
+		this.teachers = result.filter((item : ITeacher) => item.fullName !== '?');
 	}
 
 	getTeachersHeaders(): string[] {

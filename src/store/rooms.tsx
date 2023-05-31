@@ -13,10 +13,10 @@ class Room {
 	}
 
 	async fetchRooms() {
-		const res = await fetchEntities(ScheduleType.ROOM);
+		const response = await fetchEntities(ScheduleType.ROOM);
 
-		this.rooms = res.filter(item => item.fullName !== '-');
-		console.log(res);
+		this.rooms = response.filter((item: IRoom) => item.fullName !== '-' && item.fullName !== '?' );
+		console.log(response);
 
 	}
 

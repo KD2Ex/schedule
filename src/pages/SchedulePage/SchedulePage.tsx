@@ -131,55 +131,15 @@ const SchedulePage = observer(() => {
 
 	useEffect(() => {
 
-		let date = [];
-
-		if (schedule.currentData.firstWeek) {
-			switch (week) {
-				case 1: {
-					date = schedule.currentData.currentWeek
-					break;
-				}
-				case 2: {
-					date = schedule.currentData.nextWeek;
-					break;
-				}
-				default: {
-					date = schedule.currentData.previousWeek;
-				}
-			}
-		} else {
-			switch (week) {
-				case 1: {
-					date = schedule.currentData.nextWeek
-					break;
-				}
-				case 2: {
-					date = schedule.currentData.currentWeek;
-					break;
-				}
-				default: {
-					date = schedule.currentData.previousWeek;
-				}
-			}
-		}
-
-		const dateCope = date?.filter(item => true);
-		if (dateCope) {
-			dateCope[2] += 1
-		} else {
-			return;
-		}
-		console.log(dateCope)
-		console.log(new Date([...date]).toISOString())
+		const ISODate = schedule.getDate(week)
 
 		if (filterValue !== null) {
 			(async () => {
-				const newSchedule = await fetchSchedule(new Date([...dateCope]).toISOString(), isReplaceActive, scheduleTypeConvert(filterType), filterValue.id);
+				const newSchedule = await fetchSchedule(ISODate, isReplaceActive, scheduleTypeConvert(filterType), filterValue.id);
 				setScheduleDays(newSchedule);
 			})();
 		}
 
-		date = []
 
 	}, [filterValue, isReplaceActive, week])
 
@@ -222,9 +182,6 @@ const SchedulePage = observer(() => {
 					break;
 				}
 			}
-
-
-
 		})()
 
 
@@ -239,26 +196,13 @@ const SchedulePage = observer(() => {
 	}
 
 	const handleReplacementChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-		/*if (newFilter !== null) {
-			setIsReplaceActive(newFilter);
-		}*/
+
 		setIsReplaceActive(event.target.checked);
 	}
 
 	const handlePrevWeek = (event: React.ChangeEvent<HTMLInputElement>) => {
-		/*if (newFilter !== null) {
-			setIsReplaceActive(newFilter);
-		}*/
+
 		setIsPrevWeek(event.target.checked);
-	}
-
-
-
-	const handelTypeAlignment = (event: React.MouseEvent<HTMLElement>, newFilter: FILTER_TYPES) => {
-		if (newFilter !== null) {
-			setFilterType(newFilter);
-			setFilterValue(null);
-		}
 	}
 
 

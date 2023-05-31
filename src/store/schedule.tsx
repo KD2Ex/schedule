@@ -16,29 +16,71 @@ class Schedule {
 	async fetchWeekSchedule(weekNumber: number, isReplacement: boolean, type: ScheduleType, id: number) {
 
 		const firstWeek: boolean = weekNumber === 1;
+		const result = await axios.get(`http://91.223.199.62:8080/api/schedule`, {
+			params: {
+				firstWeek: firstWeek,
+				replacement: isReplacement,
+				type: type,
+				entityId: id,
+			}
+		}).catch((reason) => {
+			console.log(reason)
+		})
+		console.log(result.data.response)
+		this.weekSchedule = result.data.response;
 
-		try {
-			const result = await axios.get(`http://91.223.199.62:8080/api/schedule`, {
-				params: {
-					firstWeek: firstWeek,
-					replacement: isReplacement,
-					type: type,
-					entityId: id,
-				}
-			})
-			console.log(result.data.response)
-
-			runInAction(() => {
-				this.weekSchedule = result.data.response;
-			})
-			console.log(this.weekSchedule)
-		} catch (e) {
-			console.log(e.message)
-		}
+		/*runInAction(() => {
+		})*/
+		console.log(this.weekSchedule)
 	}
 
 	async fetchCurrentData() {
 		this.currentData = await UserScheduleService.getCurrentData()
+	}
+
+	getDate(week: number) {
+
+		let date: number[] = [];
+
+		if (this.currentData.firstWeek) {
+			switch (week) {
+				case 1: {
+					date = this.currentData.currentWeek
+					break;
+				}
+				case 2: {
+					date = this.currentData.nextWeek;
+					break;
+				}
+				default: {
+					date = this.currentData.previousWeek;
+				}
+			}
+		} else {
+			switch (week) {
+				case 1: {
+					date = this.currentData.nextWeek
+					break;
+				}
+				case 2: {
+					date = this.currentData.currentWeek;
+					break;
+				}
+				default: {
+					date = this.currentData.previousWeek;
+				}
+			}
+		}
+
+		const result = date?.filter((item: number) => true);
+
+		if (result) {
+			result[2] += 1;
+			return new Date([...result]).toISOString()
+		}
+
+		return null
+
 	}
 
 }
