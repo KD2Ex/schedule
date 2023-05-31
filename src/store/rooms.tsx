@@ -15,7 +15,16 @@ class Room {
 	async fetchRooms() {
 		const response = await fetchEntities(ScheduleType.ROOM);
 
-		this.rooms = response.filter((item: IRoom) => item.fullName !== '-' && item.fullName !== '?' );
+		this.rooms = response.filter((item: IRoom) => {
+				console.log(item.fullName.match(/[^сз_/тирВЦИ\d]+/gi))
+
+				//|| item.fullName.includes('ИЦ')
+			return !item.fullName.match(/[^сз_/тирВЦИЦ\d]+/gi)
+				|| item.fullName.toUpperCase().includes('ИЦ')
+				|| item.fullName.toUpperCase().includes('ВЦ')
+		}
+
+		)
 		console.log(response);
 
 	}

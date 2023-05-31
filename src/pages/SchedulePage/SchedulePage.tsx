@@ -3,7 +3,7 @@ import {
 	Autocomplete,
 	Box,
 	Button, Checkbox,
-	Container, FormControlLabel, FormGroup,
+	Container, FormControlLabel, FormGroup, getRadioUtilityClass,
 	TextField,
 	ToggleButton,
 	ToggleButtonGroup,
@@ -30,6 +30,7 @@ import UserScheduleService from "../../api/services/UserScheduleService";
 import {AutocompleteOption} from "../../models/interfaces/IAutocompleteOption";
 import user from "../../store/user";
 import schedule from "../../store/schedule";
+import compareEntity, {CompareObject} from "../../utils/compareFunctions/compareEntity";
 
 
 export const loader = async () => {
@@ -42,12 +43,12 @@ const SchedulePage = observer(() => {
 	const [week, setWeek] = useState(1);
 	const [isReplaceActive, setIsReplaceActive] = useState(true);
 	const [filterValue, setFilterValue] = useState<AutocompleteOption | null>(null);
-	const [filterOptions, setFilterOptions] = useState<AutocompleteOption[]>([]);
+	const [scheduleEntities, setScheduleEntities] = useState<AutocompleteOption[]>([]);
 	const [filterType, setFilterType] = useState<FILTER_TYPES>(FILTER_TYPES.TEACHERS);
 	const [scheduleDays, setScheduleDays] = useState<IScheduleDay[]>([]);
 	const [open, setOpen] = useState(false);
 	const [isPrevWeek, setIsPrevWeek] = useState(false);
-	const loading = open && filterOptions?.length === 0;
+	const loading = open && scheduleEntities?.length === 0;
 
 	const date = new Date();
 	const currentDay = date.getDay() - 1;
@@ -64,68 +65,40 @@ const SchedulePage = observer(() => {
 		}
 
 		(async () => {
-
 			let options: AutocompleteOption[] = [];
+			let entities: CompareObject[] = []
 
 			switch (filterType) {
 				case FILTER_TYPES.TEACHERS:
 					await teacher.fetchTeachers();
-
-					teacher.teachers.sort(function(a, b) {
-						if (a.fullName > b.fullName) {
-							return 1;
-						}
-						if (a.fullName < b.fullName) {
-							return -1;
-						}
-						return 0;
-					})
-
-					teacher.teachers.map(teacher => {
-						options.push({id: teacher.id, label: teacher.fullName})
-					})
-
+					entities = [...teacher.teachers];
 					break;
 				case FILTER_TYPES.GROUPS:
 					await group.fetchGroups();
-
-					group.groups.sort(function (a, b) {
-						return Number(a.fullName.split('-')[0]) - Number(b.fullName.split('-')[0]);
-					})
-
-					group.groups.map(group => {
-						options.push({
-							id: group.id,
-							label: group.fullName,
-						})
-					})
-
+					entities = [...group.groups];
 					break;
 				case FILTER_TYPES.ROOMS:
 					await room.fetchRooms();
-
-					room.rooms.sort(function (a, b) {
-						return +a.fullName - +b.fullName
-					})
-
-					room.rooms.map(room => {
-						options.push({id: room.id, label: room.fullName})
-					})
-
-
+					entities = [...room.rooms];
 					break;
 			}
-			setFilterOptions(options);
+
+			entities.sort(compareEntity);
+
+			entities.map(item => {
+				options.push({id: item.id, label: item.fullName})
+			})
+
+			setScheduleEntities(options);
 		})();
 
 		console.log(room);
-
 
 	}, [loading])
 
 	useEffect(() => {
 		if (!open) {
-			setFilterOptions([]);
+			setScheduleEntities([]);
 		}
 	}, [open]);
 
@@ -299,7 +272,7 @@ const SchedulePage = observer(() => {
 						setOpen(false);
 					}}
 					loading={loading}
-					options={filterOptions}
+					options={scheduleEntities}
 					renderInput={(params) => (<TextField
 						{...params}
 						label={` ${filterType}`}
