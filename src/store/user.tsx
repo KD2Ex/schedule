@@ -46,8 +46,11 @@ class User {
 			//const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, {withCredentials: true});
 			//console.log()
 			//localStorage.setItem('token', response.data.accessToken);
-			this.setAuth(true);
-			this.setPretendingToAuth(false);
+			if (localStorage.getItem('token')) {
+				this.setAuth(true);
+				this.setPretendingToAuth(false);
+			}
+
 			//this.setUser('');
 		} catch (e) {
 			console.log()

@@ -1,4 +1,4 @@
-import {ScheduleType} from "../enums/ScheduleType";
+import {ScheduleEntityType} from "../enums/ScheduleEntityType";
 
 
 export interface UserScheduleResponse {
@@ -6,7 +6,7 @@ export interface UserScheduleResponse {
 	response: {
 		firstWeek: boolean,
 		entityId: number,
-		type: ScheduleType,
+		type: ScheduleEntityType,
 		previousWeek: number[],
 		currentWeek: number[],
 		nextWeek: number[],

@@ -1,10 +1,7 @@
-import axios from "axios";
-import {ScheduleType} from "../../models/enums/ScheduleType";
+import {ScheduleEntityType} from "../../models/enums/ScheduleEntityType";
 import $api from "../http";
 
-
-export const fetchSchedule = async (startDate: string, isReplacement: boolean, type: ScheduleType, id: number) => {
-	//const firstWeek: boolean = weekNumber === 1;
+export const fetchSchedule = async (startDate: string, isReplacement: boolean, type: ScheduleEntityType, id: number) => {
 
 	const result = await $api.get(`/schedule`, {
 		params: {

@@ -15,22 +15,23 @@ import {
 import ProfileButton from "../../components/styled/ProfileButton";
 import {AutocompleteOption} from "../../models/interfaces/IAutocompleteOption";
 import {useFilterOptions} from "../../hooks/useFilterOptions";
-import {FILTER_TYPES} from "../../models/enums/FilterType";
+import {SCHEDULE_ENTITY} from "../../models/enums/SCHEDULE_ENTITY";
 import TypeButtons from "../../components/TypeButtons";
 import {SettingsBox} from "../../components/styled/SettingsBox";
 import {isEmailValid} from "../../utils/validators";
 import {SettingTypography} from "../../components/styled/SettingTypography";
 import UserService from "../../api/services/UserService";
-import {scheduleTypeConvert, scheduleTypeToFilterValue} from "../../utils/converters";
+import {scheduleTypeConvert} from "../../utils/converters";
 import user from "../../store/user";
 import {useNavigate} from "react-router-dom";
 import LinkedAccount from "../../components/LinkedAccount/LinkedAccount";
 import {ISocial} from "../../models/interfaces/ISocial";
-import {ScheduleType} from "../../models/enums/ScheduleType";
+import {ScheduleEntityType} from "../../models/enums/ScheduleEntityType";
 import {observer} from "mobx-react-lite";
 import {setLoadedOption} from "../../utils/setLoadedOption";
 import {ProfileResponse} from "../../models/response/ProfileResponse";
 import {AlertType} from "../../models/types/AlertType";
+import {IScheduleEntity} from "../../models/interfaces/IScheduleEntity";
 
 const ProfilePage = observer(() =>  {
 
@@ -39,7 +40,7 @@ const ProfilePage = observer(() =>  {
 	const [openList, setOpenList] = useState(false);
 	const [openAlerts, setOpenAlerts] = useState(false);
 	const [filterOptions, setFilterOptions] = useState<AutocompleteOption[]>([]);
-	const [filterType, setFilterType] = useState<FILTER_TYPES>(FILTER_TYPES.GROUPS);
+	const [filterType, setFilterType] = useState<IScheduleEntity>({title: SCHEDULE_ENTITY.GROUP, value: ScheduleEntityType.GROUP});
 	const [filterValue, setFilterValue] = useState<AutocompleteOption | null>(null);
 	const [email, setEmail] = useState('');
 	const [profile, setProfile] = useState<ProfileResponse>({});
@@ -72,8 +73,8 @@ const ProfilePage = observer(() =>  {
 				console.log(profile.mail)
 				setEmail(profile.mail)
 				if (profile.linkedSchedule.contain) {
-					const newFilterType = scheduleTypeToFilterValue(profile.linkedSchedule.linkedEntityType);
-					setFilterType(newFilterType)
+					const newFilterType = profile.linkedSchedule.linkedEntityType;
+					setFilterType({value: newFilterType, title: SCHEDULE_ENTITY[newFilterType]})
 					setFilterValue(await setLoadedOption(profile.linkedSchedule.linkedEntityType, profile.linkedSchedule.linkedEntityId))
 				}
 				setLinkedAccounts(profile.linkedSocial);
@@ -87,7 +88,7 @@ const ProfilePage = observer(() =>  {
 			return undefined;
 		}
 
-		useFilterOptions(filterType, setFilterOptions)
+		useFilterOptions(filterType.title, setFilterOptions)
 
 	}, [loading])
 
@@ -144,11 +145,11 @@ const ProfilePage = observer(() =>  {
 	}
 
 	const handleLinkSchedule = async () => {
-		await UserService.setLinkedSchedule(ScheduleType.TEACHER, -1);
+		await UserService.setLinkedSchedule(ScheduleEntityType.TEACHER, -1);
 		if (filterValue !== null) {
-			await UserService.setLinkedSchedule(scheduleTypeConvert(filterType), filterValue?.id);
+			await UserService.setLinkedSchedule(filterType.value, filterValue?.id);
 		} else {
-			//await UserService.setLinkedSchedule(ScheduleType.TEACHER, -1);
+			//await UserService.setLinkedSchedule(ScheduleEntityType.TEACHER, -1);
 		}
 		setAlertMessage('Настройки профиля обновлены');
 		setAlertStatus("success")
@@ -327,7 +328,7 @@ const ProfilePage = observer(() =>  {
 								options={filterOptions}
 								renderInput={(params) => (<TextField
 									{...params}
-									label={` ${filterType}`}
+									label={` ${filterType.title}`}
 									InputProps={{
 										...params.InputProps,
 									}}

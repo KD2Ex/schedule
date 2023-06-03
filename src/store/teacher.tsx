@@ -2,7 +2,7 @@ import {makeAutoObservable} from "mobx";
 import ITeacher from "../models/interfaces/ITeacher";
 import {getTeacherFullName} from "../utils/stringFormatters";
 import {fetchEntities} from "../api/services/EntitiesService";
-import {ScheduleType} from "../models/enums/ScheduleType";
+import {ScheduleEntityType} from "../models/enums/ScheduleEntityType";
 
 
 class Teacher {
@@ -13,7 +13,7 @@ class Teacher {
 	}
 
 	async fetchTeachers() {
-		const result = await fetchEntities(ScheduleType.TEACHER)
+		const result = await fetchEntities(ScheduleEntityType.TEACHER)
 		this.teachers = result.filter((item : ITeacher) => item.fullName !== '?');
 	}
 

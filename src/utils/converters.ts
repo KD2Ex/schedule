@@ -1,34 +1,34 @@
-import {FILTER_TYPES} from "../models/enums/FilterType";
-import {ScheduleType} from "../models/enums/ScheduleType";
+import {SCHEDULE_ENTITY} from "../models/enums/SCHEDULE_ENTITY";
+import {ScheduleEntityType} from "../models/enums/ScheduleEntityType";
 
 
-export const scheduleTypeConvert = (filterType: FILTER_TYPES) => {
+export const scheduleTypeConvert = (filterType: SCHEDULE_ENTITY) => {
 
 	switch (filterType) {
-		case FILTER_TYPES.GROUPS:{
-			return ScheduleType.GROUP;
+		case SCHEDULE_ENTITY.GROUP:{
+			return ScheduleEntityType.GROUP;
 		}
-		case FILTER_TYPES.TEACHERS:{
-			return ScheduleType.TEACHER;
+		case SCHEDULE_ENTITY.TEACHER:{
+			return ScheduleEntityType.TEACHER;
 		}
-		case FILTER_TYPES.ROOMS:{
-			return ScheduleType.ROOM;
+		case SCHEDULE_ENTITY.ROOM:{
+			return ScheduleEntityType.ROOM;
 		}
 	}
 
 }
 
 
-export const scheduleTypeToFilterValue = (type: ScheduleType) => {
+export const scheduleTypeToFilterValue = (type: ScheduleEntityType) => {
 	switch (type) {
-		case ScheduleType.GROUP:{
-			return FILTER_TYPES.GROUPS;
+		case ScheduleEntityType.GROUP:{
+			return SCHEDULE_ENTITY.GROUP;
 		}
-		case ScheduleType.TEACHER:{
-			return FILTER_TYPES.TEACHERS;
+		case ScheduleEntityType.TEACHER:{
+			return SCHEDULE_ENTITY.TEACHER;
 		}
-		case ScheduleType.ROOM:{
-			return FILTER_TYPES.ROOMS;
+		case ScheduleEntityType.ROOM:{
+			return SCHEDULE_ENTITY.ROOM;
 		}
 	}
 }

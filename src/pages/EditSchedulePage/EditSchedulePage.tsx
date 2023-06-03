@@ -3,14 +3,14 @@ import {Box, Button, Container, Grid, List, ListItemButton, ListItemText} from "
 import Css from './EditSchedulePage.module.css';
 import ScheduleDayDataGrid from "../../components/ScheduleDayDataGrid/ScheduleDayDataGrid";
 import {getColumns} from "../../utils/stringFormatters";
-import {FILTER_TYPES} from "../../models/enums/FilterType";
+import {SCHEDULE_ENTITY} from "../../models/enums/SCHEDULE_ENTITY";
 import IScheduleDay from "../../models/interfaces/IScheduleDay";
 import {fetchSchedule} from "../../api/services/ScheduleService";
 import {scheduleTypeConvert} from "../../utils/converters";
 
 const EditSchedulePage = () => {
 
-	const [scheduleType, setScheduleType] = useState<FILTER_TYPES>(FILTER_TYPES.GROUPS);
+	const [scheduleType, setScheduleType] = useState<SCHEDULE_ENTITY>(SCHEDULE_ENTITY.GROUP);
 	const [selectedIndex, setSelectedIndex] = useState<number>(1);
 	const [schedule, setSchedule] = useState<IScheduleDay[]>([])
 

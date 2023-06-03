@@ -1,7 +1,7 @@
 import {makeAutoObservable, runInAction} from "mobx";
 import axios from "axios";
 import {LessonType} from "../models/enums/LessonType";
-import {ScheduleType} from "../models/enums/ScheduleType";
+import {ScheduleEntityType} from "../models/enums/ScheduleEntityType";
 import {runInNewContext} from "vm";
 import UserScheduleService from "../api/services/UserScheduleService";
 
@@ -13,7 +13,7 @@ class Schedule {
 		makeAutoObservable(this);
 	}
 
-	async fetchWeekSchedule(weekNumber: number, isReplacement: boolean, type: ScheduleType, id: number) {
+	async fetchWeekSchedule(weekNumber: number, isReplacement: boolean, type: ScheduleEntityType, id: number) {
 
 		const firstWeek: boolean = weekNumber === 1;
 		const result = await axios.get(`http://91.223.199.62:8080/api/schedule`, {

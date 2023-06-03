@@ -1,6 +1,8 @@
-import React, {ComponentPropsWithoutRef, FC} from 'react';
+import React, {FC} from 'react';
 import {ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps} from "@mui/material";
-import {FILTER_TYPES} from "../../models/enums/FilterType";
+import {SCHEDULE_ENTITY} from "../../models/enums/SCHEDULE_ENTITY";
+import {IScheduleEntity} from "../../models/interfaces/IScheduleEntity";
+import {ScheduleEntityType} from "../../models/enums/ScheduleEntityType";
 
 interface ToggleButtons {
 	label: string,
@@ -8,8 +10,8 @@ interface ToggleButtons {
 }
 
 interface TypeButtonsProps extends ToggleButtonGroupProps {
-	filterType: FILTER_TYPES;
-	setFilterType: React.Dispatch<FILTER_TYPES>;
+	filterType: IScheduleEntity;
+	setFilterType: React.Dispatch<IScheduleEntity>;
 	setFilterValue: React.Dispatch<any>
 }
 
@@ -17,9 +19,9 @@ interface TypeButtonsProps extends ToggleButtonGroupProps {
 
 const TypeButtons: FC<TypeButtonsProps> = ({filterType, setFilterType, setFilterValue, ...props}) => {
 
-	const handelTypeAlignment = (event: React.MouseEvent<HTMLElement>, newFilter: FILTER_TYPES) => {
+	const handelTypeAlignment = (event: React.MouseEvent<HTMLElement>, newFilter: ScheduleEntityType) => {
 		if (newFilter !== null) {
-			setFilterType(newFilter);
+			setFilterType({value: newFilter, title: SCHEDULE_ENTITY[newFilter]});
 			setFilterValue(null);
 			//setT(null);
 		}
@@ -28,17 +30,17 @@ const TypeButtons: FC<TypeButtonsProps> = ({filterType, setFilterType, setFilter
 	return (
 		<ToggleButtonGroup
 			onChange={handelTypeAlignment}
-			value={filterType}
+			value={filterType.value}
 			{...props}
 			sx={{padding: 0, '.MuiToggleButtonGroup-grouped': {padding: {xs: 1.5, sm: 2}}}}
 		>
-			<ToggleButton value={FILTER_TYPES.GROUPS} sx={{padding: 0}} >
+			<ToggleButton value={ScheduleEntityType.GROUP} sx={{padding: 0}} >
 				Группы
 			</ToggleButton>
-			<ToggleButton value={FILTER_TYPES.TEACHERS}>
+			<ToggleButton value={ScheduleEntityType.TEACHER}>
 				Преподаватели
 			</ToggleButton>
-			<ToggleButton value={FILTER_TYPES.ROOMS}>
+			<ToggleButton value={ScheduleEntityType.ROOM}>
 				Аудитории
 			</ToggleButton>
 		</ToggleButtonGroup>

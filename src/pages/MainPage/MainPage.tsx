@@ -9,7 +9,6 @@ const MainPage = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		console.log('wtaf')
 
 		navigate('/schedule')
 	}, [])

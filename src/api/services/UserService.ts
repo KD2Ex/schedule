@@ -3,7 +3,7 @@ import {AuthResponse} from "../../models/response/AuthResponse";
 import $api from "../http";
 import {ProfileResponse} from "../../models/response/ProfileResponse";
 import {SocialType} from "../../models/types/SocialType";
-import {ScheduleType} from "../../models/enums/ScheduleType";
+import {ScheduleEntityType} from "../../models/enums/ScheduleEntityType";
 import {UserResponse} from "../../models/response/UserResponse";
 
 export default class UserService {
@@ -20,7 +20,7 @@ export default class UserService {
 		return user.data;
 	}
 
-	static async setLinkedSchedule(type: ScheduleType, entityId: number) {
+	static async setLinkedSchedule(type: ScheduleEntityType, entityId: number) {
 		return $api.post('/profile/update/linked_schedule', {type, entityId})
 	}
 

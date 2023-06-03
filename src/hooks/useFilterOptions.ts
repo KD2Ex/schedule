@@ -1,19 +1,19 @@
 import {useEffect} from "react";
-import {FILTER_TYPES} from "../models/enums/FilterType";
+import {SCHEDULE_ENTITY} from "../models/enums/SCHEDULE_ENTITY";
 import teacher from "../store/teacher";
 import group from "../store/group";
 import room from "../store/rooms";
 import {AutocompleteOption} from "../models/interfaces/IAutocompleteOption";
 
 
-export const useFilterOptions = (filterType: FILTER_TYPES, setState: any) => {
+export const useFilterOptions = (filterType: SCHEDULE_ENTITY, setState: any) => {
 
 	let options: AutocompleteOption[] = [];
 
 	(async () => {
 
 		switch (filterType) {
-			case FILTER_TYPES.TEACHERS:
+			case SCHEDULE_ENTITY.TEACHER:
 				await teacher.fetchTeachers();
 
 				teacher.teachers.sort(function (a, b) {
@@ -31,7 +31,7 @@ export const useFilterOptions = (filterType: FILTER_TYPES, setState: any) => {
 				})
 
 				break;
-			case FILTER_TYPES.GROUPS:
+			case SCHEDULE_ENTITY.GROUP:
 				await group.fetchGroups();
 
 				group.groups.sort(function (a, b) {
@@ -46,7 +46,7 @@ export const useFilterOptions = (filterType: FILTER_TYPES, setState: any) => {
 				})
 
 				break;
-			case FILTER_TYPES.ROOMS:
+			case SCHEDULE_ENTITY.ROOM:
 				await room.fetchRooms();
 
 				room.rooms.sort(function (a, b) {

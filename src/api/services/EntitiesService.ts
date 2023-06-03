@@ -1,8 +1,8 @@
-import {ScheduleType} from "../../models/enums/ScheduleType";
+import {ScheduleEntityType} from "../../models/enums/ScheduleEntityType";
 import $api from "../http";
 
 
-export const fetchEntities = async (type: ScheduleType) => {
+export const fetchEntities = async (type: ScheduleEntityType) => {
 	console.log('fetch')
 	const result = await $api.get(`/schedule/entities`, {
 		params: {
@@ -14,7 +14,7 @@ export const fetchEntities = async (type: ScheduleType) => {
 	})
 	console.log(result.data.response)
 
-	// if (type === ScheduleType.ROOM) {
+	// if (type === ScheduleEntityType.ROOM) {
 	// 	result.data.response.entities = result.data.response.entities.filter((item) => )
 	// }
 

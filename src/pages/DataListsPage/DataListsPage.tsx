@@ -9,7 +9,7 @@ import {
 } from "@mui/x-data-grid";
 import {Box} from "@mui/material";
 import TypeButtons from "../../components/TypeButtons";
-import {FILTER_TYPES} from "../../models/enums/FilterType";
+import {SCHEDULE_ENTITY} from "../../models/enums/SCHEDULE_ENTITY";
 import {observer} from "mobx-react-lite";
 import group from "../../store/group";
 import rooms from "../../store/rooms";
@@ -19,7 +19,7 @@ import {createLogger} from "vite";
 
 const DataListsPage = observer( () => {
 
-	const [filterType, setFilterType] = useState<FILTER_TYPES>(FILTER_TYPES.GROUPS);
+	const [filterType, setFilterType] = useState<SCHEDULE_ENTITY>(SCHEDULE_ENTITY.GROUP);
 	const [filterOptions, setFilterOptions] = useState<string[]>([]);
 	const [filterValue, setFilterValue] = useState<string>('');
 	const [open, setOpen] = useState<boolean>(false);
@@ -54,20 +54,20 @@ const DataListsPage = observer( () => {
 
 		( async () => {
 			switch (filterType) {
-				case FILTER_TYPES.GROUPS: {
+				case SCHEDULE_ENTITY.GROUP: {
 					await group.fetchGroups();
 					setColumns(groupsColumns)
 					setRows(group.groups)
 					break;
 				}
-				case FILTER_TYPES.ROOMS: {
+				case SCHEDULE_ENTITY.ROOM: {
 					await rooms.fetchRooms();
 
 					setColumns(roomsColumns)
 					setRows(rooms.rooms)
 					break;
 				}
-				case FILTER_TYPES.TEACHERS: {
+				case SCHEDULE_ENTITY.TEACHER: {
 					await teacher.fetchTeachers();
 
 					setColumns(teachersColumns)
@@ -94,7 +94,7 @@ const DataListsPage = observer( () => {
 		console.log(newObj)
 
 		switch (filterType) {
-			case FILTER_TYPES.GROUPS: {
+			case SCHEDULE_ENTITY.GROUP: {
 				group.editGroup(newObj)
 				break;
 			}

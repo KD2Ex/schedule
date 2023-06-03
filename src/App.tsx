@@ -5,15 +5,14 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {getMode, themeObject} from "./themes";
 import CssBaseline from "@mui/material/CssBaseline";
 import {AuthContext, ColorContext, ColorModeContext} from "./context";
-import {publicRoutes, routes} from "./routes";
+import {publicRoutes, routes} from "./router/routes";
 import {redirect} from "react-router-dom";
 import {useMediaQuery} from "@mui/material";
 import {observer} from "mobx-react-lite";
 import user from './store/user'
+import {router} from "./router";
 
 const App = observer(() => {
-
-
 
 	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 	const [mode, setMode] = useState<'light' | 'dark'>(prefersDarkMode ? 'dark' : 'light');
@@ -21,9 +20,7 @@ const App = observer(() => {
 
 	useEffect(() => {
 		//console.log(window.location.toString().split());
-		if (localStorage.getItem('token')) {
-			user.isAuth = true;
-		}
+		user.checkAuth()
 		console.log('effect1')
 
 	}, [])
@@ -31,11 +28,28 @@ const App = observer(() => {
 	const colorMode = useMemo(() => ({
 		toggleColorMode: () => {
 			setMode((prevMode) => (prevMode === 'light' ? 'dark' : "light"))
-			console.log('toggle')
+
 		}
 	}), [])
 
 	const themeColorMode = getMode(mode);
+
+	let link = document.querySelector("link[rel~='icon']");
+	if (!link) {
+		link = document.createElement('link');
+		link.rel = 'icon';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	}
+
+	if (!prefersDarkMode) {
+		link.href = './src/styles/logos/kkep.svg';
+	} else {
+		link.href = './src/styles/logos/kkep_white.svg';
+
+	}
+	console.log(window)
+	console.log('toggle')
+
 	// @ts-ignore
 	const theme = createTheme({
 		palette: {
@@ -46,11 +60,6 @@ const App = observer(() => {
 
 	console.log(user.isAuth)
 	console.log(localStorage.getItem('token') )
-
-	const router = createBrowserRouter(routes);
-	console.log(router);
-
-
 
 	return (
 		<>

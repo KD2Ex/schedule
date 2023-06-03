@@ -1,7 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import IRoom from "../models/interfaces/IRoom";
 import {fetchEntities} from "../api/services/EntitiesService";
-import {ScheduleType} from "../models/enums/ScheduleType";
+import {ScheduleEntityType} from "../models/enums/ScheduleEntityType";
 
 
 class Room {
@@ -13,7 +13,7 @@ class Room {
 	}
 
 	async fetchRooms() {
-		const response = await fetchEntities(ScheduleType.ROOM);
+		const response = await fetchEntities(ScheduleEntityType.ROOM);
 
 		this.rooms = response.filter((item: IRoom) => {
 				console.log(item.fullName.match(/[^сз_/тирВЦИ\d]+/gi))

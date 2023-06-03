@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {TableCell, TableRow, TableRowProps} from "@mui/material";
 import ILesson from "../../models/interfaces/ILesson";
 import IPair from "../../models/interfaces/IPair";
-import {FILTER_TYPES} from "../../models/enums/FilterType";
+import {SCHEDULE_ENTITY} from "../../models/enums/SCHEDULE_ENTITY";
 import {tableRowStyle} from "./TableRowsMuiStyles";
 import Css from './TableRowsStyles.module.css'
 import TooltippedCell from "../styled/TooltippedCell";

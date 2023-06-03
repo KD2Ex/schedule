@@ -7,7 +7,7 @@ import {
 	IconButton,
 	ButtonProps,
 	ButtonBaseProps,
-	Box
+	Box, useTheme
 } from '@mui/material'
 import {styled} from '@mui/material/styles';
 import {Link as link, useNavigate} from 'react-router-dom';
@@ -17,7 +17,8 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import {NavBarButton} from "../UI/NavBarButton/NavBarButton";
 import user from '../../store/user'
-
+import kkep_white from '../../styles/logos/kkep_white.svg'
+import kkep from '../../styles/logos/kkep.svg'
 
 
 
@@ -38,16 +39,29 @@ function NavBar() {
 
 	return (
 			<Box sx={{flexGrow: 1}}>
-				<AppBar position='static' sx={{}} className={styles.appBar}>
-					<Toolbar disableGutters>
-						<Box sx={{flexGrow: 1}}>
+
+				<AppBar position='sticky' sx={{maxHeight: '90px'}} className={styles.appBar}>
+
+					<Toolbar disableGutters sx={{
+						position: 'sticky'
+					}} >
+						<img src={kkep_white} alt="" style={{
+							width: '90px',
+							height: '60px',
+							flexGrow: 0,
+							marginRight: 8,
+							color: 'white'
+						}}/>
+
+
+						<Box sx={{flexGrow: 2, maxHeight: '100%', position: 'sticky'}}>
 
 							<NavBarButton component={link} to="/schedule" >
 								Расписание
 							</NavBarButton>
-							{/*<Button sx={{color: 'white'}} component={link} to="/edit" >
-								Списки
-							</Button>*/}
+							<Button sx={{color: 'white'}} component={link} to="/edit" >
+								Редактирование
+							</Button>
 
 
 

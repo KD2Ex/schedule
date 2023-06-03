@@ -1,36 +1,25 @@
 import React, {useEffect, useState} from 'react'
-import {
-	Autocomplete,
-	Box,
-	Button, Checkbox,
-	Container, FormControlLabel, FormGroup, getRadioUtilityClass,
-	TextField,
-	ToggleButton,
-	ToggleButtonGroup,
-	Typography
+import {Autocomplete, Box, Checkbox, FormControlLabel, FormGroup, TextField, ToggleButton,
+	ToggleButtonGroup
 } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import ScheduleDayTable from '../../components/ScheduleDayTable/ScheduleDayTable';
 import {observer} from "mobx-react-lite";
 import room from "../../store/rooms";
-import group from "../../store/group";
-import teacher from "../../store/teacher";
-import {FILTER_TYPES} from '../../models/enums/FilterType'
+import {SCHEDULE_ENTITY} from '../../models/enums/SCHEDULE_ENTITY'
 import TypeButtons from "../../components/TypeButtons";
-import {getColumns, getTeacherFullName} from "../../utils/stringFormatters";
-import {Link} from "react-router-dom";
-import {GridValidRowModel} from '@mui/x-data-grid';
-import {ScheduleType} from "../../models/enums/ScheduleType";
+import {getColumns} from "../../utils/stringFormatters";
+import {ScheduleEntityType} from "../../models/enums/ScheduleEntityType";
 import {fetchSchedule} from "../../api/services/ScheduleService";
 import IScheduleDay from "../../models/interfaces/IScheduleDay";
-import {scheduleTypeConvert, scheduleTypeToFilterValue} from "../../utils/converters";
-import {themeObject} from "../../themes";
-import {CheckOutlined, CheckRounded} from "@mui/icons-material";
 import UserScheduleService from "../../api/services/UserScheduleService";
 import {AutocompleteOption} from "../../models/interfaces/IAutocompleteOption";
-import user from "../../store/user";
 import schedule from "../../store/schedule";
 import compareEntity, {CompareObject} from "../../utils/compareFunctions/compareEntity";
+import {IScheduleEntity} from "../../models/interfaces/IScheduleEntity";
+import switchFetching from "../../utils/switchFetching";
+import IPair from "../../models/interfaces/IPair";
+import {LessonType} from "../../models/enums/LessonType";
 
 
 export const loader = async () => {
@@ -44,7 +33,9 @@ const SchedulePage = observer(() => {
 	const [isReplaceActive, setIsReplaceActive] = useState(true);
 	const [filterValue, setFilterValue] = useState<AutocompleteOption | null>(null);
 	const [scheduleEntities, setScheduleEntities] = useState<AutocompleteOption[]>([]);
-	const [filterType, setFilterType] = useState<FILTER_TYPES>(FILTER_TYPES.TEACHERS);
+	const [scheduleEntityType, setScheduleEntityType] = useState<IScheduleEntity>(
+		{value: ScheduleEntityType.TEACHER, title: SCHEDULE_ENTITY.TEACHER}
+	);
 	const [scheduleDays, setScheduleDays] = useState<IScheduleDay[]>([]);
 	const [open, setOpen] = useState(false);
 	const [isPrevWeek, setIsPrevWeek] = useState(false);
@@ -55,7 +46,8 @@ const SchedulePage = observer(() => {
 
 	const emptyDay = {
 		number: 0,
-		pairs: []
+		pairs: [] as IPair[],
+		date: new Date(),
 	}
 
 	useEffect(() => {
@@ -66,22 +58,7 @@ const SchedulePage = observer(() => {
 
 		(async () => {
 			let options: AutocompleteOption[] = [];
-			let entities: CompareObject[] = []
-
-			switch (filterType) {
-				case FILTER_TYPES.TEACHERS:
-					await teacher.fetchTeachers();
-					entities = [...teacher.teachers];
-					break;
-				case FILTER_TYPES.GROUPS:
-					await group.fetchGroups();
-					entities = [...group.groups];
-					break;
-				case FILTER_TYPES.ROOMS:
-					await room.fetchRooms();
-					entities = [...room.rooms];
-					break;
-			}
+			let entities: CompareObject[] = await switchFetching(scheduleEntityType.value)
 
 			entities.sort(compareEntity);
 
@@ -108,7 +85,7 @@ const SchedulePage = observer(() => {
 
 		if (filterValue !== null) {
 			(async () => {
-				const newSchedule = await fetchSchedule(ISODate, isReplaceActive, scheduleTypeConvert(filterType), filterValue.id);
+				const newSchedule = await fetchSchedule(ISODate, isReplaceActive, scheduleEntityType.value, filterValue.id);
 				setScheduleDays(newSchedule);
 			})();
 		}
@@ -137,24 +114,13 @@ const SchedulePage = observer(() => {
 
 			setWeek(userData.firstWeek ? 1 : 2);
 			if (userData.type) {
-				setFilterType(scheduleTypeToFilterValue(userData.type));
+				setScheduleEntityType({value: userData.type, title: SCHEDULE_ENTITY[userData.type]});
 			}
-			switch (userData.type) {
-				case ScheduleType.GROUP: {
-					if (group.groups.length === 0) {
-						await group.fetchGroups();
-					}
-					setFilterValue({label: group.groups.find((group) => group.id === userData.entityId).fullName, id: userData.entityId} as AutocompleteOption)
-					break;
-				}
-				case ScheduleType.TEACHER: {
-					if (teacher.teachers.length === 0) {
-						await teacher.fetchTeachers();
-					}
-					setFilterValue({label: teacher.teachers.find((teacher) => teacher.id === userData.entityId).fullName, id: userData.entityId} as AutocompleteOption)
-					break;
-				}
-			}
+
+			let entity = await switchFetching(userData.type);
+
+			setFilterValue({label: entity.find((item) => item.id === userData.entityId)?.fullName, id: userData.entityId} as AutocompleteOption)
+
 		})()
 
 
@@ -205,15 +171,21 @@ const SchedulePage = observer(() => {
 	const fillDays = () => {
 		const scheduleDaysCount = [];
 
+		for (let i = getMinPairNumber(); i < getMaxPairsNumber(); i++) {
+			emptyDay.pairs.push(
+				{number: i, lessons: [], type: LessonType.EMPTY}
+			)
+		}
+
 		for(let i = scheduleDays.length; i < 6; i++) {
 			scheduleDaysCount.push(<ScheduleDayTable
 				key={i}
-				columns={getColumns(filterType)}
+				columns={getColumns(scheduleEntityType.title)}
 				rows={emptyDay}
 				isSelected={i === currentDay}
-				dayNumber={Number(i)}
+				/*dayNumber={Number(i)}*/
 				isReplacementEnabled={isReplaceActive}
-				filterType={filterType}
+				filterType={scheduleEntityType}
 				maxPairNumber={maxPairsNumber}
 				minPairNumber={minPairNumber}
 			/>)
@@ -232,8 +204,8 @@ const SchedulePage = observer(() => {
 			}}>
 
 				<TypeButtons
-					filterType={filterType}
-					setFilterType={setFilterType}
+					filterType={scheduleEntityType}
+					setFilterType={setScheduleEntityType}
 					setFilterValue={setFilterValue}
 					exclusive
 					size='small'
@@ -275,7 +247,7 @@ const SchedulePage = observer(() => {
 					options={scheduleEntities}
 					renderInput={(params) => (<TextField
 						{...params}
-						label={` ${filterType}`}
+						label={` ${scheduleEntityType.title}`}
 						InputProps={{
 							...params.InputProps,
 						}}
@@ -332,11 +304,11 @@ const SchedulePage = observer(() => {
 				{filterValue !== null && scheduleDays.length !== 0 ? scheduleDays.map((item: IScheduleDay, index: React.Key | null | undefined) => (
 					<ScheduleDayTable
 						key={index}
-						columns={getColumns(filterType)}
+						columns={getColumns(scheduleEntityType.title)}
 						rows={item}
 						isSelected={new Date(item.date * 1000).toLocaleDateString() === new Date().toLocaleDateString()}
 						isReplacementEnabled={isReplaceActive}
-						filterType={filterType}
+						filterType={scheduleEntityType}
 						maxPairNumber={maxPairsNumber}
 						minPairNumber={minPairNumber}
 					/>

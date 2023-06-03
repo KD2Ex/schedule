@@ -1,10 +1,10 @@
-import {FILTER_TYPES} from "../models/enums/FilterType";
-import {ScheduleType} from "../models/enums/ScheduleType";
+import {SCHEDULE_ENTITY} from "../models/enums/SCHEDULE_ENTITY";
+import {ScheduleEntityType} from "../models/enums/ScheduleEntityType";
 
 
-export const useEntity = (filterType: FILTER_TYPES) => {
+export const useEntity = (filterType: SCHEDULE_ENTITY) => {
 	switch (filterType) {
-		case FILTER_TYPES.GROUPS:
+		case SCHEDULE_ENTITY.GROUP:
 
 
 	}

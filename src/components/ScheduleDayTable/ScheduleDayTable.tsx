@@ -5,20 +5,21 @@ import ScheduleDayHeader from "../UI/ScheduleDayHeader/ScheduleDayHeader";
 import Css from './ScheduleDayTable.module.css'
 import IScheduleDay from "../../models/interfaces/IScheduleDay";
 import {LessonType} from "../../models/enums/LessonType";
-import {FILTER_TYPES} from "../../models/enums/FilterType";
+import {SCHEDULE_ENTITY} from "../../models/enums/SCHEDULE_ENTITY";
 import IPair from "../../models/interfaces/IPair";
 import ScheduleRowDouble from "../ScheduleRows/ScheduleRowDouble";
 import ScheduleRowEmpty from "../ScheduleRows/ScheduleRowEmpty";
 import ScheduleRowOne from "../ScheduleRows/ScheduleRowOne";
 import ScheduleRowFirst from "../ScheduleRows/ScheduleRowFirst";
 import ScheduleRowSecond from "../ScheduleRows/ScheduleRowSecond";
+import {IScheduleEntity} from "../../models/interfaces/IScheduleEntity";
 
 interface DayGridProps {
 	rows: IScheduleDay,
 	columns: string[],
 	isSelected: boolean,
 	isReplacementEnabled: boolean,
-	filterType: FILTER_TYPES;
+	filterType: IScheduleEntity;
 	maxPairNumber: number;
 	minPairNumber: number;
 }
@@ -51,125 +52,25 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 	}) => {
 
 
-/*
-
-	const tableRowDefault = (cells, isReplacement: boolean, isSmall: boolean) => {
-		return <TableRow
-			sx={  (isReplacement ? {  ...tableRowStyle } : null)}
-		>
-			<TableCell sx={{px: 1, textAlign: 'center', py: isSmall ? 0 : 2}}>
-				{cells[0][0]}
-			</TableCell>
-			<TableCell component="th" scope="row" sx={{px: 1 }} size='small'>
-				{/!*<div className={Css.textContainer}>
-
-				</div>*!/}
-				{cells[0][1]}
-			</TableCell>
-			<TableCell component="th" scope="row" sx={{px: 1, pr:2, py: 0}} size='small'>
-				{/!*<div className={Css.textContainer}>
-				</div>*!/}
-				{cells[0][2]}
-
-			</TableCell>
-			<TableCell sx={{px: 1}} size='small'>
-				{cells[0][3]}
-			</TableCell>
-		</TableRow>
-	}
-
-	const tableRowDouble = (cells, firstReplacement: boolean, secondReplacement: boolean) => {
-		return <>
-
-			<TableRow
-				sx={  (firstReplacement ? {  ...tableRowStyle } : null)}
-			>
-				<TableCell sx={{p: 1, py: 0, textAlign: 'center'}} rowSpan={2}>
-					{cells[0][0]}
-				</TableCell>
-				<TableCell component="th" scope="row"   sx={{ py: 0, px: 1}} size='small'>
-					<div className={Css.textContainer}>
-					</div>
-					{cells[0][1]}
-
-				</TableCell>
-				<TableCell component="th" scope="row"  sx={{ px: 1}} size='small'>
-					<div className={Css.textContainer}>
-					</div>
-					{cells[0][2]}
-
-				</TableCell>
-				<TableCell  sx={{ py: 0, px: 1}} size='small'>
-					{cells[0][3]}
-				</TableCell>
-			</TableRow>
-
-
-			<TableRow
-				sx={  (secondReplacement ? {  ...tableRowStyle } : null)}
-			>
-				<TableCell component="th" scope="row"   sx={{py: 0, px: 1}}>
-					<div className={Css.textContainer}>
-					</div>
-					{cells[1][0]}
-
-				</TableCell>
-				<TableCell component="th" scope="row"    sx={{ py: 0, px: 1}} size='small'>
-					<div className={Css.textContainer}>
-					</div>
-					{cells[1][1] || "Нет пары"}
-
-				</TableCell>
-				<TableCell  sx={{ py: 0, px:1}} size='small'>
-					{cells[1][2]}
-				</TableCell>
-
-			</TableRow>
-
-		</>
-	}
-
-	const tableRowEmpty = (number: number, isSmall: boolean) => {
-		return <TableRow
-			//key={pair.number}
-			//sx={  (pair.lessons[0]?.replacement && isReplacementEnabled ? {  boxShadow: 'inset 0px 0px 50px 12px rgba(3, 29, 96, 1)' } : null)}
-		>
-			<TableCell component="th" scope='row' sx={{px: 1, textAlign: 'center', py: isSmall ? 0 : 2}} >
-				{number}
-			</TableCell>
-			<TableCell size='small'>
-			</TableCell>
-			<TableCell size='small' sx={{py:0}}>
-				<Typography sx={{fontStyle: 'italic',  fontSize: '1em'}}>
-					Нет занятия
-				</Typography>
-			</TableCell>
-			<TableCell size='small'>
-			</TableCell>
-		</TableRow>
-	}
-
-*/
-
 	const getTableRow = (pair: IPair) => {
 
 		const cells: string[][] = [[pair.number.toString()], []];
 
 		pair.lessons.forEach((lesson, index) => {
-			switch (filterType) {
-				case FILTER_TYPES.GROUPS: {
+			switch (filterType.title) {
+				case SCHEDULE_ENTITY.GROUP: {
 					cells[index].push(pair.lessons[index].teacher);
 					cells[index].push(pair.lessons[index].subject);
 					cells[index].push(pair.lessons[index].room);
 					break;
 				}
-				case FILTER_TYPES.TEACHERS: {
+				case SCHEDULE_ENTITY.TEACHER: {
 					cells[index].push(pair.lessons[index].group);
 					cells[index].push(pair.lessons[index].subject);
 					cells[index].push(pair.lessons[index].room);
 					break;
 				}
-				case FILTER_TYPES.ROOMS: {
+				case SCHEDULE_ENTITY.ROOM: {
 					cells[index].push(pair.lessons[index].teacher);
 					cells[index].push(pair.lessons[index].subject);
 					cells[index].push(pair.lessons[index].group);
@@ -243,7 +144,6 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 		return resultRows;
 	}
 
-		//console.log(isSelected)
 
 	return (
 		<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
