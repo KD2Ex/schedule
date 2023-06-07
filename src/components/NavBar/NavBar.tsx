@@ -10,7 +10,7 @@ import {
 	Box, useTheme
 } from '@mui/material'
 import {styled} from '@mui/material/styles';
-import {Link as link, useNavigate} from 'react-router-dom';
+import {Link, Link as link, useNavigate} from 'react-router-dom';
 import styles from './NavBar.module.css';
 import {AuthContext, ColorModeContext} from "../../context";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
@@ -45,23 +45,36 @@ function NavBar() {
 					<Toolbar disableGutters sx={{
 						position: 'sticky'
 					}} >
-						<img src={kkep_white} alt="" style={{
-							width: '90px',
-							height: '60px',
-							flexGrow: 0,
-							marginRight: 8,
-							color: 'white'
-						}}/>
+
+						<Link to={'/schedule'}>
+							<img
+								src={kkep_white}
+								alt=""
+								style={{
+									width: '90px',
+									height: '60px',
+									flexGrow: 0,
+									marginRight: 8,
+									color: 'white'
+								}}>
+
+
+							</img>
+						</Link>
+
+
 
 
 						<Box sx={{flexGrow: 2, maxHeight: '100%', position: 'sticky'}}>
 
-							<NavBarButton component={link} to="/schedule" >
+							<NavBarButton component={link} to="/schedule" sx={{
+								display: {xs: 'none', md: 'block'}
+							}} >
 								Расписание
 							</NavBarButton>
-							<Button sx={{color: 'white'}} component={link} to="/edit" >
+							{/*<Button sx={{color: 'white'}} component={link} to="/edit" >
 								Редактирование
-							</Button>
+							</Button>*/}
 
 
 
