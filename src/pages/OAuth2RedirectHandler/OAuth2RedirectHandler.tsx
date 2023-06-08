@@ -21,12 +21,10 @@ const OAuth2RedirectHandler = () => {
 	}
 
 
-	useEffect(() => {
-		console.log(window.location.toString().split('=')[1]);
-		localStorage.setItem('token',window.location.toString().split('=')[1])
-		user.setAuth(true);
-
-	}, [])
+	console.log(window.location.toString())
+	console.log(window.location.toString().split('=')[1]);
+	localStorage.setItem('token',window.location.toString().split('=')[1])
+	user.setAuth(true);
 /*
 	const func = async () => {
 		await UserService.getLoggedUser();

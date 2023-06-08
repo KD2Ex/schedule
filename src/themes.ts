@@ -49,7 +49,8 @@ export const getMode = (mode: any) => (
                 disabled: 'primary.main',
                 disabledBackground: 'primary.main',
                 active: 'rgba(210,210,210,0.82)',
-                hover: 'rgba(83,83,83,0.82)',
+                //hover: 'rgba(83,83,83,0.82)',
+                hover: 'rgba(0,19,69,0.82)',
                 selected: 'rgba(0,19,69,0.82)',
             },
             primary: {

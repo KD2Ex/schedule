@@ -9,7 +9,7 @@ import Css from "../ScheduleRows/TableRowsStyles.module.css";
 // 	}
 // }))
 
-const ScheduleTooltip = styled(({ className, ...props }: TooltipProps) => (
+export const ScheduleTooltip = styled(({ className, ...props }: TooltipProps) => (
 	<Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
 	[`& .${tooltipClasses.tooltip}`]: {

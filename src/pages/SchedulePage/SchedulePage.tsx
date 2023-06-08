@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import {Autocomplete, Box, Checkbox, FormControlLabel, FormGroup, TextField, ToggleButton,
-	ToggleButtonGroup
+import {
+	Autocomplete, Box, Checkbox, FormControlLabel, FormGroup, TextField, ToggleButton,
+	ToggleButtonGroup, Tooltip
 } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import ScheduleDayTable from '../../components/ScheduleDayTable/ScheduleDayTable';
@@ -20,6 +21,7 @@ import {IScheduleEntity} from "../../models/interfaces/IScheduleEntity";
 import switchFetching from "../../utils/switchFetching";
 import IPair from "../../models/interfaces/IPair";
 import {LessonType} from "../../models/enums/LessonType";
+import { ScheduleTooltip } from '../../components/styled/TooltippedCell';
 
 
 export const loader = async () => {
@@ -29,7 +31,7 @@ export const loader = async () => {
 
 const SchedulePage = observer(() => {
 
-	const [week, setWeek] = useState(1);
+	const [week, setWeek] = useState(2);
 	const [isReplaceActive, setIsReplaceActive] = useState(true);
 	const [filterValue, setFilterValue] = useState<AutocompleteOption | null>(null);
 	const [scheduleEntities, setScheduleEntities] = useState<AutocompleteOption[]>([]);
@@ -81,25 +83,25 @@ const SchedulePage = observer(() => {
 
 	useEffect(() => {
 
-		const ISODate = schedule.getDate(week)
+		const ISODate = schedule.getDate(isPrevWeek ? 0 : week)
 
 		if (filterValue !== null) {
 			(async () => {
+
+				console.log(ISODate)
 				const newSchedule = await fetchSchedule(ISODate, isReplaceActive, scheduleEntityType.value, filterValue.id);
 				setScheduleDays(newSchedule);
 			})();
 		}
 
 
-	}, [filterValue, isReplaceActive, week])
+	}, [filterValue, isReplaceActive, week, isPrevWeek])
 
 	useEffect(() => {
-
-		setWeek(3)
-
+/*
 		if (!isPrevWeek) {
 			setWeek(schedule.currentData.firstWeek ? 1 : 2)
-		}
+		}*/
 
 	}, [isPrevWeek])
 
@@ -117,6 +119,7 @@ const SchedulePage = observer(() => {
 				setScheduleEntityType({value: userData.type, title: SCHEDULE_ENTITY[userData.type]});
 			}
 
+
 			let entity = await switchFetching(userData.type);
 
 			setFilterValue({label: entity.find((item) => item.id === userData.entityId)?.fullName, id: userData.entityId} as AutocompleteOption)
@@ -129,6 +132,7 @@ const SchedulePage = observer(() => {
 
 	const handleWeekChange = (event: React.MouseEvent<HTMLElement>, newWeek: number) => {
 		if (newWeek !== null) {
+			setIsPrevWeek(false)
 			setWeek(newWeek);
 		}
 		console.log(newWeek);
@@ -193,6 +197,14 @@ const SchedulePage = observer(() => {
 		return scheduleDaysCount;
 	}
 
+	const isScheduleEmpty = () => {
+		let isEmpty = true;
+		scheduleDays.map((item) => {
+			if (item.pairs.length !== 0) isEmpty = false;
+		})
+		return isEmpty;
+	}
+
 	return (
 		<>
 			<Box sx={{
@@ -219,14 +231,47 @@ const SchedulePage = observer(() => {
 					onChange={handleWeekChange}
 					value={week}
 					exclusive
-					disabled={isPrevWeek}
 				>
 					<ToggleButton value="Неделя" disabled>
 						Неделя
 					</ToggleButton>
-					<ToggleButton value={1}>
+					<ToggleButton
+						value={1}
+						sx={{
+						}}
+					>
 						1
+
 					</ToggleButton>
+					{/*<Tooltip  leaveDelay={200} value={1}
+							  title={
+						<FormControlLabel
+						sx={{
+							m: 0,
+
+						}}
+						control={
+							<Checkbox
+								checked={isPrevWeek}
+								onChange={handlePrevWeek}
+								sx={{
+									color: 'primary.main',
+
+									'&.Mui-checked': {
+										color: (theme) => theme.palette.mode === 'light' ? `${theme.palette.primary.main} ` : `${theme.palette.primary.main}`
+									}
+								}}
+							/>
+						}
+						label={'Прошлая неделя'}
+						labelPlacement={"start"}
+						/>
+					}>
+
+
+					</Tooltip>*/}
+
+
 					<ToggleButton value={2}>
 						2
 					</ToggleButton>
@@ -278,7 +323,7 @@ const SchedulePage = observer(() => {
 
 				</FormGroup>
 
-				{!schedule.currentData.firstWeek &&
+
                 <FormControlLabel
                     sx={{m: 0}}
                     control={
@@ -296,12 +341,12 @@ const SchedulePage = observer(() => {
                     label={'Показать прошлю неделю'}
                     labelPlacement={"start"}
                 />
-				}
+
 			</Box>
 
 
 			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
-				{filterValue !== null && scheduleDays.length !== 0 ? scheduleDays.map((item: IScheduleDay, index: React.Key | null | undefined) => (
+				{filterValue !== null && !isScheduleEmpty() ?  scheduleDays.map((item: IScheduleDay, index: React.Key | null | undefined) => (
 					<ScheduleDayTable
 						key={index}
 						columns={getColumns(scheduleEntityType.title)}
@@ -315,7 +360,14 @@ const SchedulePage = observer(() => {
 				)) : null}
 
 
-				{filterValue !== null && fillDays()}
+				{filterValue !== null && !isScheduleEmpty() && fillDays()}
+				{filterValue !== null && isScheduleEmpty() && <h1 style={{
+					display: 'flex',
+					margin: 'auto',
+					alignItems: 'center',
+					justifyContent: 'center',
+					height: '100%'
+				}}>Пар нет!</h1>}
 
 
 			</Grid2>

@@ -29,7 +29,7 @@ function NavBar() {
 
 	const handleLogout = () => {
 		user.logout()
-		//navigate('/login')
+		navigate('/schedule')
 	}
 
 	const handleLogin = () => {
@@ -68,7 +68,7 @@ function NavBar() {
 						<Box sx={{flexGrow: 2, maxHeight: '100%', position: 'sticky'}}>
 
 							<NavBarButton component={link} to="/schedule" sx={{
-								display: {xs: 'none', md: 'block'}
+								display: {xs: 'none', md: 'inline-block'}
 							}} >
 								Расписание
 							</NavBarButton>

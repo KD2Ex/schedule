@@ -36,10 +36,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "vite": "vite --open --port 3000",
+    "dev": "vite --open --port 3000",
     "build": "vite build",
-    "dev": "vite serve",
-    "preview": "vite preview --port 8096",
+    "preview": "vite preview --port 8100",
     "test": "react-scripts test"
   },
   "eslintConfig": {

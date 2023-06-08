@@ -46,6 +46,7 @@ class Schedule {
 			switch (week) {
 				case 1: {
 					date = this.currentData.currentWeek
+					console.log(date)
 					break;
 				}
 				case 2: {
@@ -54,6 +55,7 @@ class Schedule {
 				}
 				default: {
 					date = this.currentData.previousWeek;
+					break;
 				}
 			}
 		} else {
@@ -73,9 +75,15 @@ class Schedule {
 		}
 
 		const result = date?.filter((item: number) => true);
-
 		if (result) {
-			result[2] += 1;
+
+			if (result[2] < 30) {
+				result[2] += 1;
+
+			}
+			console.log(result)
+
+			console.log(new Date([...result]))
 			return new Date([...result]).toISOString()
 		}
 
