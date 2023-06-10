@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {
-	Autocomplete, Box, Checkbox, FormControlLabel, FormGroup, TextField, ToggleButton,
+	Autocomplete, Box, Checkbox, FormControlLabel, FormGroup, Switch, TextField, ToggleButton,
 	ToggleButtonGroup, Tooltip
 } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
@@ -35,6 +35,7 @@ export const loader = async () => {
 const SchedulePage = observer(() => {
 
 	const [week, setWeek] = useState(2);
+	const [currentWeek, setCurrentWeek] = useState(1);
 	const [isReplaceActive, setIsReplaceActive] = useState(true);
 	const [filterValue, setFilterValue] = useState<AutocompleteOption | null>(null);
 	const [filterType, setScheduleEntityType] = useState<IScheduleEntity>(
@@ -83,6 +84,7 @@ const SchedulePage = observer(() => {
 
 			setFilterValue({label: entity.find((item) => item.id === schedule.currentData.entityId)?.fullName, id: schedule.currentData.entityId} as AutocompleteOption)
 			setWeek(schedule.currentData.firstWeek ? 1 : 2);
+			setCurrentWeek(schedule.currentData.firstWeek ? 1 : 2)
 		})()
 
 
@@ -145,50 +147,64 @@ const SchedulePage = observer(() => {
 					onChange={handleWeekChange}
 					value={week}
 					exclusive
+					sx={{
+						'&>:nth-child(n + 2)': {
+							fontWeight: 400
+						},
+
+					}}
 				>
-					<ToggleButton value="Неделя" disabled>
+					<ToggleButton
+						value="Неделя"
+						disabled>
 						Неделя
 					</ToggleButton>
-					<ToggleButton
-						value={1}
-						sx={{
-						}}
+{/*					<ToggleButton
+						value={3}
 					>
-						1
+						Предыдущая
+					</ToggleButton>*/}
 
-					</ToggleButton>
-					{/*<Tooltip  leaveDelay={200} value={1}
+					<Tooltip  leaveDelay={200} value={1}
 							  title={
-						<FormControlLabel
-						sx={{
-							m: 0,
+								  <FormControlLabel
+									  sx={{
+										  m: 0,
 
-						}}
-						control={
-							<Checkbox
-								checked={isPrevWeek}
-								onChange={handlePrevWeek}
-								sx={{
-									color: 'primary.main',
+									  }}
+									  control={
+										  <Switch
+											  checked={isPrevWeek}
+											  onChange={handlePrevWeek}
+											  sx={{
+												  color: 'primary.main',
 
-									'&.Mui-checked': {
-										color: (theme) => theme.palette.mode === 'light' ? `${theme.palette.primary.main} ` : `${theme.palette.primary.main}`
-									}
-								}}
-							/>
-						}
-						label={'Прошлая неделя'}
-						labelPlacement={"start"}
-						/>
-					}>
+												  '&.Mui-checked': {
+													  color: (theme) => theme.palette.mode === 'light' ? `${theme.palette.primary.main} ` : `${theme.palette.primary.main}`
+												  }
+											  }}
+										  />
+									  }
+									  label={'Прошлая неделя'}
+									  labelPlacement={"start"}
+								  />
+							  }>
 
-
-					</Tooltip>*/}
-
-
+						<ToggleButton
+							value={1}
+							sx={{
+								borderBottom: (theme) =>
+									currentWeek === 1 && `1px solid ${theme.palette.primary.main}`
+							}}
+						>
+							1
+						</ToggleButton>
+					</Tooltip>
 					<ToggleButton value={2}>
 						2
 					</ToggleButton>
+
+
 				</ToggleButtonGroup>
 
 				<ScheduleFilter
@@ -218,7 +234,7 @@ const SchedulePage = observer(() => {
 
 				</FormGroup>
 
-
+{/*
                 <FormControlLabel
                     sx={{m: 0}}
                     control={
@@ -235,7 +251,7 @@ const SchedulePage = observer(() => {
 					}
                     label={'Показать прошлю неделю'}
                     labelPlacement={"start"}
-                />
+                />*/}
 
 			</Box>
 
