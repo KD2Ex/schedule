@@ -4,13 +4,44 @@ import {LessonType} from "../models/enums/LessonType";
 import {ScheduleEntityType} from "../models/enums/ScheduleEntityType";
 import {runInNewContext} from "vm";
 import UserScheduleService from "../api/services/UserScheduleService";
+import {fetchSchedule} from "../api/services/ScheduleService";
 
 class Schedule {
 	weekSchedule: any = [];
 	currentData: any = {};
+	firstPair: number = 0;
+	lastPair: number = 4;
 
 	constructor() {
 		makeAutoObservable(this);
+	}
+
+	getFirstPair() {
+		let minPair = 1;
+		this.weekSchedule.forEach(day => {
+			if (day.pairs.length === 0) return;
+			day.pairs[0].number === 0 ? minPair = 0 : null
+		})
+
+		return minPair;
+	}
+
+	getLastPair() {
+		let maxPairs = 0;
+		this.weekSchedule.forEach(day => {
+			if (day.pairs.length === 0) return;
+			day.pairs[day.pairs.length - 1].number > maxPairs ? maxPairs = day.pairs[day.pairs.length - 1].number : null
+		})
+		console.log(maxPairs)
+		return maxPairs;
+	}
+
+	async fetchSchedule(date, replaced, type, entity ) {
+		const newSchedule = await fetchSchedule(date, replaced, type, entity);
+		this.weekSchedule = newSchedule
+		this.firstPair = this.getFirstPair();
+		this.lastPair = this.getLastPair();
+
 	}
 
 	async fetchWeekSchedule(weekNumber: number, isReplacement: boolean, type: ScheduleEntityType, id: number) {

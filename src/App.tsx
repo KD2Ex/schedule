@@ -47,8 +47,6 @@ const App = observer(() => {
 		link.href = './src/styles/logos/kkep_white.svg';
 
 	}
-	console.log(window)
-	console.log('toggle')
 
 	// @ts-ignore
 	const theme = createTheme({
@@ -58,8 +56,8 @@ const App = observer(() => {
 		...themeObject,
 	})
 
-	console.log(user.isAuth)
-	console.log(localStorage.getItem('token') )
+	//console.log(user.isAuth)
+	//console.log(localStorage.getItem('token') )
 
 	return (
 		<>

@@ -38,7 +38,6 @@ const SchedulePage = observer(() => {
 	const [scheduleEntityType, setScheduleEntityType] = useState<IScheduleEntity>(
 		{value: ScheduleEntityType.TEACHER, title: SCHEDULE_ENTITY.TEACHER}
 	);
-	const [scheduleDays, setScheduleDays] = useState<IScheduleDay[]>([]);
 	const [open, setOpen] = useState(false);
 	const [isPrevWeek, setIsPrevWeek] = useState(false);
 	const loading = open && scheduleEntities?.length === 0;
@@ -51,6 +50,8 @@ const SchedulePage = observer(() => {
 		pairs: [] as IPair[],
 		date: new Date(),
 	}
+
+	console.log('render')
 
 	useEffect(() => {
 
@@ -87,13 +88,9 @@ const SchedulePage = observer(() => {
 
 		if (filterValue !== null) {
 			(async () => {
-
-				console.log(ISODate)
-				const newSchedule = await fetchSchedule(ISODate, isReplaceActive, scheduleEntityType.value, filterValue.id);
-				setScheduleDays(newSchedule);
+				await schedule.fetchSchedule(ISODate, isReplaceActive, scheduleEntityType.value, filterValue.id)
 			})();
 		}
-
 
 	}, [filterValue, isReplaceActive, week, isPrevWeek])
 
@@ -149,39 +146,16 @@ const SchedulePage = observer(() => {
 	}
 
 
-	const getMaxPairsNumber = () => {
-		let maxPairs = 0;
-		scheduleDays.forEach(day => {
-			if (day.pairs.length === 0) return;
-			day.pairs[day.pairs.length - 1].number > maxPairs ? maxPairs = day.pairs[day.pairs.length - 1].number : null
-		})
-		return maxPairs;
-	}
-
-	const getMinPairNumber = () => {
-		let minPair = 1;
-		scheduleDays.forEach(day => {
-			if (day.pairs.length === 0) return;
-			day.pairs[0].number === 0 ? minPair = 0 : null
-		})
-
-		return minPair;
-	}
-
-
-	const maxPairsNumber = getMaxPairsNumber();
-	const minPairNumber = getMinPairNumber();
-
 	const fillDays = () => {
 		const scheduleDaysCount = [];
 
-		for (let i = getMinPairNumber(); i < getMaxPairsNumber(); i++) {
+		for (let i = schedule.firstPair; i < schedule.lastPair; i++) {
 			emptyDay.pairs.push(
 				{number: i, lessons: [], type: LessonType.EMPTY}
 			)
 		}
 
-		for(let i = scheduleDays.length; i < 6; i++) {
+		for(let i = schedule.weekSchedule.length; i < 6; i++) {
 			scheduleDaysCount.push(<ScheduleDayTable
 				key={i}
 				columns={getColumns(scheduleEntityType.title)}
@@ -190,8 +164,8 @@ const SchedulePage = observer(() => {
 				/*dayNumber={Number(i)}*/
 				isReplacementEnabled={isReplaceActive}
 				filterType={scheduleEntityType}
-				maxPairNumber={maxPairsNumber}
-				minPairNumber={minPairNumber}
+				maxPairNumber={schedule.lastPair}
+				minPairNumber={schedule.firstPair}
 			/>)
 		}
 		return scheduleDaysCount;
@@ -199,7 +173,7 @@ const SchedulePage = observer(() => {
 
 	const isScheduleEmpty = () => {
 		let isEmpty = true;
-		scheduleDays.map((item) => {
+		schedule.weekSchedule.map((item) => {
 			if (item.pairs.length !== 0) isEmpty = false;
 		})
 		return isEmpty;
@@ -223,7 +197,6 @@ const SchedulePage = observer(() => {
 					size='small'
 
 				/>
-
 
 
 				<ToggleButtonGroup
@@ -346,7 +319,7 @@ const SchedulePage = observer(() => {
 
 
 			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
-				{filterValue !== null && !isScheduleEmpty() ?  scheduleDays.map((item: IScheduleDay, index: React.Key | null | undefined) => (
+				{filterValue !== null && !isScheduleEmpty() ?  schedule.weekSchedule.map((item: IScheduleDay, index: React.Key | null | undefined) => (
 					<ScheduleDayTable
 						key={index}
 						columns={getColumns(scheduleEntityType.title)}
@@ -354,11 +327,10 @@ const SchedulePage = observer(() => {
 						isSelected={new Date(item.date * 1000).toLocaleDateString() === new Date().toLocaleDateString()}
 						isReplacementEnabled={isReplaceActive}
 						filterType={scheduleEntityType}
-						maxPairNumber={maxPairsNumber}
-						minPairNumber={minPairNumber}
+						maxPairNumber={schedule.lastPair}
+						minPairNumber={schedule.firstPair}
 					/>
 				)) : null}
-
 
 				{filterValue !== null && !isScheduleEmpty() && fillDays()}
 				{filterValue !== null && isScheduleEmpty() && <h1 style={{
@@ -371,9 +343,6 @@ const SchedulePage = observer(() => {
 
 
 			</Grid2>
-
-
-
 
 		</>
 	)

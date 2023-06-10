@@ -1,15 +1,15 @@
 import React, {FC} from 'react';
 import {TableCell, TableRow, Typography} from "@mui/material";
-import {tableRowStyle} from "./TableRowsMuiStyles";
+import {replacedStyle} from "./TableRowsMuiStyles";
 
 interface ScheduleRowEmptyProps {
 	number: number;
 	isReplaced: boolean;
 }
 
-const ScheduleRowEmpty: FC<ScheduleRowEmptyProps> = ({number, isReplaced}) => {
+const RowEmpty: FC<ScheduleRowEmptyProps> = ({number, isReplaced}) => {
 	return (
-		<TableRow sx={  (isReplaced ? {  ...tableRowStyle } : null) }>
+		<TableRow sx={  (isReplaced ? {  ...replacedStyle } : null) }>
 			<TableCell component="th" scope='row' sx={{px: 1, textAlign: 'center'}} >
 				{number}
 			</TableCell>
@@ -26,4 +26,4 @@ const ScheduleRowEmpty: FC<ScheduleRowEmptyProps> = ({number, isReplaced}) => {
 	);
 };
 
-export default ScheduleRowEmpty;
+export default RowEmpty;

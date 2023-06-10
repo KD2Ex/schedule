@@ -16,7 +16,7 @@ class Room {
 		const response = await fetchEntities(ScheduleEntityType.ROOM);
 
 		this.rooms = response.filter((item: IRoom) => {
-				console.log(item.fullName.match(/[^сз_/тирВЦИ\d]+/gi))
+				//console.log(item.fullName.match(/[^сз_/тирВЦИ\d]+/gi))
 
 				//|| item.fullName.includes('ИЦ')
 			return !item.fullName.match(/[^сз_/тирВЦИЦ\d]+/gi)

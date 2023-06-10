@@ -22,17 +22,23 @@ export const ScheduleTooltip = styled(({ className, ...props }: TooltipProps) =>
 }));
 
 interface TooltippedCellProps {
-	children: JSX.Element
+	children: React.ReactNode
 }
 
 const TooltippedCell: FC<TooltippedCellProps> = ({children, ...props}) => {
 	return (
-		<ScheduleTooltip enterDelay={500} TransitionComponent={Zoom} arrow placement={'bottom-start'} title={children}>
+		<ScheduleTooltip
+			enterDelay={500}
+			TransitionComponent={Zoom}
+			arrow
+			placement={'bottom-start'}
+			title={children}>
 			<TableCell {...props}>
 				<div className={Css.textContainer}>
 					{children}
 				</div>
 			</TableCell>
+
 		</ScheduleTooltip>
 	);
 };

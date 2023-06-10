@@ -12,14 +12,8 @@ export const fetchSchedule = async (startDate: string, isReplacement: boolean, t
 		}
 	}).catch((reason) => {
 		console.log(reason)
-
 	})
-	console.log(result)
+	console.log(result.data.response)
 	return result.data.response.days;
-	try {
 
-	} catch (e) {
-		console.log(e.message)
-		return [];
-	}
 }
