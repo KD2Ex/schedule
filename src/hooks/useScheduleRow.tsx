@@ -6,7 +6,7 @@ import RowOne from "../components/ScheduleRows/RowOne/RowOne";
 import RowDouble from "../components/ScheduleRows/RowDouble";
 import React from "react";
 
-export const getTableRow = (pair: IPair, filterType, key: number) => {
+export const useScheduleRow = (pair: IPair, filterType, key: number, editable: boolean) => {
 
     const cells: string[][] = [[pair.number.toString()], []];
 
@@ -50,6 +50,7 @@ export const getTableRow = (pair: IPair, filterType, key: number) => {
         case LessonType.ONE: {
             return (
                 <RowOne
+                    editable={editable}
                     key={key}
                     row={cells[0]}
                     isReplaced={replaces[0]}
@@ -81,8 +82,3 @@ export const getTableRow = (pair: IPair, filterType, key: number) => {
     }
 }
 
-export const useScheduleTable = (row, type, isReplaced) => {
-
-    return getTableRow(row, type, isReplaced)
-
-}

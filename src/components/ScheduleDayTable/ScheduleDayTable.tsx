@@ -6,7 +6,7 @@ import IScheduleDay from "../../models/interfaces/IScheduleDay";
 import RowEmpty from "../ScheduleRows/RowEmpty";
 import {IScheduleEntity} from "../../models/interfaces/IScheduleEntity";
 import styles from "../ScheduleRows/RowOne/RowOne.module.css";
-import {getTableRow, useScheduleTable} from "../../hooks/useScheduleTable";
+import {useScheduleRow, useScheduleTable} from "../../hooks/useScheduleRow";
 import { getColumns } from '../../utils/stringFormatters';
 import {ScheduleModalContext} from "../../context";
 
@@ -17,6 +17,8 @@ interface DayGridProps {
 	filterType: IScheduleEntity;
 	maxPairNumber: number;
 	minPairNumber: number;
+	editable?: boolean;
+	clickable?: boolean;
 }
 
 const color = `rgba(0, 68, 255, 0.82)`
@@ -29,6 +31,8 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 		filterType,
 		maxPairNumber,
 		minPairNumber,
+		editable,
+		clickable
 	}) => {
 
 
@@ -36,92 +40,16 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 
 
 	const handleClick = () => {
-
-		console.log(scheduleModalOpen, setScheduleModalOpen,selectedSchedule,setSelectedSchedule)
-		setSelectedSchedule(rows);
-		setScheduleModalOpen(true);
-
+		if (clickable) {
+			console.log(scheduleModalOpen, setScheduleModalOpen,selectedSchedule,setSelectedSchedule)
+			setSelectedSchedule(rows);
+			setScheduleModalOpen(true);
+		}
 	}
-	/*const getTableRowN = (pair: IPair, key: number) => {
-
-		const cells: string[][] = [[pair.number.toString()], []];
-
-		pair.lessons.forEach((lesson, index) => {
-			switch (filterType.title) {
-				case SCHEDULE_ENTITY.GROUP: {
-					cells[index].push(pair.lessons[index].teacher);
-					cells[index].push(pair.lessons[index].subject);
-					cells[index].push(pair.lessons[index].room);
-					break;
-				}
-				case SCHEDULE_ENTITY.TEACHER: {
-					cells[index].push(pair.lessons[index].group);
-					cells[index].push(pair.lessons[index].subject);
-					cells[index].push(pair.lessons[index].room);
-					break;
-				}
-				case SCHEDULE_ENTITY.ROOM: {
-					cells[index].push(pair.lessons[index].teacher);
-					cells[index].push(pair.lessons[index].subject);
-					cells[index].push(pair.lessons[index].group);
-					break;
-				}
-			}
-		})
-
-
-		let replaces: boolean[] = [false, false];
-
-		if (isReplacementEnabled) {
-			replaces = [
-				pair.lessons[0]?.replacement,
-				pair.type === LessonType.DOUBLE && pair.lessons[1]?.replacement
-			]
-
-		}
-
-
-		switch (pair?.type) {
-			case LessonType.EMPTY:
-			case LessonType.ONE: {
-				return (
-					<RowOne
-						key={key}
-						row={cells[0]}
-						isReplaced={replaces[0]}
-						isEmpty={pair?.type === LessonType.EMPTY}
-					/>
-				)
-			}
-			case LessonType.DOUBLE:
-			case LessonType.FIRST: {
-				return(
-					<RowDouble
-						key={key}
-						firstRow={cells[0]}
-						secondRow={cells[1]}
-						replaces={replaces}
-					/>
-				)
-			}
-			case LessonType.SECOND: {
-				return(
-					<RowDouble
-						key={key}
-						firstRow={cells[1]}
-						secondRow={cells[0]}
-						replaces={replaces}
-					/>
-				)
-			}
-		}
-	}*/
-
 
 	const columns = useMemo(() => {
 		return getColumns(filterType.title)
 	}, [filterType])
-
 
 
 	const fillStartingPairs = () => {
@@ -171,7 +99,8 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 					border: "1px solid",
 					borderColor: "primary.pale",
 					borderRadius: "0px 4px 4px 4px",
-					'&:hover': {
+
+					'&:hover': clickable && {
 						bgcolor: 'rgb(44,44,45)',
 						transition: '200ms'
 					}
@@ -186,7 +115,9 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 				>
 					<TableHead>
 						<TableRow sx={{borderBottom: "1px solid primary.main",}}>
-
+							{editable &&
+								<TableCell sx={{width: '16%'}}>Видимость</TableCell>
+							}
 							<TableCell sx={{width: {xs: '7%', sm: '8%'}, px: 1, pr: 0, textAlign: 'center'}}>{columns[0]}</TableCell>
 							<TableCell sx={{width: '25%', px: 1}}>{columns[1]}</TableCell>
 							<TableCell sx={{width: {xs: '40%', sm: '60%'}, px: 1}}>{columns[2]}</TableCell>
@@ -196,11 +127,12 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 					</TableHead>
 
 					<TableBody className={styles.tableRow}>
+
 						{rows.pairs.length !== 0 && fillStartingPairs()}
 
 
 						{rows.pairs.map((item, index) => {
-							return getTableRow(item, filterType, index);
+							return useScheduleRow(item, filterType, index, editable);
 						})}
 						{/*{rows.pairs.map((pair, index, arr) => {
 								return getTableRowN(

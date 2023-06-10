@@ -47,6 +47,7 @@ const ScheduleEditDialog: FC<ScheduleEditDialogProps> = ({open, setOpen, schedul
                     filterType={{value: ScheduleEntityType.GROUP, title: SCHEDULE_ENTITY.GROUP} as IScheduleEntity}
                     maxPairNumber={schedule.lastPair}
                     minPairNumber={schedule.firstPair}
+                    editable
                 />}
 
             </DialogContent>

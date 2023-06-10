@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {TableCell, TableRow, TableRowProps} from "@mui/material";
+import {Checkbox, TableCell, TableRow, TableRowProps} from "@mui/material";
 import {replacedStyle, rowOneStyle} from "../TableRowsMuiStyles";
 import TooltippedCell from "../../styled/TooltippedCell";
 import styles from './RowOne.module.css'
@@ -8,11 +8,12 @@ import {useEmptyRow} from "../../../hooks/useEmptyRow";
 interface TableRowOneProps {
 	row?: string[];
 	isReplaced: boolean;
-	isEmpty: boolean
+	isEmpty: boolean,
+	editable: boolean
 }
 
 
-const RowOne: FC<TableRowOneProps> = ({row, isReplaced, isEmpty}) => {
+const RowOne: FC<TableRowOneProps> = ({row, isReplaced, isEmpty, editable}) => {
 
 
 /*	let styles = {
@@ -21,12 +22,19 @@ const RowOne: FC<TableRowOneProps> = ({row, isReplaced, isEmpty}) => {
 		}
 	}*/
 
+
+
 	const styles = isReplaced ? {...rowOneStyle, ...replacedStyle} : {...rowOneStyle}
 
 	return (
 		<TableRow
 			sx={styles}
 		>
+			{editable &&
+				<TableCell>
+					<Checkbox/>
+				</TableCell>
+			}
 			{isEmpty
 				? useEmptyRow(row[0])/*row.map((item, index) => {
 					if (index === 0) {

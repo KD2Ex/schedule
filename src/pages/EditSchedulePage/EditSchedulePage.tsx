@@ -88,7 +88,9 @@ const EditSchedulePage = () => {
 							isReplacementEnabled={false}
 							filterType={{value: ScheduleEntityType.GROUP, title: SCHEDULE_ENTITY.GROUP}}
 							maxPairNumber={1}
-							minPairNumber={4}/>
+							minPairNumber={4}
+							clickable
+						/>
 					</Grid>
 				))}
 				{schedule.weekSchedule.map(item => (
@@ -99,7 +101,9 @@ const EditSchedulePage = () => {
 							isReplacementEnabled={false}
 							filterType={{value: ScheduleEntityType.GROUP, title: SCHEDULE_ENTITY.GROUP}}
 							maxPairNumber={1}
-							minPairNumber={4}/>
+							minPairNumber={4}
+							clickable
+						/>
 					</Grid>
 				))}
 			</Grid>
