@@ -80,6 +80,16 @@ const ProfilePage = observer(() =>  {
 				setLinkedAccounts(profile.linkedSocial);
 			}
 		)()
+
+		window._vkWidget = window._vkWidget || {};
+		window._vkWidget.key = 'uniqueVkWidget';
+		window._vkWidget.language = 'ru';
+		const s = document.createElement('script');
+		s.type = 'text/javascript';
+		s.async = true;
+		s.src = 'https://vk.com/js/api/openapi.js?168';
+		const t = document.getElementsByTagName('script')[0];
+		t.parentNode.insertBefore(s, t);
 	}, [])
 
 	useEffect(() => {

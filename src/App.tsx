@@ -4,7 +4,7 @@ import {createBrowserRouter, RouterProvider, useNavigate} from "react-router-dom
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {getMode, themeObject} from "./themes";
 import CssBaseline from "@mui/material/CssBaseline";
-import {AuthContext, ColorContext, ColorModeContext} from "./context";
+import {AuthContext, ColorContext, ColorModeContext, ScheduleModalContext} from "./context";
 import {publicRoutes, routes} from "./router/routes";
 import {redirect} from "react-router-dom";
 import {useMediaQuery} from "@mui/material";
@@ -16,7 +16,8 @@ const App = observer(() => {
 
 	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 	const [mode, setMode] = useState<'light' | 'dark'>(prefersDarkMode ? 'dark' : 'light');
-
+	const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
+	const [selectedSchedule, setSelectedSchedule] = useState(null);
 
 	useEffect(() => {
 		//console.log(window.location.toString().split());
@@ -28,7 +29,6 @@ const App = observer(() => {
 	const colorMode = useMemo(() => ({
 		toggleColorMode: () => {
 			setMode((prevMode) => (prevMode === 'light' ? 'dark' : "light"))
-
 		}
 	}), [])
 
@@ -63,10 +63,17 @@ const App = observer(() => {
 		<>
 			<ColorModeContext.Provider value={colorMode}>
 				<ColorContext.Provider value={mode}>
+					<ScheduleModalContext.Provider value={{
+						scheduleModalOpen,
+						setScheduleModalOpen,
+						selectedSchedule,
+						setSelectedSchedule
+					}}>
 						<ThemeProvider theme={theme}>
 							<CssBaseline/>
 							<RouterProvider router={router}/>
 						</ThemeProvider>
+					</ScheduleModalContext.Provider>
 				</ColorContext.Provider>
 			</ColorModeContext.Provider>
 

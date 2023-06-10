@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useMemo} from 'react'
+import React, {memo, useContext, useEffect, useMemo} from 'react'
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import ScheduleDayHeader from "../UI/ScheduleDayHeader/ScheduleDayHeader";
@@ -8,6 +8,7 @@ import {IScheduleEntity} from "../../models/interfaces/IScheduleEntity";
 import styles from "../ScheduleRows/RowOne/RowOne.module.css";
 import {getTableRow, useScheduleTable} from "../../hooks/useScheduleTable";
 import { getColumns } from '../../utils/stringFormatters';
+import {ScheduleModalContext} from "../../context";
 
 interface DayGridProps {
 	rows: IScheduleDay,
@@ -31,6 +32,16 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 	}) => {
 
 
+		const {scheduleModalOpen, setScheduleModalOpen,selectedSchedule,setSelectedSchedule} = useContext(ScheduleModalContext);
+
+
+	const handleClick = () => {
+
+		console.log(scheduleModalOpen, setScheduleModalOpen,selectedSchedule,setSelectedSchedule)
+		setSelectedSchedule(rows);
+		setScheduleModalOpen(true);
+
+	}
 	/*const getTableRowN = (pair: IPair, key: number) => {
 
 		const cells: string[][] = [[pair.number.toString()], []];
@@ -112,7 +123,6 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 	}, [filterType])
 
 
-	console.log(columns)
 
 	const fillStartingPairs = () => {
 
@@ -149,10 +159,31 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 	return (
 		<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
 
-			<ScheduleDayHeader isSelected={isSelected} dayNumber={rows.number - 1} date={rows.date} isReplaced={isReplacementEnabled} />
+			<ScheduleDayHeader
+				isSelected={isSelected}
+				dayNumber={rows.number - 1}
+				date={rows.date}
+				isReplaced={isReplacementEnabled}
+			/>
 
-			<TableContainer  sx={{border: "1px solid", borderColor: "primary.pale", borderRadius: "0px 4px 4px 4px" }}>
-				<Table sx={{ tableLayout: 'fixed'}}>
+			<TableContainer
+				sx={{
+					border: "1px solid",
+					borderColor: "primary.pale",
+					borderRadius: "0px 4px 4px 4px",
+					'&:hover': {
+						bgcolor: 'rgb(44,44,45)',
+						transition: '200ms'
+					}
+				}}
+				onClick={handleClick}
+			>
+				<Table
+					sx={{
+						tableLayout: 'fixed',
+
+					}}
+				>
 					<TableHead>
 						<TableRow sx={{borderBottom: "1px solid primary.main",}}>
 

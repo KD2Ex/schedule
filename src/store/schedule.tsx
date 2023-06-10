@@ -13,6 +13,10 @@ class Schedule {
 	lastPair: number = 4;
 	isLoading: boolean = false;
 
+	mockSchedule: any = [
+
+	]
+
 	constructor() {
 		makeAutoObservable(this);
 	}

@@ -72,9 +72,9 @@ function NavBar() {
 							}} >
 								Расписание
 							</NavBarButton>
-							{/*<Button sx={{color: 'white'}} component={link} to="/edit" >
+							<Button sx={{color: 'white'}} component={link} to="/edit" >
 								Редактирование
-							</Button>*/}
+							</Button>
 
 
 
