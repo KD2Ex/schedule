@@ -22,6 +22,9 @@ import switchFetching from "../../utils/switchFetching";
 import IPair from "../../models/interfaces/IPair";
 import {LessonType} from "../../models/enums/LessonType";
 import { ScheduleTooltip } from '../../components/styled/TooltippedCell';
+import ScheduleFilter from '../../components/ScheduleFilter/ScheduleFilter';
+import { emptyDay } from './data';
+import { fillDays } from '../../utils/fillDays';
 
 
 export const loader = async () => {
@@ -34,93 +37,52 @@ const SchedulePage = observer(() => {
 	const [week, setWeek] = useState(2);
 	const [isReplaceActive, setIsReplaceActive] = useState(true);
 	const [filterValue, setFilterValue] = useState<AutocompleteOption | null>(null);
-	const [scheduleEntities, setScheduleEntities] = useState<AutocompleteOption[]>([]);
-	const [scheduleEntityType, setScheduleEntityType] = useState<IScheduleEntity>(
+	const [filterType, setScheduleEntityType] = useState<IScheduleEntity>(
 		{value: ScheduleEntityType.TEACHER, title: SCHEDULE_ENTITY.TEACHER}
 	);
-	const [open, setOpen] = useState(false);
 	const [isPrevWeek, setIsPrevWeek] = useState(false);
-	const loading = open && scheduleEntities?.length === 0;
 
 	const date = new Date();
 	const currentDay = date.getDay() - 1;
 
-	const emptyDay = {
-		number: 0,
-		pairs: [] as IPair[],
-		date: new Date(),
-	}
-
-	console.log('render')
-
 	useEffect(() => {
 
-		if (!loading) {
-			return undefined;
-		}
-
-		(async () => {
-			let options: AutocompleteOption[] = [];
-			let entities: CompareObject[] = await switchFetching(scheduleEntityType.value)
-
-			entities.sort(compareEntity);
-
-			entities.map(item => {
-				options.push({id: item.id, label: item.fullName})
-			})
-
-			setScheduleEntities(options);
-		})();
-
-		console.log(room);
-
-	}, [loading])
-
-	useEffect(() => {
-		if (!open) {
-			setScheduleEntities([]);
-		}
-	}, [open]);
-
-	useEffect(() => {
-
-		const ISODate = schedule.getDate(isPrevWeek ? 0 : week)
 
 		if (filterValue !== null) {
+
 			(async () => {
-				await schedule.fetchSchedule(ISODate, isReplaceActive, scheduleEntityType.value, filterValue.id)
+				const ISODate = schedule.getDate(isPrevWeek ? 0 : week)
+				await schedule.fetchSchedule(ISODate, isReplaceActive, filterType.value, filterValue.id)
+				schedule.setIsLoading(false);
 			})();
+		} else {
+			
+			schedule.clearSchedule();
+			
 		}
 
-	}, [filterValue, isReplaceActive, week, isPrevWeek])
+	}, [filterValue, week, isPrevWeek])
 
-	useEffect(() => {
-/*
-		if (!isPrevWeek) {
-			setWeek(schedule.currentData.firstWeek ? 1 : 2)
-		}*/
-
-	}, [isPrevWeek])
 
 	useEffect(() => {
 
 
 		(async () => {
 			await schedule.fetchCurrentData();
+			console.log('mount')
+			schedule.setIsLoading(false);
+			console.log(schedule.currentData)
 
-			const userData = await UserScheduleService.getCurrentData();
-			console.log(userData)
-
-			setWeek(userData.firstWeek ? 1 : 2);
-			if (userData.type) {
-				setScheduleEntityType({value: userData.type, title: SCHEDULE_ENTITY[userData.type]});
+			
+			if (schedule.currentData.type) {
+				setScheduleEntityType({value: schedule.currentData.type, title: SCHEDULE_ENTITY[schedule.currentData.type]});
 			}
 
 
-			let entity = await switchFetching(userData.type);
+			let entity = await switchFetching(schedule.currentData.type);
 
-			setFilterValue({label: entity.find((item) => item.id === userData.entityId)?.fullName, id: userData.entityId} as AutocompleteOption)
-
+			setFilterValue({label: entity.find((item) => item.id === schedule.currentData.entityId)?.fullName, id: schedule.currentData.entityId} as AutocompleteOption)
+			setWeek(schedule.currentData.firstWeek ? 1 : 2);
 		})()
 
 
@@ -146,30 +108,7 @@ const SchedulePage = observer(() => {
 	}
 
 
-	const fillDays = () => {
-		const scheduleDaysCount = [];
-
-		for (let i = schedule.firstPair; i < schedule.lastPair; i++) {
-			emptyDay.pairs.push(
-				{number: i, lessons: [], type: LessonType.EMPTY}
-			)
-		}
-
-		for(let i = schedule.weekSchedule.length; i < 6; i++) {
-			scheduleDaysCount.push(<ScheduleDayTable
-				key={i}
-				columns={getColumns(scheduleEntityType.title)}
-				rows={emptyDay}
-				isSelected={i === currentDay}
-				/*dayNumber={Number(i)}*/
-				isReplacementEnabled={isReplaceActive}
-				filterType={scheduleEntityType}
-				maxPairNumber={schedule.lastPair}
-				minPairNumber={schedule.firstPair}
-			/>)
-		}
-		return scheduleDaysCount;
-	}
+	
 
 	const isScheduleEmpty = () => {
 		let isEmpty = true;
@@ -178,6 +117,8 @@ const SchedulePage = observer(() => {
 		})
 		return isEmpty;
 	}
+
+	console.log('render')
 
 	return (
 		<>
@@ -190,7 +131,7 @@ const SchedulePage = observer(() => {
 			}}>
 
 				<TypeButtons
-					filterType={scheduleEntityType}
+					filterType={filterType}
 					setFilterType={setScheduleEntityType}
 					setFilterValue={setFilterValue}
 					exclusive
@@ -250,29 +191,10 @@ const SchedulePage = observer(() => {
 					</ToggleButton>
 				</ToggleButtonGroup>
 
-				<Autocomplete
-					value={filterValue}
-					size='small'
-					open={open}
-					sx={{width: {xs: 240, md: 300}}}
-					onOpen={() => {
-						setOpen(true);
-					}}
-					onClose={() => {
-						setOpen(false);
-					}}
-					loading={loading}
-					options={scheduleEntities}
-					renderInput={(params) => (<TextField
-						{...params}
-						label={` ${scheduleEntityType.title}`}
-						InputProps={{
-							...params.InputProps,
-						}}
-					/>)}
-					onChange={(event: any, newValue: AutocompleteOption | null) => {
-						setFilterValue(newValue);
-					}}
+				<ScheduleFilter
+					filterValue={filterValue}
+					setFilterValue={setFilterValue}
+					filterType={filterType}
 				/>
 
 				<FormGroup>
@@ -322,11 +244,10 @@ const SchedulePage = observer(() => {
 				{filterValue !== null && !isScheduleEmpty() ?  schedule.weekSchedule.map((item: IScheduleDay, index: React.Key | null | undefined) => (
 					<ScheduleDayTable
 						key={index}
-						columns={getColumns(scheduleEntityType.title)}
 						rows={item}
 						isSelected={new Date(item.date * 1000).toLocaleDateString() === new Date().toLocaleDateString()}
 						isReplacementEnabled={isReplaceActive}
-						filterType={scheduleEntityType}
+						filterType={filterType}
 						maxPairNumber={schedule.lastPair}
 						minPairNumber={schedule.firstPair}
 					/>

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {memo, useEffect, useMemo} from 'react'
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import ScheduleDayHeader from "../UI/ScheduleDayHeader/ScheduleDayHeader";
@@ -13,10 +13,11 @@ import {IScheduleEntity} from "../../models/interfaces/IScheduleEntity";
 import styles from "../ScheduleRows/RowOne/RowOne.module.css";
 import {getTableRow, useScheduleTable} from "../../hooks/useScheduleTable";
 import {isBoxedPrimitive} from "util/types";
+import { getColumns } from '../../utils/stringFormatters';
+import { log } from 'console';
 
 interface DayGridProps {
 	rows: IScheduleDay,
-	columns: string[],
 	isSelected: boolean,
 	isReplacementEnabled: boolean,
 	filterType: IScheduleEntity;
@@ -29,10 +30,9 @@ const color = `rgba(0, 68, 255, 0.82)`
 
 
 
-const ScheduleDayTable: React.FC<DayGridProps> =
+const ScheduleDayTable: React.FC<DayGridProps> = memo(
 	({
 		rows,
-		columns,
 		isSelected,
 		isReplacementEnabled,
 		filterType,
@@ -117,9 +117,10 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 
 		}
 
-
-
-
+		const columns = useMemo(() => {
+			return getColumns(filterType.title)	
+		}, [filterType])
+		console.log(columns)
 		const fillStartingPairs = () => {
 
 		const resultRows: any[] = []
@@ -188,6 +189,6 @@ const ScheduleDayTable: React.FC<DayGridProps> =
 			</TableContainer>
 		</Grid2>
 	)
-}
+});
 
 export default ScheduleDayTable

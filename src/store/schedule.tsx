@@ -11,6 +11,7 @@ class Schedule {
 	currentData: any = {};
 	firstPair: number = 0;
 	lastPair: number = 4;
+	isLoading: boolean = false;
 
 	constructor() {
 		makeAutoObservable(this);
@@ -36,12 +37,22 @@ class Schedule {
 		return maxPairs;
 	}
 
-	async fetchSchedule(date, replaced, type, entity ) {
-		const newSchedule = await fetchSchedule(date, replaced, type, entity);
-		this.weekSchedule = newSchedule
-		this.firstPair = this.getFirstPair();
-		this.lastPair = this.getLastPair();
+	clearSchedule() {
+		this.weekSchedule = [];
+	}
 
+	async fetchSchedule(date, replaced, type, entity ) {
+		if (!this.isLoading) {
+			this.isLoading = true;
+			const newSchedule = await fetchSchedule(date, replaced, type, entity);
+			this.weekSchedule = newSchedule
+			this.firstPair = this.getFirstPair();
+			this.lastPair = this.getLastPair();
+		}
+	}
+
+	async setIsLoading(value: boolean) {
+		this.isLoading = value;
 	}
 
 	async fetchWeekSchedule(weekNumber: number, isReplacement: boolean, type: ScheduleEntityType, id: number) {
@@ -66,7 +77,11 @@ class Schedule {
 	}
 
 	async fetchCurrentData() {
-		this.currentData = await UserScheduleService.getCurrentData()
+		if (!this.isLoading) {
+			this.isLoading = true;
+			this.currentData = await UserScheduleService.getCurrentData()			
+		}
+
 	}
 
 	getDate(week: number) {
