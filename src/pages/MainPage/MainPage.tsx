@@ -10,7 +10,7 @@ const MainPage = () => {
 
 	useEffect(() => {
 
-		navigate('/schedule')
+		//navigate('/schedule')
 	}, [])
 
 	return (

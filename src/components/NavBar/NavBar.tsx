@@ -19,10 +19,11 @@ import {NavBarButton} from "../UI/NavBarButton/NavBarButton";
 import user from '../../store/user'
 import kkep_white from '../../styles/logos/kkep_white.svg'
 import kkep from '../../styles/logos/kkep.svg'
+import {observer} from "mobx-react-lite";
 
 
 
-function NavBar() {
+const NavBar = observer(() =>  {
 
 	const changeMode = useContext(ColorModeContext);
 	const navigate = useNavigate();
@@ -106,6 +107,6 @@ function NavBar() {
 
 
 	)
-}
+})
 
 export default NavBar

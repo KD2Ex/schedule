@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {
-	Autocomplete, Box, Checkbox, FormControlLabel, FormGroup, Switch, TextField, ToggleButton,
+	Autocomplete, Box, Checkbox, FormControlLabel, FormGroup, Skeleton, Switch, TextField, ToggleButton,
 	ToggleButtonGroup, Tooltip
 } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
@@ -257,7 +257,12 @@ const SchedulePage = observer(() => {
 
 
 			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
-				{filterValue !== null && !isScheduleEmpty() ?  schedule.weekSchedule.map((item: IScheduleDay, index: React.Key | null | undefined) => (
+				{
+					!schedule.isLoading &&
+					filterValue !== null
+					&& !isScheduleEmpty()
+
+					? schedule.weekSchedule.map((item: IScheduleDay, index: React.Key | null | undefined) => (
 					<ScheduleDayTable
 						key={index}
 						rows={item}
@@ -267,7 +272,9 @@ const SchedulePage = observer(() => {
 						maxPairNumber={schedule.lastPair}
 						minPairNumber={schedule.firstPair}
 					/>
-				)) : null}
+				)) : <Skeleton variant={'rounded'} width={'100%'} height={150}/>
+
+				}
 
 				{filterValue !== null && !isScheduleEmpty() && fillDays()}
 				{filterValue !== null && isScheduleEmpty() && <h1 style={{

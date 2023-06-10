@@ -50,7 +50,9 @@ const ProfilePage = observer(() =>  {
 	const [newPassword, setNewPassword] = useState('');
 	const [alertStatus, setAlertStatus] = useState<AlertType>('success');
 	const [alertMessage, setAlertMessage] = useState('Успешно!');
+	const [uuid, setUuid] = useState('');
 	const isEmailCorrect = isEmailValid(email);
+
 	const loading = openList && filterOptions?.length === 0;
 
 
@@ -154,6 +156,14 @@ const ProfilePage = observer(() =>  {
 		setIsAccountLinked(false);
 	}
 
+	const handleVerifyUser = () => {
+
+	}
+
+	const handleUuidChange = (e) => {
+		setUuid(e.target.value);
+	}
+
 	const handleLinkSchedule = async () => {
 		await UserService.setLinkedSchedule(ScheduleEntityType.TEACHER, -1);
 		if (filterValue !== null) {
@@ -221,6 +231,8 @@ const ProfilePage = observer(() =>  {
 			}
 		}
 	}
+
+
 
 
   return (
@@ -458,6 +470,28 @@ const ProfilePage = observer(() =>  {
 
 
 			<Grid item xs={12} lg={4}>
+				<Typography variant={"h4"} sx={{marginBottom: 1}}>
+					Подтверждение
+				</Typography>
+				<SettingsBox sx={{
+					display: 'flex',
+					gap: 2
+				}}>
+					<TextField
+						variant={'outlined'}
+						sx={{width: '100%'}}
+						size={"small"}
+						placeholder={'Введите UUID'}
+						value={uuid}
+						onChange={handleUuidChange}
+					/>
+					<ProfileButton
+						onClick={handleVerifyUser}
+					>
+						Подтвердить
+					</ProfileButton>
+				</SettingsBox>
+
 				<Typography variant={"h4"} sx={{marginBottom: 1}}>
 					Привязанные аккаунты
 				</Typography>
