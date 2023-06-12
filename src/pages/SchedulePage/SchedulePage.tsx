@@ -25,6 +25,7 @@ import { ScheduleTooltip } from '../../components/styled/TooltippedCell';
 import ScheduleFilter from '../../components/ScheduleFilter/ScheduleFilter';
 import { emptyDay } from './data';
 import { fillDays } from '../../utils/fillDays';
+import ScheduleSkeleton from "../../components/ScheduleSkeleton/ScheduleSkeleton";
 
 
 export const loader = async () => {
@@ -257,24 +258,34 @@ const SchedulePage = observer(() => {
 
 
 			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
+
+
+
+
 				{
-					!schedule.isLoading &&
-					filterValue !== null
-					&& !isScheduleEmpty()
+						!schedule.isLoading &&
+						filterValue !== null
+						&& !isScheduleEmpty()
 
-					? schedule.weekSchedule.map((item: IScheduleDay, index: React.Key | null | undefined) => (
-					<ScheduleDayTable
-						key={index}
-						rows={item}
-						isSelected={new Date(item.date * 1000).toLocaleDateString() === new Date().toLocaleDateString()}
-						isReplacementEnabled={isReplaceActive}
-						filterType={filterType}
-						maxPairNumber={schedule.lastPair}
-						minPairNumber={schedule.firstPair}
-					/>
-				)) : <Skeleton variant={'rounded'} width={'100%'} height={150}/>
+						? schedule.weekSchedule.map((item: IScheduleDay, index: React.Key | null | undefined) => (
+							<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
+								<ScheduleDayTable
+									key={index}
+									rows={item}
+									isSelected={new Date(item.date * 1000).toLocaleDateString() === new Date().toLocaleDateString()}
+									isReplacementEnabled={isReplaceActive}
+									filterType={filterType}
+									maxPairNumber={schedule.lastPair}
+									minPairNumber={schedule.firstPair}
+								/>
+							</Grid2>
+					)) : [1,2,3,4,5,6].map(item => (
+							<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
+								<ScheduleSkeleton/>
+							</Grid2>
+						))
+					}
 
-				}
 
 				{filterValue !== null && !isScheduleEmpty() && fillDays()}
 				{filterValue !== null && isScheduleEmpty() && <h1 style={{

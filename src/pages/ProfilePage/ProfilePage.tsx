@@ -3,8 +3,8 @@ import styles from './ProfilePage.module.css'
 import './ProfilePage.css'
 import {
 	Alert,
-	Autocomplete,
-	Button,
+	Autocomplete, Box,
+	Button, Divider,
 	Grid,
 	OutlinedInput,
 	Snackbar,
@@ -244,7 +244,7 @@ const ProfilePage = observer(() =>  {
 		<Grid container spacing={2}>
 
 			<Grid item xs={12} lg={8} sx={{'h4': {marginBottom: 1}}}>
-
+{/*
 				<Typography variant={'h4'}  fontWeight={400}>
 					Расслыка
 				</Typography>
@@ -253,7 +253,7 @@ const ProfilePage = observer(() =>  {
 
 					<Grid container spacing={2}>
 
-						{/*<Grid item xs={12}>
+						<Grid item xs={12}>
 							<ProfileButton
 								onClick={handleLinkingOn}
 								sx={{display: isAccountLinked ? 'none' : 'flex'}}
@@ -266,7 +266,7 @@ const ProfilePage = observer(() =>  {
 							>
 								Отвязать аккаунт
 							</ProfileButton>
-						</Grid>*/}
+						</Grid>
 
 						<Grid item xs={12}>
 							<ProfileButton
@@ -292,7 +292,7 @@ const ProfilePage = observer(() =>  {
 
 					</Grid>
 
-				</SettingsBox>
+				</SettingsBox>*/}
 
 
 
@@ -302,63 +302,125 @@ const ProfilePage = observer(() =>  {
 
 				<SettingsBox>
 
-					<Typography sx={{fontSize: 18, marginBottom: 2}}>
-						Выберите, какое расписание вы хотите получать:
-					</Typography>
 
 					<Grid container spacing={2}>
 
-						<Grid item xs={12} md={2}>
+						<Grid item container  md={6} lg={8} xl={6} xs={12} spacing={2}>
 
-							<SettingTypography>
-								Тип расписания
-							</SettingTypography>
+							<Grid item xs={12}>
+								<Typography sx={{
+									fontSize: 18,
+								}}>
+									Выберите, какое расписание вы хотите получать:
+								</Typography>
+							</Grid>
 
-						</Grid>
-						<Grid item xs={12} md={10}>
-							<TypeButtons
-								filterType={filterType}
-								setFilterType={setFilterType}
-								setFilterValue={setFilterValue}
-								exclusive
-								size='small'
 
-							/>
-						</Grid>
+							<Grid item xs={12} md={4}>
 
-						<Grid item xs={12} md={2}>
+								<SettingTypography>
+									Тип расписания
+								</SettingTypography>
 
-							<SettingTypography>
-								Сущность
-							</SettingTypography>
+							</Grid>
+							<Grid item xs={12} md={8} sx={{justifyContent:'flex-start', display: 'flex'}}>
+								<TypeButtons
+									filterType={filterType}
+									setFilterType={setFilterType}
+									setFilterValue={setFilterValue}
+									exclusive
+									size='small'
 
-						</Grid>
-						<Grid item xs={12} md={10}>
+								/>
+							</Grid>
 
-							<Autocomplete
-								value={filterValue}
-								size='small'
-								open={openList}
-								sx={{width: {xs: '100%', sm: 315}}}
-								onOpen={() => {
-									setOpenList(true);
-								}}
-								onClose={() => {
-									setOpenList(false);
-								}}
-								loading={loading}
-								options={filterOptions}
-								renderInput={(params) => (<TextField
-									{...params}
-									label={` ${filterType.title}`}
-									InputProps={{
-										...params.InputProps,
+
+							<Grid item xs={12} md={4}>
+
+								<SettingTypography>
+									Сущность
+								</SettingTypography>
+
+							</Grid>
+							<Grid item xs={12} md={8} sx={{
+								display: 'flex',
+								justifyContent: 'flex-start'
+							}}>
+
+								<Autocomplete
+									value={filterValue}
+									size='small'
+									open={openList}
+									sx={{
+										width: {xs: 295, sm: 315},
+
 									}}
-								/>)}
-								onChange={(event: any, newValue: AutocompleteOption | null) => {
-									setFilterValue(newValue);
-								}}
+									onOpen={() => {
+										setOpenList(true);
+									}}
+									onClose={() => {
+										setOpenList(false);
+									}}
+									loading={loading}
+									options={filterOptions}
+									renderInput={(params) => (<TextField
+										{...params}
+										label={` ${filterType.title}`}
+										InputProps={{
+											...params.InputProps,
+										}}
+									/>)}
+									onChange={(event: any, newValue: AutocompleteOption | null) => {
+										setFilterValue(newValue);
+									}}
+								/>
+
+
+							</Grid>
+						</Grid>
+
+						<Grid item>
+							<Divider sx={{
+								width: '100%',
+								height: '100%',
+							}} orientation={'vertical'}
 							/>
+						</Grid>
+
+
+						<Grid item container xs={12} md={5} lg={3} spacing={2}>
+
+
+							<Grid item >
+								<Typography sx={{
+									fontSize: 18,
+								}}>
+									Рассылка
+								</Typography>
+							</Grid>
+
+							<Grid item xs={12}>
+
+								<ProfileButton
+									onClick={handleMailingOn}
+									sx={{display: isMailingActive ? 'none' : 'flex'}}
+								>
+									Включить расслыку
+								</ProfileButton>
+								<ProfileButton
+									onClick={handleMailingOff}
+									sx={{display: isMailingActive ? 'flex' : 'none'}}
+								>
+									Отключить расслыку
+								</ProfileButton>
+							</Grid>
+
+							<Grid item xs={12}>
+
+								<div className={styles.vk_button} id="vk_allow_messages_from_community">
+
+								</div>
+							</Grid>
 						</Grid>
 
 						<Grid item xs={12} sx={{gap: 2, display: 'flex', justifyContent: 'flex-end'}}>
@@ -384,6 +446,7 @@ const ProfilePage = observer(() =>  {
 						</Grid>
 
 					</Grid>
+
 
 				</SettingsBox>
 

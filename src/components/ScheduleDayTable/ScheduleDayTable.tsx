@@ -85,7 +85,7 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 
 
 	return (
-		<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
+		<>
 
 			<ScheduleDayHeader
 				isSelected={isSelected}
@@ -145,7 +145,8 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 					</TableBody>
 				</Table>
 			</TableContainer>
-		</Grid2>
+		</>
+
 	)
 });
 
