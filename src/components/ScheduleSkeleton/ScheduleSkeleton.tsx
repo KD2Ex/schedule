@@ -11,11 +11,12 @@ const ScheduleSkeleton = () => {
         <Box sx={{
             '& span': {
                 '&::after': {
-                    bgcolor: 'rgba(65,64,64,0.63)',
-                    background: 'linear-gradient( 90deg, transparent,rgba(65,64,64,0.63), transparent )'
+                    /*bgcolor: 'rgba(65,64,64,0.63)',*/
+             /*       background: 'linear-gradient( 90deg, transparent,rgba(65,64,64,0.63), transparent )'*/
                 }
             },
-            bgcolor: 'rgba(33,32,32,0.63)',
+            /*bgcolor: 'rgba(33,32,32,0.63)',*/
+            bgcolor: (theme) => theme.palette.background.block,
             p: 2,
             pt: 1,
             borderRadius: 2

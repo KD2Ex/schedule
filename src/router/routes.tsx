@@ -1,7 +1,7 @@
 import React from "react";
 import SchedulePage, {loader} from '../pages/SchedulePage/SchedulePage'
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
-import ProfilePage from "../pages/ProfilePage/ProfilePage";
+import ProfilePage, {loader as profileLoader} from "../pages/ProfilePage/ProfilePage";
 import DataListsPage from "../pages/DataListsPage/DataListsPage";
 import MainPage from "../pages/MainPage/MainPage";
 import AdminPage from "../pages/AdminPage/AdminPage";
@@ -41,11 +41,18 @@ export const routes = [
             {
                 path: "profile",
                 element: <ProfilePage/>,
+                loader: profileLoader,
+                children: [
+                    {
+                        path: 'verification',
+                        element: <div>qwer</div>
+                    }
+                ]
             },
         ]
     },
 
-    isAuth && {
+    {
         path: '/profile/page',
         element: <div>123</div>
     },

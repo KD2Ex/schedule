@@ -48,14 +48,24 @@ const SchedulePage = observer(() => {
 	const currentDay = date.getDay() - 1;
 
 	useEffect(() => {
+		schedule.setIsLoading(false);
 
 
 		if (filterValue !== null) {
 
 			(async () => {
+				//setIsScheduleLoading(true);
+
 				const ISODate = schedule.getDate(isPrevWeek ? 0 : week)
-				await schedule.fetchSchedule(ISODate, isReplaceActive, filterType.value, filterValue.id)
+				await schedule.fetchSchedule(
+					ISODate,
+					isReplaceActive,
+					filterType.value,
+					filterValue.id)
+				//setIsScheduleLoading(false);
 				schedule.setIsLoading(false);
+
+
 			})();
 		} else {
 			
@@ -70,9 +80,11 @@ const SchedulePage = observer(() => {
 
 
 		(async () => {
+			//setIsScheduleLoading(true);
 			await schedule.fetchCurrentData();
 			console.log('mount')
 			schedule.setIsLoading(false);
+
 			console.log(schedule.currentData)
 
 			
@@ -110,8 +122,6 @@ const SchedulePage = observer(() => {
 		setIsPrevWeek(event.target.checked);
 	}
 
-
-	
 
 	const isScheduleEmpty = () => {
 		let isEmpty = true;
@@ -260,26 +270,36 @@ const SchedulePage = observer(() => {
 			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
 
 
-
+			{/*	{isScheduleLoading && [1,2,3,4,5,6].map(item => (
+					<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
+						<ScheduleSkeleton/>
+					</Grid2>
+				))}*/}
 
 				{
-						!schedule.isLoading &&
-						filterValue !== null
+					!schedule.isLoading
+						? filterValue !== null
 						&& !isScheduleEmpty()
-
-						? schedule.weekSchedule.map((item: IScheduleDay, index: React.Key | null | undefined) => (
-							<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
-								<ScheduleDayTable
-									key={index}
-									rows={item}
-									isSelected={new Date(item.date * 1000).toLocaleDateString() === new Date().toLocaleDateString()}
-									isReplacementEnabled={isReplaceActive}
-									filterType={filterType}
-									maxPairNumber={schedule.lastPair}
-									minPairNumber={schedule.firstPair}
-								/>
-							</Grid2>
-					)) : [1,2,3,4,5,6].map(item => (
+					? schedule.weekSchedule.map((item: IScheduleDay, index: React.Key | null | undefined) => (
+						<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
+							<ScheduleDayTable
+								key={index}
+								rows={item}
+								isSelected={new Date(item.date * 1000).toLocaleDateString() === new Date().toLocaleDateString()}
+								isReplacementEnabled={isReplaceActive}
+								filterType={filterType}
+								maxPairNumber={schedule.lastPair}
+								minPairNumber={schedule.firstPair}
+							/>
+						</Grid2>
+					)) : filterValue !== null && !schedule.isLoading && <h1 style={{
+								display: 'flex',
+								margin: 'auto',
+								alignItems: 'center',
+								justifyContent: 'center',
+								height: '100%'
+							}}>Пар нет!</h1>
+						: [1,2,3,4,5,6].map(item => (
 							<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
 								<ScheduleSkeleton/>
 							</Grid2>
@@ -287,15 +307,16 @@ const SchedulePage = observer(() => {
 					}
 
 
+
 				{filterValue !== null && !isScheduleEmpty() && fillDays()}
-				{filterValue !== null && isScheduleEmpty() && <h1 style={{
+			{/*	{filterValue !== null && isScheduleEmpty() && !isScheduleLoading && <h1 style={{
 					display: 'flex',
 					margin: 'auto',
 					alignItems: 'center',
 					justifyContent: 'center',
 					height: '100%'
 				}}>Пар нет!</h1>}
-
+*/}
 
 			</Grid2>
 

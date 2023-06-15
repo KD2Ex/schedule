@@ -3,14 +3,15 @@ import {ILinkedSchedule} from "./ILinkedSchedule";
 
 
 export interface IUser {
-	id: string,
+	//id: string,
 	uuid: string,
-	lastName: string,
+/*	lastName: string,
 	firstName: string,
-	patronymic: string,
+	patronymic: string,*/
 	email: string,
-	isBlocked: string,
-	isActivated: boolean,
-	linkedSocials: ISocial[],
-	linkedSchedule: ILinkedSchedule
+/*	isBlocked: string,
+	isActivated: boolean,*/
+	linkedSocial: ISocial[],
+	linkedSchedule: ILinkedSchedule,
+	containPassword: boolean,
 }

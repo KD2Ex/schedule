@@ -1,11 +1,12 @@
 import { Autocomplete, TextField } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import {FC, useEffect, useState} from "react";
 import { AutocompleteOption } from "../../models/interfaces/IAutocompleteOption";
 import switchFetching from "../../utils/switchFetching";
 import compareEntity, { CompareObject } from "../../utils/compareFunctions/compareEntity";
 import { ScheduleEntityType } from "../../models/enums/ScheduleEntityType";
 import { IScheduleEntity } from "../../models/interfaces/IScheduleEntity";
+import schedule from "../../store/schedule";
 
 interface ScheduleFilterProps {
     filterValue: AutocompleteOption | null
@@ -72,7 +73,10 @@ const ScheduleFilter: FC<ScheduleFilterProps> = observer(({
                 }}
             />)}
             onChange={(event: any, newValue: AutocompleteOption | null) => {
-                setFilterValue(newValue);
+				if (newValue) {
+					schedule.setIsLoading(true);
+				}
+				setFilterValue(newValue);
             }}
         />
     )

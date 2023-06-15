@@ -61,13 +61,13 @@ const LinkedAccount: FC<LinkedAccountProps> = ({isLinked, type}) => {
 			<Grid item xs={12} sm={7} lg={8} xl={6} sx={{display: 'flex', gap: 1}}>
 				{ isLinked
 					? <>
-						<CheckCircleIcon sx={{color: theme => theme.palette.secondary.linked}}/>
+						<CheckCircleIcon sx={{color: theme => theme.palette.secondary.success}}/>
 						<Typography>
 							Аккаунт привязан
 						</Typography>
 					</>
 					: <>
-						<CancelIcon sx={{color: theme => theme.palette.secondary.nonLinked}}/>
+						<CancelIcon sx={{color: theme => theme.palette.secondary.error}}/>
 						<Typography>
 							Аккаунт не привязан
 						</Typography>
@@ -81,9 +81,9 @@ const LinkedAccount: FC<LinkedAccountProps> = ({isLinked, type}) => {
 						Отключить
 					</ProfileButton>
 					:
-					<Button sx={{width: '100%'}} variant={'outlined'}>
+					<ProfileButton sx={{width: '100%'}} >
 						Подключить
-					</Button>
+					</ProfileButton>
 				}
 			</Grid>
 

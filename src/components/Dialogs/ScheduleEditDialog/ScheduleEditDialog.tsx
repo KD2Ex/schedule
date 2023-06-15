@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Modal, Typography} from "@mui/material";
+import React, {FC, useMemo} from 'react';
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Modal, Typography, useTheme} from "@mui/material";
 import IScheduleDay from "../../../models/interfaces/IScheduleDay";
 import ScheduleDayTable from "../../ScheduleDayTable/ScheduleDayTable";
 import {IScheduleEntity} from "../../../models/interfaces/IScheduleEntity";
@@ -25,11 +25,20 @@ const ScheduleEditDialog: FC<ScheduleEditDialogProps> = ({open, setOpen, schedul
 
     console.log(open)
 
+    const theme = useTheme()
+
     return (
         <Dialog
             open={open}
             onClose={handleClose}
             maxWidth={'md'}
+            sx={{
+                '& .MuiPaper-root': {
+                    bgcolor: (theme) => theme.palette.background.dialog,
+                    backgroundImage: 'none',
+                    border: `1px solid ${theme.palette.primary.pale}`
+                }
+            }}
         >
 
             <DialogTitle>

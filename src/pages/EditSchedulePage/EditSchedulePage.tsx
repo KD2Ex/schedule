@@ -38,37 +38,7 @@ const EditSchedulePage = () => {
 
 	return (
 		<Box>
-{/*
 
-			<Container className={Css.topMenuContainer}>
-
-				<Button variant={"outlined"}>
-					Загрузить расписание из файла
-				</Button>
-				<Button variant={"outlined"}>
-					Загрузить стандартное расписание
-				</Button>
-
-			</Container>
-*/}
-
-			{/*<Grid container sx={{border: '1px solid white'}}>
-
-				<Grid item xs={4}>
-
-					<List>
-						<ListItemButton >
-							<ListItemText primary={"Group"}/>
-						</ListItemButton>
-					</List>
-
-				</Grid>
-
-				<Grid item xs={8}>
-					<ScheduleDayDataGrid isToday={true} date={new Date()} rows={schedule[0]} columns={getColumns(scheduleType)} />
-				</Grid>
-
-			</Grid>*/}
 
 			<Box sx={{
 				display: 'flex',
@@ -87,8 +57,8 @@ const EditSchedulePage = () => {
 							isSelected={false}
 							isReplacementEnabled={false}
 							filterType={{value: ScheduleEntityType.GROUP, title: SCHEDULE_ENTITY.GROUP}}
-							maxPairNumber={1}
-							minPairNumber={4}
+							maxPairNumber={schedule.lastPair}
+							minPairNumber={schedule.firstPair}
 							clickable
 						/>
 					</Grid>
@@ -100,15 +70,13 @@ const EditSchedulePage = () => {
 							isSelected={false}
 							isReplacementEnabled={false}
 							filterType={{value: ScheduleEntityType.GROUP, title: SCHEDULE_ENTITY.GROUP}}
-							maxPairNumber={1}
-							minPairNumber={4}
+							maxPairNumber={schedule.lastPair}
+							minPairNumber={schedule.firstPair}
 							clickable
 						/>
 					</Grid>
 				))}
 			</Grid>
-
-
 
 
 

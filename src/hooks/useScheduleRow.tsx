@@ -5,6 +5,8 @@ import {LessonType} from "../models/enums/LessonType";
 import RowOne from "../components/ScheduleRows/RowOne/RowOne";
 import RowDouble from "../components/ScheduleRows/RowDouble";
 import React from "react";
+import {TableCell, TableRow} from "@mui/material";
+import {replacedStyle, rowDoubleStyle, rowOneStyle} from "../components/ScheduleRows/TableRowsMuiStyles";
 
 export const useScheduleRow = (pair: IPair, filterType, key: number, editable: boolean) => {
 
@@ -45,6 +47,8 @@ export const useScheduleRow = (pair: IPair, filterType, key: number, editable: b
     }*/
 
 
+
+
     switch (pair?.type) {
         case LessonType.EMPTY:
         case LessonType.ONE: {
@@ -56,12 +60,14 @@ export const useScheduleRow = (pair: IPair, filterType, key: number, editable: b
                     isReplaced={replaces[0]}
                     isEmpty={pair?.type === LessonType.EMPTY}
                 />
+
             )
         }
         case LessonType.DOUBLE:
         case LessonType.FIRST: {
             return(
                 <RowDouble
+                    editable={editable}
                     key={key}
                     firstRow={cells[0]}
                     secondRow={cells[1]}
@@ -72,6 +78,7 @@ export const useScheduleRow = (pair: IPair, filterType, key: number, editable: b
         case LessonType.SECOND: {
             return(
                 <RowDouble
+                    editable={editable}
                     key={key}
                     firstRow={cells[1]}
                     secondRow={cells[0]}

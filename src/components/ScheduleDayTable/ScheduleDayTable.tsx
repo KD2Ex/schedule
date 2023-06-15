@@ -1,5 +1,5 @@
 import React, {memo, useContext, useEffect, useMemo} from 'react'
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@mui/material'
+import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme} from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import ScheduleDayHeader from "../UI/ScheduleDayHeader/ScheduleDayHeader";
 import IScheduleDay from "../../models/interfaces/IScheduleDay";
@@ -9,6 +9,8 @@ import styles from "../ScheduleRows/RowOne/RowOne.module.css";
 import {useScheduleRow, useScheduleTable} from "../../hooks/useScheduleRow";
 import { getColumns } from '../../utils/stringFormatters';
 import {ScheduleModalContext} from "../../context";
+import {replacedStyle, rowOneStyle} from "../ScheduleRows/TableRowsMuiStyles";
+import RowOne from "../ScheduleRows/RowOne/RowOne";
 
 interface DayGridProps {
 	rows: IScheduleDay,
@@ -41,7 +43,6 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 
 	const handleClick = () => {
 		if (clickable) {
-			console.log(scheduleModalOpen, setScheduleModalOpen,selectedSchedule,setSelectedSchedule)
 			setSelectedSchedule(rows);
 			setScheduleModalOpen(true);
 		}
@@ -59,7 +60,14 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 
 		for (let i = minPairNumber; i < firstPairNumber; i++) {
 
-			resultRows.push(<RowEmpty key={i} number={i} isReplaced={false}/>)
+			resultRows.push(
+				<RowOne
+					key={i}
+					isReplaced={false}
+					editable={editable}
+					isEmpty={true}
+					row={[i]}
+				/>)
 		}
 
 		return resultRows;
@@ -76,13 +84,22 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 
 		for (let i = lastPairNumber + 1; i <= maxPairNumber; i++) {
 
-			resultRows.push(<RowEmpty key={i} number={i} isReplaced={false}/>)
+			resultRows.push(
+				<RowOne
+					key={i}
+					isReplaced={false}
+					editable={editable}
+					isEmpty={true}
+					row={[i]}
+				/>)
 		}
 
 		return resultRows;
 	}
 
+		const rowStyles = isReplacementEnabled ? {...rowOneStyle, ...replacedStyle} : {...rowOneStyle}
 
+		const theme = useTheme()
 
 	return (
 		<>
@@ -101,7 +118,8 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 					borderRadius: "0px 4px 4px 4px",
 
 					'&:hover': clickable && {
-						bgcolor: 'rgb(44,44,45)',
+						bgcolor: theme.palette.background.block,
+						opacity: 1,
 						transition: '200ms'
 					}
 				}}
@@ -131,9 +149,19 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 						{rows.pairs.length !== 0 && fillStartingPairs()}
 
 
-						{rows.pairs.map((item, index) => {
-							return useScheduleRow(item, filterType, index, editable);
-						})}
+
+							{rows.pairs.map((item, index) => (
+								useScheduleRow(item, filterType, index, editable)
+
+								/*<TableRow
+									sx={rowStyles}
+								>
+
+								</TableRow>*/
+							))}
+						{/*return useScheduleRow(item, filterType, index, editable);*/}
+
+
 						{/*{rows.pairs.map((pair, index, arr) => {
 								return getTableRowN(
 									pair, index

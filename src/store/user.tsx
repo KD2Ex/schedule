@@ -5,10 +5,12 @@ import axios from "axios";
 import {AuthResponse} from "../models/response/AuthResponse";
 import {API_URL} from "../api/http";
 import {VK_AUTH_URL} from "../api/http/urls";
+import UserService from "../api/services/UserService";
 
 
 class User {
 	user = {} as IUser;
+	profile = {} as IUser;
 	isAuth = false;
 	isPretendedToAuth = false;
 
@@ -26,7 +28,7 @@ class User {
 	}
 
 	setUser(user: IUser) {
-		this.user = user;
+		this.profile = user;
 	}
 
 	async login(email: string, password: string) {
@@ -35,7 +37,7 @@ class User {
 			console.log(response)
 			localStorage.setItem('token', response.data.accessToken);
 			this.setAuth(true);
-			this.setUser({id: '1', email:'qwer@mail.ru', isAcitvated: true});
+			//this.setUser({id: '1', email:'qwer@mail.ru', isAcitvated: true});
 		} catch (e) {
 			console.log(e.response?.data?.message);
 		}
@@ -81,6 +83,21 @@ class User {
 
 	loginPretending() {
 		this.setPretendingToAuth(true);
+	}
+
+	async fetchProfile() {
+
+		const response = await UserService.getProfileInfo()
+
+		this.setUser(
+			{
+				linkedSocial: response.linkedSocial,
+				email: response.mail,
+				linkedSchedule: response.linkedSchedule,
+				containPassword: response.containPassword,
+				uuid: '1'
+			});
+
 	}
 
 }

@@ -8,12 +8,6 @@ import {UserResponse} from "../../models/response/UserResponse";
 
 export default class UserService {
 
-	static async getUserInfo(): Promise<UserResponse> {
-		const user = await $api.get<AxiosResponse<UserResponse>>('/user/me');
-		console.log(user);
-		return user.data;
-	}
-
 	static async getProfileInfo(): Promise<ProfileResponse> {
 		const user = await $api.get<AxiosResponse<ProfileResponse>>('/profile/me');
 		console.log(user.data);

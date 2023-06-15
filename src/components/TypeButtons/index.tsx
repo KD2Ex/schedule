@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps} from "@mui/material";
+import {ToggleButton, ToggleButtonGroup, ToggleButtonGroupProps, useMediaQuery} from "@mui/material";
 import {SCHEDULE_ENTITY} from "../../models/enums/SCHEDULE_ENTITY";
 import {IScheduleEntity} from "../../models/interfaces/IScheduleEntity";
 import {ScheduleEntityType} from "../../models/enums/ScheduleEntityType";
@@ -16,7 +16,6 @@ interface TypeButtonsProps extends ToggleButtonGroupProps {
 }
 
 
-
 const TypeButtons: FC<TypeButtonsProps> = ({filterType, setFilterType, setFilterValue, ...props}) => {
 
 	const handelTypeAlignment = (event: React.MouseEvent<HTMLElement>, newFilter: ScheduleEntityType) => {
@@ -27,12 +26,19 @@ const TypeButtons: FC<TypeButtonsProps> = ({filterType, setFilterType, setFilter
 		}
 	}
 
+	const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'))
+
 	return (
 		<ToggleButtonGroup
 			onChange={handelTypeAlignment}
 			value={filterType.value}
 			{...props}
-			sx={{padding: 0, '.MuiToggleButtonGroup-grouped': {padding: {xs: 1.5, sm: 2}}}}
+			sx={{
+				padding: 0,
+				'.MuiToggleButtonGroup-grouped': {padding: {xs: 1.5, sm: 2}},
+				width: isMobile ? '100%' : 'auto',
+				justifyContent: 'center',
+		}}
 		>
 			<ToggleButton value={ScheduleEntityType.GROUP} sx={{padding: 0}} >
 				Группы

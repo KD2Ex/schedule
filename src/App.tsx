@@ -7,10 +7,13 @@ import CssBaseline from "@mui/material/CssBaseline";
 import {AuthContext, ColorContext, ColorModeContext, ScheduleModalContext} from "./context";
 import {publicRoutes, routes} from "./router/routes";
 import {redirect} from "react-router-dom";
-import {useMediaQuery} from "@mui/material";
+import {Alert, Snackbar, useMediaQuery} from "@mui/material";
 import {observer} from "mobx-react-lite";
 import user from './store/user'
 import {router} from "./router";
+import {useVK} from "./hooks/useVK";
+import GlobalAlert from "./components/GlobalAlert/GlobalAlert";
+import alert from "./store/alerts";
 
 const App = observer(() => {
 
@@ -20,11 +23,13 @@ const App = observer(() => {
 	const [selectedSchedule, setSelectedSchedule] = useState(null);
 
 	useEffect(() => {
-		//console.log(window.location.toString().split());
+
 		user.checkAuth()
 		console.log('effect1')
 
 	}, [])
+
+	useVK([]);
 
 	const colorMode = useMemo(() => ({
 		toggleColorMode: () => {
@@ -72,10 +77,17 @@ const App = observer(() => {
 						<ThemeProvider theme={theme}>
 							<CssBaseline/>
 							<RouterProvider router={router}/>
+
+							<GlobalAlert
+								alert={alert.alert}
+							/>
+
 						</ThemeProvider>
 					</ScheduleModalContext.Provider>
 				</ColorContext.Provider>
 			</ColorModeContext.Provider>
+
+
 
 		</>
 	);

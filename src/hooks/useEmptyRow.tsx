@@ -5,7 +5,7 @@ export const useEmptyRow = (number?: number | string, isFirst?: boolean) => {
 
     return (
         <>
-            {number && <TableCell rowSpan={isFirst ? 2 : null} >
+            {number && <TableCell rowSpan={isFirst ? 2 : null} sx={{textAlign: 'center'}} >
                 {number}
             </TableCell>}
 

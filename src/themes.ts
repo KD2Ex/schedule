@@ -14,22 +14,23 @@ export const getMode = (mode: any) => (
                 disabled: 'primary.main',
                 disabledBackground: 'primary.main',
                 active: 'rgb(3, 29, 96, 0.82)',
-                hover: 'rgba(208,208,208,0.82)',
+                /*hover: 'rgba(208,208,208,0.82)',*/
                 selected: 'rgba(0,19,69,0.82)',
             },
             primary: {
                 main: "rgba(3, 29, 96, 0.82)",
+                /*main: "rgba(232,232,232,0.82)",*/
                 contrastText: 'rgba(255,255,255,0.82)',
                 //main: "rgba(81,130,255,0.82)",
                 //index: "rgba(3, 29, 96, 0.05)",
                 pale: "rgba(182,182,182,0.82)",
-                contrastPale: "rgba(255,255,255,0.82)",
+                contrastPale: "rgba(247,247,247,0.82)",
             },
             secondary: {
                 //main: "rgb(255, 255, 255)",
                 main: "rgb(3, 29, 96, 0.82)",
-                linked: 'rgba(32,163,45,0.82)',
-                nonLinked: 'rgb(255,44,44)',
+                success: 'rgba(32,163,45,0.82)',
+                error: 'rgb(255,44,44)',
 
             },
             text: {
@@ -41,6 +42,9 @@ export const getMode = (mode: any) => (
             background: {
                 default: 'rgb(255,255,255)',
                 paper: 'rgb(255,255,255)',
+                block: 'rgba(238,238,238,0.63)',
+                dialog: 'rgb(238,238,238)',
+                accent: 'rgba(234,234,234,0.82)',
             },
             mode: "light"
         }
@@ -50,22 +54,25 @@ export const getMode = (mode: any) => (
                 disabledBackground: 'primary.main',
                 active: 'rgba(210,210,210,0.82)',
                 //hover: 'rgba(83,83,83,0.82)',
-                hover: 'rgba(0,19,69,0.82)',
+                /*hover: 'rgba(0,19,69,0.82)',*/
                 selected: 'rgba(0,19,69,0.82)',
             },
             primary: {
                 main: "rgb(255,255,255)",
-                contrastText: 'rgba(0,0,0,0.82)',
+                /*main: "rgb(38,37,37)",*/
+                contrastText: 'rgba(24,24,24,0.82)',
                 //main: "rgba(81,130,255,0.82)",
                 //index: "rgba(3, 29, 96, 0.05)",
                 pale: "rgba(78,78,78,0.82)",
                 contrastPale: 'rgba(24,24,24,0.82)',
+                //contrastPale: 'rgba(33,32,32,0.63)',
             },
             secondary: {
                 //main: "rgb(255, 255, 255)",
-                main: "rgb(3, 29, 96, 0.82)",
-                linked: 'rgba(104,252,140,0.91)',
-                nonLinked: 'rgb(255,44,44)',
+                /*main: "rgb(3, 29, 96, 0.82)",*/
+                main: "rgba(3, 29, 96, 0.82)",
+                success: 'rgba(104,252,140,0.91)',
+                error: 'rgb(255,44,44)',
                 hover: "rgba(22,47,118,0.84)",
                 lightMain: "rgba(3,29,96,0.82)",
             },
@@ -76,7 +83,10 @@ export const getMode = (mode: any) => (
 
             },
             background: {
-                default: 'rgb(21,21,21)'
+                default: 'rgb(21,21,21)',
+                block: 'rgba(33,32,32,0.63)',
+                dialog: 'rgb(28,28,28)',
+                accent: 'rgb(51,51,51)',
             },
             mode: 'dark'
         }

@@ -17,6 +17,9 @@ export const replacedStyle = {
 export const rowOneStyle = {
 	'& td': {
 		px: 1,
+	},
+	'&>:nth-of-type(1)': {
+		textAlign: 'center'
 	}
 }
 
@@ -27,6 +30,7 @@ export const rowDoubleStyle = {
 		px: 1,
 	},
 	'&>:nth-of-type(1)': {
-		borderRight: (theme) => `1px solid ${theme.palette.primary.pale}`
+		borderRight: (theme) => `1px solid ${theme.palette.primary.pale}`,
+		textAlign: 'center'
 	}
 }

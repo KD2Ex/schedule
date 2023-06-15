@@ -2,6 +2,6 @@ import {styled, Typography, TypographyProps} from "@mui/material";
 
 
 export const SettingTypography = styled(Typography)<TypographyProps>( ({theme}) => ({
-	fontWeight: 'bold',
+	fontWeight: 'light',
 	fontSize: 16,
 }))

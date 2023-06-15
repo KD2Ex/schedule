@@ -19,6 +19,8 @@ const MainPage = () => {
 			<Box sx={{padding: '1rem'}}>
 				<Outlet/>
 			</Box>
+
+
 		</div>
 	);
 };
