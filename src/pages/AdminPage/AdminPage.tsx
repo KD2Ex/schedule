@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {observer} from "mobx-react-lite";
 import {Box, Button, Container, Grid, Paper} from "@mui/material";
 import teacher from "../../store/teacher";
@@ -9,6 +9,10 @@ import subject from "../../store/subject";
 import rooms from "../../store/rooms";
 import moment from "moment";
 import {Link, Outlet} from 'react-router-dom';
+import ScheduleEditDialog from "../../components/Dialogs/ScheduleEditDialog/ScheduleEditDialog";
+import {ScheduleModalContext} from "../../context";
+import GlobalAlert from "../../components/GlobalAlert/GlobalAlert";
+import alert from "../../store/alerts";
 
 const AdminPage = observer(() => {
 
@@ -36,6 +40,9 @@ const AdminPage = observer(() => {
 			</Container>
 
 			<Outlet/>
+
+
+
 
 		</>
 

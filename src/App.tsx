@@ -14,6 +14,7 @@ import {router} from "./router";
 import {useVK} from "./hooks/useVK";
 import GlobalAlert from "./components/GlobalAlert/GlobalAlert";
 import alert from "./store/alerts";
+import ScheduleEditDialog from "./components/Dialogs/ScheduleEditDialog/ScheduleEditDialog";
 
 const App = observer(() => {
 
@@ -64,26 +65,20 @@ const App = observer(() => {
 	//console.log(user.isAuth)
 	//console.log(localStorage.getItem('token') )
 
+	console.log('arpp')
+
 	return (
 		<>
 			<ColorModeContext.Provider value={colorMode}>
 				<ColorContext.Provider value={mode}>
-					<ScheduleModalContext.Provider value={{
-						scheduleModalOpen,
-						setScheduleModalOpen,
-						selectedSchedule,
-						setSelectedSchedule
-					}}>
+
 						<ThemeProvider theme={theme}>
 							<CssBaseline/>
 							<RouterProvider router={router}/>
 
-							<GlobalAlert
-								alert={alert.alert}
-							/>
+
 
 						</ThemeProvider>
-					</ScheduleModalContext.Provider>
 				</ColorContext.Provider>
 			</ColorModeContext.Provider>
 

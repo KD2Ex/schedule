@@ -2,16 +2,20 @@ import {makeAutoObservable, runInAction} from "mobx";
 import axios from "axios";
 import {LessonType} from "../models/enums/LessonType";
 import {ScheduleEntityType} from "../models/enums/ScheduleEntityType";
-import {runInNewContext} from "vm";
 import UserScheduleService from "../api/services/UserScheduleService";
-import {fetchSchedule} from "../api/services/ScheduleService";
+import ScheduleService from "../api/services/ScheduleService";
+import {IUploadedSchedule} from "../models/interfaces/IUploadedSchedule";
 
 class Schedule {
 	weekSchedule: any = [];
+	newSchedule: IUploadedSchedule = [];
 	currentData: any = {};
 	firstPair: number = 0;
 	lastPair: number = 4;
 	isLoading: boolean = false;
+
+	editableSchedule = []
+
 
 	mockSchedule: any = [
 
@@ -19,6 +23,10 @@ class Schedule {
 
 	constructor() {
 		makeAutoObservable(this);
+	}
+
+	setEditableSchedule(schedule) {
+		this.editableSchedule = schedule
 	}
 
 	getFirstPair() {
@@ -48,11 +56,16 @@ class Schedule {
 	async fetchSchedule(date, replaced, type, entity ) {
 		if (!this.isLoading) {
 			this.isLoading = true;
-			const newSchedule = await fetchSchedule(date, replaced, type, entity);
+			const newSchedule = await ScheduleService.fetchSchedule(date, replaced, type, entity);
 			this.weekSchedule = newSchedule
 			this.firstPair = this.getFirstPair();
 			this.lastPair = this.getLastPair();
 		}
+	}
+
+	async fetchSavedSchedule(date: string) {
+		const schedule = await ScheduleService.fetchSavedSchedule(date);
+		this.newSchedule = schedule;
 	}
 
 	async setIsLoading(value: boolean) {
@@ -90,7 +103,7 @@ class Schedule {
 
 	getDate(week: number) {
 
-		let date: number[] = [];
+		let date: string = '';
 
 		if (this.currentData.firstWeek) {
 			switch (week) {
@@ -123,8 +136,8 @@ class Schedule {
 				}
 			}
 		}
-
-		const result = date?.filter((item: number) => true);
+		return date;
+		const result = date.split('-')?.map((item: string) => Number(item));
 		if (result) {
 
 			if (result[2] < 30) {

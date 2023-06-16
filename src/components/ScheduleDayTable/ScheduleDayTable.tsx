@@ -11,9 +11,13 @@ import { getColumns } from '../../utils/stringFormatters';
 import {ScheduleModalContext} from "../../context";
 import {replacedStyle, rowOneStyle} from "../ScheduleRows/TableRowsMuiStyles";
 import RowOne from "../ScheduleRows/RowOne/RowOne";
+import IPair from "../../models/interfaces/IPair";
+import alerts from "../../store/alerts";
+import schedule from "../../store/schedule";
 
 interface DayGridProps {
-	rows: IScheduleDay,
+	rows: IPair[],
+	header: string,
 	isSelected: boolean,
 	isReplacementEnabled: boolean,
 	filterType: IScheduleEntity;
@@ -28,6 +32,7 @@ const color = `rgba(0, 68, 255, 0.82)`
 const ScheduleDayTable: React.FC<DayGridProps> = memo(
 	({
 		rows,
+		header,
 		isSelected,
 		isReplacementEnabled,
 		filterType,
@@ -38,13 +43,13 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 	}) => {
 
 
-		const {scheduleModalOpen, setScheduleModalOpen,selectedSchedule,setSelectedSchedule} = useContext(ScheduleModalContext);
 
+	console.log('scheduleTable')
 
 	const handleClick = () => {
 		if (clickable) {
-			setSelectedSchedule(rows);
-			setScheduleModalOpen(true);
+			console.log('click')
+			schedule.setEditableSchedule(rows);
 		}
 	}
 
@@ -56,7 +61,7 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 	const fillStartingPairs = () => {
 
 		const resultRows: any[] = []
-		const firstPairNumber = rows.pairs[0].number;
+		const firstPairNumber = rows[0].number;
 
 		for (let i = minPairNumber; i < firstPairNumber; i++) {
 
@@ -77,8 +82,8 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 	const fillEndingPairs = () => {
 
 		let lastPairNumber = minPairNumber - 1;
-		if (rows.pairs.length !== 0) {
-			lastPairNumber = rows.pairs[rows.pairs.length - 1].number;
+		if (rows.length !== 0) {
+			lastPairNumber = rows[rows.length - 1].number;
 		}
 		const resultRows: any[] = []
 
@@ -106,8 +111,7 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 
 			<ScheduleDayHeader
 				isSelected={isSelected}
-				dayNumber={rows.number - 1}
-				date={rows.date}
+				header={header}
 				isReplaced={isReplacementEnabled}
 			/>
 
@@ -146,11 +150,11 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 
 					<TableBody className={styles.tableRow}>
 
-						{rows.pairs.length !== 0 && fillStartingPairs()}
+						{rows.length !== 0 && fillStartingPairs()}
 
 
 
-							{rows.pairs.map((item, index) => (
+							{rows.map((item, index) => (
 								useScheduleRow(item, filterType, index, editable)
 
 								/*<TableRow

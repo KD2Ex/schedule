@@ -1,43 +1,106 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Box, Button, Container, Grid, List, ListItemButton, ListItemText} from "@mui/material";
-import Css from './EditSchedulePage.module.css';
-import ScheduleDayDataGrid from "../../components/ScheduleDayDataGrid/ScheduleDayDataGrid";
-import {getColumns} from "../../utils/stringFormatters";
+import React, {useContext, useEffect, useRef, useState} from 'react';
+import {Box, Button, Grid} from "@mui/material";
 import {SCHEDULE_ENTITY} from "../../models/enums/SCHEDULE_ENTITY";
-import IScheduleDay from "../../models/interfaces/IScheduleDay";
-import {fetchSchedule} from "../../api/services/ScheduleService";
-import {scheduleTypeConvert} from "../../utils/converters";
+import ScheduleEditDialog from "../../components/Dialogs/ScheduleEditDialog/ScheduleEditDialog";
+import {ScheduleModalContext} from "../../context";
+import ScheduleDatePicker from "../../components/ScheduleDatePicker/ScheduleDatePicker";
+import dayjs from "dayjs";
+import 'filepond/dist/filepond.min.css';
+import {FilePond} from 'react-filepond';
+import './EditSchedulePage.css'
+import ScheduleService from "../../api/services/ScheduleService";
 import schedule from "../../store/schedule";
 import ScheduleDayTable from "../../components/ScheduleDayTable/ScheduleDayTable";
 import {ScheduleEntityType} from "../../models/enums/ScheduleEntityType";
-import ScheduleEditDialog from "../../components/Dialogs/ScheduleEditDialog/ScheduleEditDialog";
-import {ScheduleModalContext} from "../../context";
+import {observer} from "mobx-react-lite";
+import LoadedSchedule from "../../components/LoadedSchedule/LoadedSchedule";
 
-const EditSchedulePage = () => {
+/*export const loader = async () => {
+	await ScheduleService.fetchSavedSchedule();
+	return null;
+}*/
+
+const EditSchedulePage = observer(() => {
 
 	const [scheduleType, setScheduleType] = useState<SCHEDULE_ENTITY>(SCHEDULE_ENTITY.GROUP);
 	const [selectedIndex, setSelectedIndex] = useState<number>(1);
+	const [files, setFiles] = useState([]);
+	const [date, setDate] = useState(dayjs())
 
-	/*const rows: IScheduleDay = {
-		number: 1,
-		pairs: [
 
-		]
-	}*/
 
-	const {scheduleModalOpen, setScheduleModalOpen, selectedSchedule} = useContext(ScheduleModalContext);
+	const filePond = useRef(null);
 
+	useEffect(() => {
+
+
+
+		/*(async () => {
+
+		})()*/
+
+	}, [selectedIndex])
+
+	console.log('editPage')
 
 	useEffect(() => {
 
 		(async () => {
+			console.log('date changed')
+			const localeDate = date.toISOString().split('T')[0]
+
+			await schedule.fetchSavedSchedule(localeDate);
+
+			console.log(schedule.newSchedule)
 
 		})()
 
-	}, [selectedIndex])
+	}, [date])
+
+	useEffect(() => {
+
+
+
+		// @ts-ignore
+		console.log(filePond.current._pond.setOptions({
+			server: {
+				url: 'https://kkep.su/api2/schedule/update',
+				// @ts-ignore
+				process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
+					const formData = new FormData();
+					formData.append('file', file);
+					formData.append('date', date.toISOString().split('T')[0]);
+					console.log(formData.entries())
+					console.log(date.toISOString())
+					console.log(formData);
+					console.log(await ScheduleService.updateSchedule(formData)
+						.then(response => {
+							load(response.data)
+						}))
+					console.log('process')
+					setFiles([file])
+
+
+				}
+			}
+		}))
+	}, [date])
+
 
 	return (
 		<Box>
+
+			<ScheduleDatePicker
+				date={date}
+				setDate={setDate}
+			/>
+
+			<FilePond
+				files={files}
+				allowMultiple={false}
+				onupdatefiles={setFiles}
+				ref={filePond}
+			/>
 
 
 			<Box sx={{
@@ -49,45 +112,13 @@ const EditSchedulePage = () => {
 				</Button>
 			</Box>
 
-			<Grid container spacing={2}>
-				{schedule.weekSchedule.map(item => (
-					<Grid item xs={4}>
-						<ScheduleDayTable
-							rows={item}
-							isSelected={false}
-							isReplacementEnabled={false}
-							filterType={{value: ScheduleEntityType.GROUP, title: SCHEDULE_ENTITY.GROUP}}
-							maxPairNumber={schedule.lastPair}
-							minPairNumber={schedule.firstPair}
-							clickable
-						/>
-					</Grid>
-				))}
-				{schedule.weekSchedule.map(item => (
-					<Grid item xs={4}>
-						<ScheduleDayTable
-							rows={item}
-							isSelected={false}
-							isReplacementEnabled={false}
-							filterType={{value: ScheduleEntityType.GROUP, title: SCHEDULE_ENTITY.GROUP}}
-							maxPairNumber={schedule.lastPair}
-							minPairNumber={schedule.firstPair}
-							clickable
-						/>
-					</Grid>
-				))}
-			</Grid>
+			<LoadedSchedule newSchedule={schedule.newSchedule}/>
 
 
 
-			<ScheduleEditDialog
-				open={scheduleModalOpen}
-				setOpen={setScheduleModalOpen}
-				scheduleDay={selectedSchedule}
-			/>
 
 		</Box>
 	);
-};
+});
 
 export default EditSchedulePage;

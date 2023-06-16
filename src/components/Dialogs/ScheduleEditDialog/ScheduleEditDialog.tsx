@@ -1,4 +1,4 @@
-import React, {FC, useMemo} from 'react';
+import React, {FC, memo, useContext, useEffect, useMemo, useState} from 'react';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Modal, Typography, useTheme} from "@mui/material";
 import IScheduleDay from "../../../models/interfaces/IScheduleDay";
 import ScheduleDayTable from "../../ScheduleDayTable/ScheduleDayTable";
@@ -6,24 +6,34 @@ import {IScheduleEntity} from "../../../models/interfaces/IScheduleEntity";
 import {ScheduleEntityType} from "../../../models/enums/ScheduleEntityType";
 import {SCHEDULE_ENTITY} from "../../../models/enums/SCHEDULE_ENTITY";
 import schedule from "../../../store/schedule";
+import {ScheduleModalContext} from "../../../context";
+import {observer} from "mobx-react-lite";
 
 interface ScheduleEditDialogProps {
-    open: boolean,
-    setOpen: React.Dispatch<boolean>,
-    scheduleDay: IScheduleDay,
+
 }
 
-const ScheduleEditDialog: FC<ScheduleEditDialogProps> = ({open, setOpen, scheduleDay}) => {
+const ScheduleEditDialog: FC<ScheduleEditDialogProps> = observer(() => {
+
+    const [open, setOpen] = useState(false);
+
 
     const handleClose = () => {
         setOpen(false);
     }
 
-    if (!scheduleDay) {
+    useEffect(() => {
+
+        setOpen(true);
+
+    }, [JSON.stringify(schedule.editableSchedule)])
+
+
+    if (!schedule.editableSchedule) {
+        console.log(schedule.editableSchedule)
+
         return (<></>)
     }
-
-    console.log(open)
 
     const theme = useTheme()
 
@@ -44,13 +54,13 @@ const ScheduleEditDialog: FC<ScheduleEditDialogProps> = ({open, setOpen, schedul
             <DialogTitle>
 
                 <Typography variant={'h4'}>
-                    Расписание группы {scheduleDay.pairs[0].lessons[0].group} на {new Date(scheduleDay.date * 1000).toLocaleDateString()}
+                    Расписание группы {schedule.editableSchedule[0]?.lessons[0].group} на {new Date( 1000).toLocaleDateString()}
                 </Typography>
             </DialogTitle>
 
             <DialogContent>
-                {scheduleDay &&  <ScheduleDayTable
-                    rows={scheduleDay}
+                {schedule.editableSchedule &&  <ScheduleDayTable
+                    rows={schedule.editableSchedule}
                     isSelected={true}
                     isReplacementEnabled={false}
                     filterType={{value: ScheduleEntityType.GROUP, title: SCHEDULE_ENTITY.GROUP} as IScheduleEntity}
@@ -72,6 +82,6 @@ const ScheduleEditDialog: FC<ScheduleEditDialogProps> = ({open, setOpen, schedul
 
         </Dialog>
     );
-};
+});
 
 export default ScheduleEditDialog;

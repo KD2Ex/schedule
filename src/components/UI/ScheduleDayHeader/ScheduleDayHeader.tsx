@@ -4,8 +4,9 @@ import {WEEK_DAYS} from "../../../models/enums/WeekDays";
 
 interface ScheduleDayHeaderProps {
 	isSelected: boolean,
-	dayNumber: number,
-	date: Date,
+	/*dayNumber: number,
+	date: Date,*/
+	header: string,
 	isReplaced: boolean,
 }
 
@@ -19,12 +20,12 @@ const weekDays = [
 	WEEK_DAYS.SUNDAY,
 ]
 
-const ScheduleDayHeader: FC<ScheduleDayHeaderProps> = ({isSelected, dayNumber, date, isReplaced}) => {
+const ScheduleDayHeader: FC<ScheduleDayHeaderProps> = ({isSelected,header, isReplaced}) => {
 
 	const bgColor = isSelected ? "primary.main" : "background.default";
 	const fontColor = isSelected ? "primary.contrastText" : "primary.main";
 
-	const currentDate = new Date(date * 1000);
+	//const currentDate = date;
 	//console.log(currentDate)
 
 	return (
@@ -37,11 +38,10 @@ const ScheduleDayHeader: FC<ScheduleDayHeaderProps> = ({isSelected, dayNumber, d
 			borderBottom: "0px",
 			backgroundColor: bgColor}}>
 			<Typography sx={{color: fontColor, px: 1}} >
-				{weekDays[dayNumber] + ' '}
-				{isReplaced ? (currentDate.getDate() + '.' + '0' +
-					(currentDate.getMonth() + 1) + '.' +
-					currentDate.getFullYear()) : null
-				}
+				{/*{weekDays[dayNumber] + ' '}
+				{isReplaced ? (date) : ''
+				}*/}
+				{header}
 			</Typography>
 
 		</Box>

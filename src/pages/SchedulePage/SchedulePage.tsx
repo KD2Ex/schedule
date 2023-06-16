@@ -6,30 +6,20 @@ import {
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import ScheduleDayTable from '../../components/ScheduleDayTable/ScheduleDayTable';
 import {observer} from "mobx-react-lite";
-import room from "../../store/rooms";
 import {SCHEDULE_ENTITY} from '../../models/enums/SCHEDULE_ENTITY'
 import TypeButtons from "../../components/TypeButtons";
-import {getColumns} from "../../utils/stringFormatters";
 import {ScheduleEntityType} from "../../models/enums/ScheduleEntityType";
-import {fetchSchedule} from "../../api/services/ScheduleService";
 import IScheduleDay from "../../models/interfaces/IScheduleDay";
-import UserScheduleService from "../../api/services/UserScheduleService";
 import {AutocompleteOption} from "../../models/interfaces/IAutocompleteOption";
 import schedule from "../../store/schedule";
-import compareEntity, {CompareObject} from "../../utils/compareFunctions/compareEntity";
 import {IScheduleEntity} from "../../models/interfaces/IScheduleEntity";
 import switchFetching from "../../utils/switchFetching";
-import IPair from "../../models/interfaces/IPair";
-import {LessonType} from "../../models/enums/LessonType";
-import { ScheduleTooltip } from '../../components/styled/TooltippedCell';
 import ScheduleFilter from '../../components/ScheduleFilter/ScheduleFilter';
-import { emptyDay } from './data';
 import { fillDays } from '../../utils/fillDays';
 import ScheduleSkeleton from "../../components/ScheduleSkeleton/ScheduleSkeleton";
 
 
 export const loader = async () => {
-	console.log('loader')
 	return null
 }
 
@@ -57,6 +47,7 @@ const SchedulePage = observer(() => {
 				//setIsScheduleLoading(true);
 
 				const ISODate = schedule.getDate(isPrevWeek ? 0 : week)
+				console.log(ISODate)
 				await schedule.fetchSchedule(
 					ISODate,
 					isReplaceActive,
@@ -82,7 +73,6 @@ const SchedulePage = observer(() => {
 		(async () => {
 			//setIsScheduleLoading(true);
 			await schedule.fetchCurrentData();
-			console.log('mount')
 			schedule.setIsLoading(false);
 
 			console.log(schedule.currentData)
@@ -131,7 +121,6 @@ const SchedulePage = observer(() => {
 		return isEmpty;
 	}
 
-	console.log('render')
 
 	return (
 		<>
@@ -284,8 +273,10 @@ const SchedulePage = observer(() => {
 						<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
 							<ScheduleDayTable
 								key={index}
-								rows={item}
-								isSelected={new Date(item.date * 1000).toLocaleDateString() === new Date().toLocaleDateString()}
+								header={'header'}
+								clickable={true}
+								rows={item.pairs}
+								isSelected={item.date === new Date().toISOString().split('T')[0] && isReplaceActive}
 								isReplacementEnabled={isReplaceActive}
 								filterType={filterType}
 								maxPairNumber={schedule.lastPair}

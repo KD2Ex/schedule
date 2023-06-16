@@ -6,3 +6,8 @@
     gap: 1rem;
     align-items: center;
 }
+
+
+.filepond--panel-root {
+    background-color: #3a3939;
+}

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_URL = 'https://kkep.su/api';
+export const API_URL = 'https://kkep.su/api2';
 
 const $api = axios.create({
 	withCredentials: true,
