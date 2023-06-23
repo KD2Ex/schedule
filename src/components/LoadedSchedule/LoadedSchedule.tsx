@@ -17,15 +17,15 @@ const LoadedSchedule = observer(({newSchedule}) => {
 
     return (
         <>
-            <Grid container spacing={2}>
+            <Grid item container spacing={2} xs>
 
                 {newSchedule?.lessons?.map((group, index) => (
-                    <Grid item xs={4}>
+                    <Grid item xs={12} md={6} lg={4}>
                         <ScheduleDayTable
                             key={group[0].lessons[0].id}
                             rows={group}
                             isSelected={false}
-                            isReplacementEnabled={false}
+                            isReplacementEnabled={true}
                             header={group[0].lessons[0].group}
                             filterType={
                                 {
@@ -33,9 +33,10 @@ const LoadedSchedule = observer(({newSchedule}) => {
                                     title: SCHEDULE_ENTITY.GROUP
                                 }
                             }
-                            maxPairNumber={schedule.lastPair}
                             minPairNumber={schedule.firstPair}
+                            maxPairNumber={schedule.lastPair}
                             clickable={true}
+
                         />
                     </Grid>
 

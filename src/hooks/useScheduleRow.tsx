@@ -7,29 +7,30 @@ import RowDouble from "../components/ScheduleRows/RowDouble";
 import React from "react";
 import {TableCell, TableRow} from "@mui/material";
 import {replacedStyle, rowDoubleStyle, rowOneStyle} from "../components/ScheduleRows/TableRowsMuiStyles";
+import schedule from "../store/schedule";
 
-export const useScheduleRow = (pair: IPair, filterType, key: number, editable: boolean) => {
+export const useScheduleRow = (pair: IPair, filterType, key: number, editable: boolean, isReplacementEnabled: boolean) => {
 
     const cells: string[][] = [[pair.number.toString()], []];
 
     pair.lessons.forEach((lesson, index) => {
         switch (filterType.title) {
             case SCHEDULE_ENTITY.GROUP: {
-                cells[index].push(pair.lessons[index].teacher);
-                cells[index].push(pair.lessons[index].subject);
-                cells[index].push(pair.lessons[index].room);
+                cells[index]?.push(pair.lessons[index].teacher);
+                cells[index]?.push(pair.lessons[index].subject);
+                cells[index]?.push(pair.lessons[index].room);
                 break;
             }
             case SCHEDULE_ENTITY.TEACHER: {
-                cells[index].push(pair.lessons[index].group);
-                cells[index].push(pair.lessons[index].subject);
-                cells[index].push(pair.lessons[index].room);
+                cells[index]?.push(pair.lessons[index].group);
+                cells[index]?.push(pair.lessons[index].subject);
+                cells[index]?.push(pair.lessons[index].room);
                 break;
             }
             case SCHEDULE_ENTITY.ROOM: {
-                cells[index].push(pair.lessons[index].teacher);
-                cells[index].push(pair.lessons[index].subject);
-                cells[index].push(pair.lessons[index].group);
+                cells[index]?.push(pair.lessons[index].teacher);
+                cells[index]?.push(pair.lessons[index].subject);
+                cells[index]?.push(pair.lessons[index].group);
                 break;
             }
         }
@@ -38,13 +39,13 @@ export const useScheduleRow = (pair: IPair, filterType, key: number, editable: b
 
     let replaces: boolean[] = [false, false];
 
-   /* if (isReplacementEnabled) {
+    if (isReplacementEnabled) {
         replaces = [
             pair.lessons[0]?.replacement,
             pair.type === LessonType.DOUBLE && pair.lessons[1]?.replacement
         ]
 
-    }*/
+    }
 
 
 
@@ -54,6 +55,7 @@ export const useScheduleRow = (pair: IPair, filterType, key: number, editable: b
         case LessonType.ONE: {
             return (
                 <RowOne
+                    id={pair.lessons[0]?.id}
                     editable={editable}
                     key={key}
                     row={cells[0]}

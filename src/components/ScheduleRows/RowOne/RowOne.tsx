@@ -1,20 +1,23 @@
-import React, {FC} from 'react';
-import {Checkbox, TableCell, TableRow, TableRowProps} from "@mui/material";
+import React, {FC, useEffect, useState} from 'react';
+import {Checkbox, TableCell, TableRow, TableRowProps, useTheme} from "@mui/material";
 import {replacedStyle, rowOneStyle} from "../TableRowsMuiStyles";
 import TooltippedCell from "../../styled/TooltippedCell";
 import styles from './RowOne.module.css'
 import {useEmptyRow} from "../../../hooks/useEmptyRow";
 import CheckBoxCell from "../../CheckBoxCell/CheckBoxCell";
+import schedule from "../../../store/schedule";
+import {observer} from "mobx-react-lite";
 
 interface TableRowOneProps {
 	row?: string[];
 	isReplaced: boolean;
 	isEmpty: boolean,
-	editable: boolean
+	editable: boolean,
+	id: number
 }
 
 
-const RowOne: FC<TableRowOneProps> = ({row, isReplaced, isEmpty, editable}) => {
+const RowOne: FC<TableRowOneProps> = observer(({row, isReplaced, isEmpty, editable, id}) => {
 
 
 /*	let styles = {
@@ -23,14 +26,61 @@ const RowOne: FC<TableRowOneProps> = ({row, isReplaced, isEmpty, editable}) => {
 		}
 	}*/
 
+	const theme = useTheme();
+	const [hidden, setHidden] = useState<boolean>(
+		!!schedule.newSchedule?.hideLessons?.find(item => item === id)
+	)
+	const [styles, setStyles] = useState(isReplaced ? {...rowOneStyle, ...replacedStyle} : {...rowOneStyle})
+
+	useEffect(() => {
+
+		if (hidden) {
+			setStyles({...styles, opacity: 0.5})
+		} else {
+			setStyles({...styles, opacity: 'none'})
+		}
 
 
-	const styles = isReplaced ? {...rowOneStyle, ...replacedStyle} : {...rowOneStyle}
+	}, [hidden])
+
+	useEffect(() => {
+
+		setHidden(!!schedule.newSchedule.hideLessons?.find(item => item === id))
+
+	}, [JSON.stringify(schedule.newSchedule?.hideLessons)])
+
+	useEffect(() => {
+		setStyles(isReplaced ? {...rowOneStyle, ...replacedStyle} : {...rowOneStyle})
+	}, [isReplaced])
+
+	const handleHide = () => {
+		if (hidden) {
+			setHidden(false);
+			schedule.showLesson(id)
+		} else {
+			setHidden(true)
+			schedule.hideLesson(id)
+		}
+	}
+
+	if (id === 117) {
+		console.log(hidden)
+	}
+
 
 	return (
-		<TableRow sx={styles}>
+		<TableRow
+			sx={{
+				...styles,
+			}}
+		>
 			{editable &&
-				<CheckBoxCell rowSpan={1}/>
+				<CheckBoxCell
+					rowSpan={1}
+					value={hidden}
+					handleCheck={handleHide}
+					id={id}
+				/>
 			}
 			{isEmpty
 				? useEmptyRow(row[0])
@@ -45,6 +95,6 @@ const RowOne: FC<TableRowOneProps> = ({row, isReplaced, isEmpty, editable}) => {
 
 
 	);
-};
+});
 
 export default RowOne;

@@ -10,15 +10,7 @@ interface ScheduleDayHeaderProps {
 	isReplaced: boolean,
 }
 
-const weekDays = [
-	WEEK_DAYS.MONDAY,
-	WEEK_DAYS.TUESDAY,
-	WEEK_DAYS.WEDNESDAY,
-	WEEK_DAYS.THURSDAY,
-	WEEK_DAYS.FRIDAY,
-	WEEK_DAYS.SATURDAY,
-	WEEK_DAYS.SUNDAY,
-]
+
 
 const ScheduleDayHeader: FC<ScheduleDayHeaderProps> = ({isSelected,header, isReplaced}) => {
 

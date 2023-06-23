@@ -25,6 +25,7 @@ export const getMode = (mode: any) => (
                 //index: "rgba(3, 29, 96, 0.05)",
                 pale: "rgba(182,182,182,0.82)",
                 contrastPale: "rgba(247,247,247,0.82)",
+                fileLoader: 'rgb(48,70,125)'
             },
             secondary: {
                 //main: "rgb(255, 255, 255)",
@@ -43,7 +44,7 @@ export const getMode = (mode: any) => (
                 default: 'rgb(255,255,255)',
                 paper: 'rgb(255,255,255)',
                 block: 'rgba(238,238,238,0.63)',
-                dialog: 'rgb(238,238,238)',
+                dialog: 'rgb(255,255,255)',
                 accent: 'rgba(234,234,234,0.82)',
             },
             mode: "light"

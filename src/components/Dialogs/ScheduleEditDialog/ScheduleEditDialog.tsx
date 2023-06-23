@@ -20,20 +20,33 @@ const ScheduleEditDialog: FC<ScheduleEditDialogProps> = observer(() => {
 
     const handleClose = () => {
         setOpen(false);
+        schedule.rejectEditing();
+        const timer = setTimeout(() => schedule.setEditableSchedule([]), 150)
+
+    }
+
+    const handleSave = () => {
+        console.log(schedule.hiddenLessons)
+        console.log(schedule.showedLessons)
+
+        schedule.updateHiddenLessons();
+
+        console.log(schedule.editableSchedule[0].lessons[0].group)
+        schedule.addEditedSchedule(schedule.editableSchedule[0].lessons[0].group)
+
+        setOpen(false);
+        const timer = setTimeout(() => schedule.setEditableSchedule([]), 600)
+
     }
 
     useEffect(() => {
 
-        setOpen(true);
+        if (schedule.editableSchedule.length !== 0) {
+            setOpen(true);
+        }
 
     }, [JSON.stringify(schedule.editableSchedule)])
 
-
-    if (!schedule.editableSchedule) {
-        console.log(schedule.editableSchedule)
-
-        return (<></>)
-    }
 
     const theme = useTheme()
 
@@ -54,25 +67,30 @@ const ScheduleEditDialog: FC<ScheduleEditDialogProps> = observer(() => {
             <DialogTitle>
 
                 <Typography variant={'h4'}>
-                    Расписание группы {schedule.editableSchedule[0]?.lessons[0].group} на {new Date( 1000).toLocaleDateString()}
+                    Расписание группы {schedule.editableSchedule[0]?.lessons[0].group} на {schedule.editDate.toDate().toLocaleDateString()}
+
                 </Typography>
             </DialogTitle>
 
             <DialogContent>
                 {schedule.editableSchedule &&  <ScheduleDayTable
                     rows={schedule.editableSchedule}
-                    isSelected={true}
-                    isReplacementEnabled={false}
+                    header={schedule.editableSchedule[0]?.lessons[0].group}
+                    isSelected={false}
+                    isReplacementEnabled={true}
                     filterType={{value: ScheduleEntityType.GROUP, title: SCHEDULE_ENTITY.GROUP} as IScheduleEntity}
-                    maxPairNumber={schedule.lastPair}
-                    minPairNumber={schedule.firstPair}
+                    /*maxPairNumber={schedule.lastPair}
+                    minPairNumber={schedule.firstPair}*/
                     editable
                 />}
 
             </DialogContent>
 
             <DialogActions>
-                <Button variant={'contained'}>
+                <Button
+                    variant={'contained'}
+                    onClick={handleSave}
+                >
                     Сохранить
                 </Button>
                 <Button>

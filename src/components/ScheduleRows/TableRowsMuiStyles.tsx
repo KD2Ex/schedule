@@ -5,11 +5,12 @@ import {useTheme} from "@mui/material";
 //const color = theme.palette.mode === 'light' ? `rgba(67, 137, 255, 0.62)` :  `rgba(5, 59, 149, 0.62)`;
 //const color = `rgba(0, 68, 255, 0.82)`;
 //(81, 190, 255, 0.68)
+//rgba(3, 29, 96, 0.82)
 
 export const replacedStyle = {
-	boxShadow: (theme) => `inset 0px 0px 50px 30px 
-	${theme.palette.mode === 'light' ? `rgba(81, 190, 255, 0.68)` :  `rgba(5, 59, 149, 0.62)`}`,
-
+	boxShadow: (theme) => `inset 0px 0px 15px 28px 
+	${theme.palette.mode === 'light' ? `rgba(87, 194, 255, 0.68)` :  `rgba(5, 59, 149, 0.62)`}`,
+	//'& td': {color: (theme) => `${theme.palette.primary.contrastText}`}
 	// '& MuiTableCell-root': {
 	// }
 }

@@ -5,14 +5,19 @@ import {ScheduleEntityType} from "../models/enums/ScheduleEntityType";
 import UserScheduleService from "../api/services/UserScheduleService";
 import ScheduleService from "../api/services/ScheduleService";
 import {IUploadedSchedule} from "../models/interfaces/IUploadedSchedule";
+import dayjs, {Dayjs} from "dayjs";
 
 class Schedule {
 	weekSchedule: any = [];
-	newSchedule: IUploadedSchedule = [];
+	newSchedule: IUploadedSchedule = {};
 	currentData: any = {};
 	firstPair: number = 0;
 	lastPair: number = 4;
 	isLoading: boolean = false;
+	editDate: Dayjs = dayjs();
+	editedSchedules: string[] = []
+	showedLessons: number[] = []
+	hiddenLessons: number[] = []
 
 	editableSchedule = []
 
@@ -25,72 +30,136 @@ class Schedule {
 		makeAutoObservable(this);
 	}
 
+	addEditedSchedule(group: string) {
+
+		if (!this.editedSchedules.find(item => item === group)) {
+			this.editedSchedules.push(group)
+		}
+	}
+
+	setEditDate(date: Dayjs) {
+		this.editDate = date;
+	}
+
 	setEditableSchedule(schedule) {
+		console.log(schedule)
 		this.editableSchedule = schedule
 	}
 
-	getFirstPair() {
+	getFirstPair(schedule) {
 		let minPair = 1;
-		this.weekSchedule.forEach(day => {
-			if (day.pairs.length === 0) return;
-			day.pairs[0].number === 0 ? minPair = 0 : null
-		})
+		if (schedule[0]?.hasOwnProperty('pairs')) {
+			schedule?.forEach(day => {
+				if (day.pairs.length === 0) return;
+				day.pairs[0].number < minPair ? minPair = day.pairs[0].number : null
+			})
+		} else {
+			schedule.forEach(item => {
+
+				if (item[0].number < minPair) {
+					minPair = item[0].number;
+				}
+
+			})
+		}
 
 		return minPair;
 	}
 
-	getLastPair() {
+	getLastPair(schedule) {
 		let maxPairs = 0;
-		this.weekSchedule.forEach(day => {
-			if (day.pairs.length === 0) return;
-			day.pairs[day.pairs.length - 1].number > maxPairs ? maxPairs = day.pairs[day.pairs.length - 1].number : null
-		})
-		console.log(maxPairs)
+
+		if (schedule[0]?.hasOwnProperty('pairs')) {
+			schedule?.forEach(day => {
+				if (day.pairs.length === 0) return;
+				if (day.pairs[day.pairs.length - 1].number > maxPairs) {
+					maxPairs = day.pairs[day.pairs.length - 1].number
+				}
+			})
+		} else {
+			schedule.forEach(item => {
+
+				if (item[item.length - 1].number > maxPairs) {
+					maxPairs = item[item.length - 1].number;
+				}
+			})
+		}
+
+
 		return maxPairs;
+	}
+
+	hideLesson(id: number) {
+		//this.newSchedule.hideLessons.push(id);
+		this.hiddenLessons.push(id)
+		if (!!this.showedLessons.find(item => item === id)) {
+			console.log('wtf')
+			this.showedLessons = this.showedLessons.filter(item => item !== id);
+		}
+	}
+
+	showLesson(id: number) {
+		//this.newSchedule.hideLessons = this.newSchedule.hideLessons.filter(item => item !== id);
+		this.showedLessons.push(id)
+		if (!!this.hiddenLessons.find(item => item === id)) {
+			this.hiddenLessons = this.hiddenLessons.filter(item => item !== id);
+		}
+	}
+
+	updateHiddenLessons() {
+
+		const newSchedule = [...new Set(this.newSchedule.hideLessons
+			.concat(this.hiddenLessons)
+			.filter(item => !this.showedLessons.includes(item)))];
+
+		console.log(newSchedule)
+
+		this.newSchedule.hideLessons = newSchedule;
+	}
+
+	rejectEditing() {
+		this.hiddenLessons = [];
+		this.showedLessons = [];
 	}
 
 	clearSchedule() {
 		this.weekSchedule = [];
 	}
 
-	async fetchSchedule(date, replaced, type, entity ) {
+	clearNewSchedule() {
+		this.newSchedule = {
+			lessons: [],
+			type: 'NONE',
+			hideLessons: []
+		}
+	}
+
+	async fetchSchedule(date, replaced, type, entity) {
 		if (!this.isLoading) {
 			this.isLoading = true;
 			const newSchedule = await ScheduleService.fetchSchedule(date, replaced, type, entity);
 			this.weekSchedule = newSchedule
-			this.firstPair = this.getFirstPair();
-			this.lastPair = this.getLastPair();
+			console.log(newSchedule)
+			this.firstPair = this.getFirstPair(newSchedule);
+			this.lastPair = this.getLastPair(newSchedule);
+
+			console.log(this.firstPair)
+			console.log(this.lastPair)
 		}
 	}
 
 	async fetchSavedSchedule(date: string) {
 		const schedule = await ScheduleService.fetchSavedSchedule(date);
+		console.log(schedule)
+		this.firstPair = this.getFirstPair(schedule.lessons);
+		this.lastPair = this.getLastPair(schedule.lessons);
+		console.log(this.firstPair)
+		console.log(this.lastPair)
 		this.newSchedule = schedule;
 	}
 
 	async setIsLoading(value: boolean) {
 		this.isLoading = value;
-	}
-
-	async fetchWeekSchedule(weekNumber: number, isReplacement: boolean, type: ScheduleEntityType, id: number) {
-
-		const firstWeek: boolean = weekNumber === 1;
-		const result = await axios.get(`http://91.223.199.62:8080/api/schedule`, {
-			params: {
-				firstWeek: firstWeek,
-				replacement: isReplacement,
-				type: type,
-				entityId: id,
-			}
-		}).catch((reason) => {
-			console.log(reason)
-		})
-		console.log(result.data.response)
-		this.weekSchedule = result.data.response;
-
-		/*runInAction(() => {
-		})*/
-		console.log(this.weekSchedule)
 	}
 
 	async fetchCurrentData() {
@@ -137,7 +206,7 @@ class Schedule {
 			}
 		}
 		return date;
-		const result = date.split('-')?.map((item: string) => Number(item));
+	/*	const result = date.split('-')?.map((item: string) => Number(item));
 		if (result) {
 
 			if (result[2] < 30) {
@@ -150,7 +219,7 @@ class Schedule {
 			return new Date([...result]).toISOString()
 		}
 
-		return null
+		return null*/
 
 	}
 

@@ -17,6 +17,7 @@ import switchFetching from "../../utils/switchFetching";
 import ScheduleFilter from '../../components/ScheduleFilter/ScheduleFilter';
 import { fillDays } from '../../utils/fillDays';
 import ScheduleSkeleton from "../../components/ScheduleSkeleton/ScheduleSkeleton";
+import {weekDays} from "../../models/consts/weekDays";
 
 
 export const loader = async () => {
@@ -273,8 +274,12 @@ const SchedulePage = observer(() => {
 						<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
 							<ScheduleDayTable
 								key={index}
-								header={'header'}
-								clickable={true}
+								header={
+									`
+									${weekDays[new Date(item.date).getDay() - 1]} 
+									${isReplaceActive ? new Date(item.date).toLocaleDateString() : ''}
+									`
+								}
 								rows={item.pairs}
 								isSelected={item.date === new Date().toISOString().split('T')[0] && isReplaceActive}
 								isReplacementEnabled={isReplaceActive}

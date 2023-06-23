@@ -14,6 +14,8 @@ import RowOne from "../ScheduleRows/RowOne/RowOne";
 import IPair from "../../models/interfaces/IPair";
 import alerts from "../../store/alerts";
 import schedule from "../../store/schedule";
+import {observer} from "mobx-react-lite";
+import {isEdited} from "../../utils/isEdited";
 
 interface DayGridProps {
 	rows: IPair[],
@@ -29,7 +31,7 @@ interface DayGridProps {
 
 const color = `rgba(0, 68, 255, 0.82)`
 
-const ScheduleDayTable: React.FC<DayGridProps> = memo(
+const ScheduleDayTable: React.FC<DayGridProps> = observer(
 	({
 		rows,
 		header,
@@ -71,7 +73,7 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 					isReplaced={false}
 					editable={editable}
 					isEmpty={true}
-					row={[i]}
+					row={[i.toString()]}
 				/>)
 		}
 
@@ -95,7 +97,7 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 					isReplaced={false}
 					editable={editable}
 					isEmpty={true}
-					row={[i]}
+					row={[i.toString()]}
 				/>)
 		}
 
@@ -117,16 +119,19 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 
 			<TableContainer
 				sx={{
-					border: "1px solid",
-					borderColor: "primary.pale",
-					borderRadius: "0px 4px 4px 4px",
+					border: isEdited(rows[0]?.lessons[0]?.group)
+						? `${theme.palette.primary.main} 2px solid`
+						: `${theme.palette.primary.pale} 1px solid`,
 
+					borderRadius: "0px 4px 4px 4px",
+					transition: '200ms',
 					'&:hover': clickable && {
 						bgcolor: theme.palette.background.block,
 						opacity: 1,
-						transition: '200ms'
-					}
+					},
+					scrollMargin: '50px',
 				}}
+				id={rows[0]?.lessons[0]?.group}
 				onClick={handleClick}
 			>
 				<Table
@@ -148,30 +153,17 @@ const ScheduleDayTable: React.FC<DayGridProps> = memo(
 						</TableRow>
 					</TableHead>
 
-					<TableBody className={styles.tableRow}>
+					<TableBody
+						className={[styles.tableRow, styles.hidden].join(' ')}
+
+					>
 
 						{rows.length !== 0 && fillStartingPairs()}
 
-
-
 							{rows.map((item, index) => (
-								useScheduleRow(item, filterType, index, editable)
+								useScheduleRow(item, filterType, index, editable, isReplacementEnabled)
 
-								/*<TableRow
-									sx={rowStyles}
-								>
-
-								</TableRow>*/
 							))}
-						{/*return useScheduleRow(item, filterType, index, editable);*/}
-
-
-						{/*{rows.pairs.map((pair, index, arr) => {
-								return getTableRowN(
-									pair, index
-								)
-							}
-						)}*/}
 
 						{fillEndingPairs()}
 					</TableBody>
