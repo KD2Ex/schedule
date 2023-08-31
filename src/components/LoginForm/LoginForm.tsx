@@ -13,6 +13,7 @@ import kkeplogo from '../../styles/logos/kkep.svg'
 import {GITHUB_AUTH_URL, GOOGLE_AUTH_URL, VK_AUTH_URL} from "../../api/http/urls";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import css from './LoginForm.module.css';
+import alerts from "../../store/alerts";
 
 const LoginForm: FC = observer(() => {
 
@@ -23,8 +24,14 @@ const LoginForm: FC = observer(() => {
 
 
 	const handleLogin = async () => {
-		await user.login(username, password);
-		navigate('/schedule')
+
+		if (await user.login(username, password)) {
+			navigate('/schedule');
+			alerts.openInfoAlert('Вы успешно авторизованы')
+		} else {
+			alerts.openErrorAlert('Неверное имя пользователя или пароль');
+		}
+
 	}
 
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -36,9 +43,9 @@ const LoginForm: FC = observer(() => {
 
 	return (
 
-			<Box className={styles.loginBox} sx={{borderColor: (theme) => theme.palette.primary.pale}}>
-
-
+			<Box className={styles.loginBox}
+				 sx={{borderColor: (theme) => theme.palette.primary.pale}}
+			>
 				<TextField
 					placeholder={'Email'}
 					value={username}
@@ -77,25 +84,35 @@ const LoginForm: FC = observer(() => {
 				</Button>
 
 
-				<Divider sx={{width: '100%'}} variant={'middle'}>ИЛИ</Divider>
-				<Typography>
-					Авторизуйтесь через
-				</Typography>
-				<Box sx={{m: 0}}>
-					<IconButton onClick={() => user.loginWithServices(VK_AUTH_URL)}>
-						<img src={vklogo} style={{width: '32px', height: '32px', margin: 0}}/>
-					</IconButton>
-					<IconButton onClick={() => user.loginWithServices(GOOGLE_AUTH_URL)}>
-						{/*<GoogleIcon sx={{width: '32px', height: '32px', margin: 0}}/>*/}
-						<img src={gllogo} style={{width: '32px', height: '32px', margin: 0}}/>
-					</IconButton>
-					<IconButton onClick={() => user.loginWithServices(GITHUB_AUTH_URL)}>
-						<GitHubIcon sx={{width: '32px', height: '32px', margin: 0, color: (theme) => theme.palette.mode === 'light'
-								? 'black'
-								: 'white'
-						}}/>
-					</IconButton>
+				<Divider sx={{width: '100%', pt: 1}} variant={'middle'}>ИЛИ</Divider>
+
+				<Box sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+				}}>
+
+
+					<Typography>
+						Авторизуйтесь через
+					</Typography>
+					<Box sx={{m: 0}}>
+						<IconButton onClick={() => user.loginWithServices(VK_AUTH_URL)}>
+							<img src={vklogo} style={{width: '32px', height: '32px', margin: 0}}/>
+						</IconButton>
+						{/*<IconButton onClick={() => user.loginWithServices(GOOGLE_AUTH_URL)}>
+							<GoogleIcon sx={{width: '32px', height: '32px', margin: 0}}/>
+							<img src={gllogo} style={{width: '32px', height: '32px', margin: 0}}/>
+						</IconButton>
+						<IconButton onClick={() => user.loginWithServices(GITHUB_AUTH_URL)}>
+							<GitHubIcon sx={{width: '32px', height: '32px', margin: 0, color: (theme) => theme.palette.mode === 'light'
+									? 'black'
+									: 'white'
+							}}/>
+						</IconButton>*/}
+					</Box>
 				</Box>
+
 
 			</Box>
 

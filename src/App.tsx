@@ -5,23 +5,26 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {getMode, themeObject} from "./themes";
 import CssBaseline from "@mui/material/CssBaseline";
 import {AuthContext, ColorContext, ColorModeContext, ScheduleModalContext} from "./context";
-import {publicRoutes, routes} from "./router/routes";
-import {redirect} from "react-router-dom";
 import {Alert, Snackbar, useMediaQuery} from "@mui/material";
 import {observer} from "mobx-react-lite";
 import user from './store/user'
 import {router} from "./router";
 import {useVK} from "./hooks/useVK";
-import GlobalAlert from "./components/GlobalAlert/GlobalAlert";
+import { ruRU } from '@mui/x-data-grid'
 import alert from "./store/alerts";
-import ScheduleEditDialog from "./components/Dialogs/ScheduleEditDialog/ScheduleEditDialog";
+import GlobalAlert from "./components/GlobalAlert/GlobalAlert";
 
 const App = observer(() => {
 
 	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
+	const initialModeState = localStorage.getItem('mode') ? localStorage.getItem('mode') : prefersDarkMode;
+
 	const [mode, setMode] = useState<'light' | 'dark'>(prefersDarkMode ? 'dark' : 'light');
 	const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
 	const [selectedSchedule, setSelectedSchedule] = useState(null);
+
+
 
 	useEffect(() => {
 
@@ -34,7 +37,13 @@ const App = observer(() => {
 
 	const colorMode = useMemo(() => ({
 		toggleColorMode: () => {
-			setMode((prevMode) => (prevMode === 'light' ? 'dark' : "light"))
+			let prev: 'light' | 'dark' = 'light';
+
+			setMode((prevMode) => {
+				prevMode === 'light' ? prev = 'dark' : prev = "light"
+				return prev;
+			})
+			localStorage.setItem('mode', prev)
 		}
 	}), [])
 
@@ -60,6 +69,7 @@ const App = observer(() => {
 			...themeColorMode
 		},
 		...themeObject,
+		ruRU,
 	})
 
 	//console.log(user.isAuth)
@@ -76,8 +86,9 @@ const App = observer(() => {
 							<CssBaseline/>
 							<RouterProvider router={router}/>
 
-
-
+							<GlobalAlert
+								alert={alert.alert}
+							/>
 						</ThemeProvider>
 				</ColorContext.Provider>
 			</ColorModeContext.Provider>

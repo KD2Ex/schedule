@@ -26,6 +26,10 @@ class Alerts {
         this.alert = {message: message, severity: 'warning'};
     }
 
+	openInfoAlert(message: string) {
+		this.alert = {message: message, severity: 'info'};
+	}
+
 }
 
 export default new Alerts();

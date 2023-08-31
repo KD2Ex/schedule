@@ -5,6 +5,10 @@ import {SocialType} from "../../models/types/SocialType";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import styles from '../LinkedAccount/LinkedAccount.module.css'
+import AuthService from "../../api/services/AuthService";
+import user from "../../store/user";
+import {GITHUB_AUTH_URL, GOOGLE_AUTH_URL, REDIRECT_URL, VK_AUTH_URL, VK_LINK_URL} from "../../api/http/urls";
+import {API_URL} from "../../api/http";
 
 interface LinkedAccountProps {
 	type: SocialType,
@@ -12,6 +16,8 @@ interface LinkedAccountProps {
 }
 
 const LinkedAccount: FC<LinkedAccountProps> = ({isLinked, type}) => {
+
+
 
 	/*return (
 		<Box className={styles.flex}>
@@ -50,6 +56,39 @@ const LinkedAccount: FC<LinkedAccountProps> = ({isLinked, type}) => {
 			</Box>
 		</Box>
 	)*/
+
+
+	const handleClick = async () => {
+
+		// let url = '';
+		//
+		// switch (type) {
+		// 	case "VK": {
+		// 		url = VK_AUTH_URL;
+		// 		break;
+		// 	}
+		// 	case "GITHUB": {
+		// 		url = GITHUB_AUTH_URL;
+		// 		break;
+		// 	}
+		// 	case "GOOGLE": {
+		// 		url = GOOGLE_AUTH_URL;
+		// 		break;
+		// 	}
+		// 	case "TELEGRAM": {
+		// 		url = VK_AUTH_URL;
+		// 		break;
+		// 	}
+		// }
+		//await user.loginWithServices(`${url}&link=1`);
+
+
+		await user.loginWithServices(
+			API_URL + `/oauth2/authorize/${type.toLowerCase()}?redirect_uri=${REDIRECT_URL}&link=1&token_bearer=${localStorage.getItem('token')}`
+		);
+
+	}
+
 	return (
 		<Grid container sx={{alignItems: 'center'}} spacing={2}>
 			<Grid item xs={12} sm={2} lg={3} xl={3}>
@@ -81,7 +120,10 @@ const LinkedAccount: FC<LinkedAccountProps> = ({isLinked, type}) => {
 						Отключить
 					</ProfileButton>
 					:
-					<ProfileButton sx={{width: '100%'}} >
+					<ProfileButton
+						sx={{width: '100%'}}
+						onClick={handleClick}
+					>
 						Подключить
 					</ProfileButton>
 				}

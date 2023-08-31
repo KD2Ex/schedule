@@ -1,15 +1,25 @@
 import React, {useEffect} from 'react';
-import {useLocation, useNavigate, Navigate} from 'react-router-dom';
+import {useLocation, useNavigate, Navigate, useParams, useSearchParams} from 'react-router-dom';
 
 import user from '../../store/user';
 import jwtDecode from "jwt-decode";
 import UserService from "../../api/services/UserService";
 import schedule from "../../store/schedule";
+import {log} from "util";
+import alerts from "../../store/alerts";
 
 const OAuth2RedirectHandler = () => {
 
 	const location = useLocation();
 	const navigation = useNavigate();
+
+	let [searchParams, setSearchParams] = useSearchParams();
+	const query = new URLSearchParams(window.location.search);
+
+	//searchParams.forEach((item) => console.log(item))
+	console.log(searchParams.get('accessToken'))
+	console.log(searchParams.get('expiry'))
+	console.log(searchParams.get('refreshToken'))
 
 	function getUrlParameter(name: string) {
 		name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -23,16 +33,26 @@ const OAuth2RedirectHandler = () => {
 
 	console.log(window.location.toString())
 	console.log(window.location.toString().split('=')[1]);
-	localStorage.setItem('token',window.location.toString().split('=')[1])
-	user.setAuth(true);
+
+
+	if (searchParams.get('accessToken') != null) {
+		localStorage.setItem('token', searchParams.get('accessToken'))
+		user.setAuth(true);
+
+		alerts.openInfoAlert('Вы успешно авторизованы')
+
+		return (
+			<Navigate to={"/schedule"}/>
+		);
+	} else {
+		return (
+			<Navigate to={'/error'}/>
+		)
+	}
 /*
 	const func = async () => {
 		await UserService.getLoggedUser();
 	}*/
-
-	return (
-		<Navigate to={"/schedule"}/>
-	);
 };
 
 export default OAuth2RedirectHandler;

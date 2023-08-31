@@ -28,8 +28,6 @@ const EditSchedulePage = observer(() => {
 	const [selectedIndex, setSelectedIndex] = useState<number>(1);
 	const [date, setDate] = useState(dayjs())
 
-
-
 	const handleHover = () => {
 
 	}

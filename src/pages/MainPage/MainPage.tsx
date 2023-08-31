@@ -25,9 +25,7 @@ const MainPage = observer(() => {
 
 			</Box>
 
-			<GlobalAlert
-				alert={alert.alert}
-			/>
+
 
 			<ScheduleEditDialog
 

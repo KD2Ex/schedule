@@ -140,7 +140,7 @@ export const themeObject = {
         MuiInputLabel: {
             styleOverrides: {
                 root: {
-                    padding: "-1px",
+                    //padding: "-1px",
                     fontSize: 14,
                 }
             }

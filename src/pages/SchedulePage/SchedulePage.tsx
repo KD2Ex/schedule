@@ -35,6 +35,7 @@ const SchedulePage = observer(() => {
 	);
 	const [isPrevWeek, setIsPrevWeek] = useState(false);
 
+
 	const date = new Date();
 	const currentDay = date.getDay() - 1;
 
@@ -49,11 +50,11 @@ const SchedulePage = observer(() => {
 
 				const ISODate = schedule.getDate(isPrevWeek ? 0 : week)
 				console.log(ISODate)
-				await schedule.fetchSchedule(
+				console.log(await schedule.fetchSchedule(
 					ISODate,
 					isReplaceActive,
 					filterType.value,
-					filterValue.id)
+					filterValue.id))
 				//setIsScheduleLoading(false);
 				schedule.setIsLoading(false);
 
@@ -73,7 +74,9 @@ const SchedulePage = observer(() => {
 
 		(async () => {
 			//setIsScheduleLoading(true);
-			await schedule.fetchCurrentData();
+			await schedule.fetchCurrentData().catch((error) => {
+				console.log('err: ' + error)
+			});
 			schedule.setIsLoading(false);
 
 			console.log(schedule.currentData)
@@ -259,21 +262,18 @@ const SchedulePage = observer(() => {
 
 			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
 
-
-			{/*	{isScheduleLoading && [1,2,3,4,5,6].map(item => (
-					<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
-						<ScheduleSkeleton/>
-					</Grid2>
-				))}*/}
+				{
+					schedule.error && <p>{schedule.error.code}</p>
+				}
 
 				{
 					!schedule.isLoading
 						? filterValue !== null
 						&& !isScheduleEmpty()
 					? schedule.weekSchedule.map((item: IScheduleDay, index: React.Key | null | undefined) => (
-						<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
+						<Grid2 key={index} xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
 							<ScheduleDayTable
-								key={index}
+
 								header={
 									`
 									${weekDays[new Date(item.date).getDay() - 1]} 
@@ -295,8 +295,8 @@ const SchedulePage = observer(() => {
 								justifyContent: 'center',
 								height: '100%'
 							}}>Пар нет!</h1>
-						: [1,2,3,4,5,6].map(item => (
-							<Grid2 xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
+						: [1,2,3,4,5,6].map((item, index) => (
+							<Grid2 key={index} xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
 								<ScheduleSkeleton/>
 							</Grid2>
 						))
@@ -305,14 +305,6 @@ const SchedulePage = observer(() => {
 
 
 				{filterValue !== null && !isScheduleEmpty() && fillDays()}
-			{/*	{filterValue !== null && isScheduleEmpty() && !isScheduleLoading && <h1 style={{
-					display: 'flex',
-					margin: 'auto',
-					alignItems: 'center',
-					justifyContent: 'center',
-					height: '100%'
-				}}>Пар нет!</h1>}
-*/}
 
 			</Grid2>
 

@@ -3,6 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 1em;
     flex-direction: column;
     padding: 2em;
     border: 0.1em solid;
@@ -10,13 +11,6 @@
     width: 350px;
 }
 
-.loginBox * {
-    margin-bottom: 1em;
-}
-
-.loginBox span{
-    margin-top: 1em;
-}
 
 input:-webkit-autofill,
 .MuiInputBase-root:has(+ input:-webkit-autofill) {

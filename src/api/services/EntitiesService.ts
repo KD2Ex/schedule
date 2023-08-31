@@ -12,7 +12,7 @@ export const fetchEntities = async (type: ScheduleEntityType) => {
 		console.log(reason)
 		return [];
 	})
-	console.log(result.data.response)
+	console.log(result)
 
 	// if (type === ScheduleEntityType.ROOM) {
 	// 	result.data.response.entities = result.data.response.entities.filter((item) => )

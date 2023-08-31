@@ -14,6 +14,7 @@ class Teacher {
 
 	async fetchTeachers() {
 		const result = await fetchEntities(ScheduleEntityType.TEACHER)
+		console.log(result)
 		this.teachers = result.filter((item : ITeacher) => item.fullName !== '?');
 	}
 

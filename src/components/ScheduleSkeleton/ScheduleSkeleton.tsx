@@ -29,9 +29,9 @@ const ScheduleSkeleton = () => {
             />
            {/* <Skeleton animation={'wave'} variant={'rounded'} width={'100%'} height={250}/>*/}
 
-            {[1,2,3,4,5,6].map(item => (
+            {[1,2,3,4,5,6].map((item, index) => (
                 <>
-                    <Skeleton animation={'wave'} variant={'text'} width={'100%'} height={30}/>
+                    <Skeleton key={index} animation={'wave'} variant={'text'} width={'100%'} height={30}/>
                 </>
 
             ))}

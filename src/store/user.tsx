@@ -6,6 +6,7 @@ import {AuthResponse} from "../models/response/AuthResponse";
 import {API_URL} from "../api/http";
 import {VK_AUTH_URL} from "../api/http/urls";
 import UserService from "../api/services/UserService";
+import alerts from "./alerts";
 
 
 class User {
@@ -35,11 +36,12 @@ class User {
 		try {
 			const response = await AuthService.login(email, password);
 			console.log(response)
-			localStorage.setItem('token', response.data.accessToken);
+			localStorage.setItem('token', response.data.response.accessToken);
 			this.setAuth(true);
+			return true;
 			//this.setUser({id: '1', email:'qwer@mail.ru', isAcitvated: true});
 		} catch (e) {
-			console.log(e.response?.data?.message);
+			return false;
 		}
 	}
 
@@ -73,12 +75,18 @@ class User {
 		}
 	}
 
+	linkSocial(url: string) {
+
+	}
+
 	// getLoggedUser()
 
 	logout() {
 		this.setAuth(false);
 		this.setPretendingToAuth(false);
 		localStorage.clear();
+
+		alerts.openWarningAlert('Вы вышли из системы')
 	}
 
 	loginPretending() {

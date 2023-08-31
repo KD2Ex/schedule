@@ -18,9 +18,8 @@ class Schedule {
 	editedSchedules: string[] = []
 	showedLessons: number[] = []
 	hiddenLessons: number[] = []
-
 	editableSchedule = []
-
+	error: any;
 
 	mockSchedule: any = [
 
@@ -165,7 +164,7 @@ class Schedule {
 	async fetchCurrentData() {
 		if (!this.isLoading) {
 			this.isLoading = true;
-			this.currentData = await UserScheduleService.getCurrentData()			
+			this.currentData = await UserScheduleService.getCurrentData()
 		}
 
 	}
@@ -221,6 +220,14 @@ class Schedule {
 
 		return null*/
 
+	}
+
+	setError(error: any) {
+		this.error = error;
+	}
+
+	removeError() {
+		this.error = null;
 	}
 
 }

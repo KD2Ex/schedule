@@ -41,7 +41,12 @@ const NavBar = observer(() =>  {
 	return (
 			<Box sx={{flexGrow: 1}}>
 
-				<AppBar position='sticky' sx={{maxHeight: '90px'}} className={styles.appBar}>
+				<AppBar position='sticky'
+						sx={{
+							maxHeight: '90px',
+							zIndex: '1400',
+						}}
+						className={styles.appBar}>
 
 					<Toolbar disableGutters sx={{
 						position: 'sticky'
@@ -73,9 +78,9 @@ const NavBar = observer(() =>  {
 							}} >
 								Расписание
 							</NavBarButton>
-				{/*			<Button sx={{color: 'white'}} component={link} to="/edit" >
+							<Button sx={{color: 'white'}} component={link} to="/edit" >
 								Редактирование
-							</Button>*/}
+							</Button>
 
 
 
