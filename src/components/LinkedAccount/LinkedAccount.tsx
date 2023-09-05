@@ -89,6 +89,10 @@ const LinkedAccount: FC<LinkedAccountProps> = ({isLinked, type}) => {
 
 	}
 
+	const handleRemove = async () => {
+		await user.unlinkSocial(type)
+	}
+
 	return (
 		<Grid container sx={{alignItems: 'center'}} spacing={2}>
 			<Grid item xs={12} sm={2} lg={3} xl={3}>
@@ -116,7 +120,10 @@ const LinkedAccount: FC<LinkedAccountProps> = ({isLinked, type}) => {
 			<Grid item sx={{flexGrow: 0}} xs={12} sm={3} lg={12} xl={3}>
 				{isLinked
 					?
-					<ProfileButton sx={{width: '100%'}}>
+					<ProfileButton
+						sx={{width: '100%'}}
+						onClick={handleRemove}
+					>
 						Отключить
 					</ProfileButton>
 					:

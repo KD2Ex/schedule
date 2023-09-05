@@ -157,6 +157,17 @@ class Schedule {
 		this.newSchedule = schedule;
 	}
 
+	async saveSchedule(date: string, hideLessons: number[]) {
+
+		try {
+			const response = await ScheduleService.saveSchedule(date, hideLessons);
+			console.log(response);
+			alert('Расписание успешно сохранено')
+		} catch (e) {
+
+		}
+	}
+
 	async setIsLoading(value: boolean) {
 		this.isLoading = value;
 	}

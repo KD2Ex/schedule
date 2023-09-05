@@ -122,7 +122,6 @@ const ScheduleDayTable: React.FC<DayGridProps> = observer(
 					border: isEdited(rows[0]?.lessons[0]?.group)
 						? `${theme.palette.primary.main} 2px solid`
 						: `${theme.palette.primary.pale} 1px solid`,
-
 					borderRadius: "0px 4px 4px 4px",
 					transition: '200ms',
 					'&:hover': clickable && {
@@ -137,7 +136,6 @@ const ScheduleDayTable: React.FC<DayGridProps> = observer(
 				<Table
 					sx={{
 						tableLayout: 'fixed',
-
 					}}
 				>
 					<TableHead>

@@ -49,5 +49,16 @@ export default class ScheduleService {
 		console.log(response.data.response)
 		return response.data.response
 	}
+
+	static async saveSchedule(date: string, hideLessons: number[]) {
+
+		console.log(date, hideLessons)
+
+		return $api.post('/schedule/save', {
+			date: date,
+			hideLessons: hideLessons
+		})
+
+	}
 }
 

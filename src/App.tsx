@@ -13,6 +13,8 @@ import {useVK} from "./hooks/useVK";
 import { ruRU } from '@mui/x-data-grid'
 import alert from "./store/alerts";
 import GlobalAlert from "./components/GlobalAlert/GlobalAlert";
+import alerts from "./store/alerts";
+import Loader from "./components/Loader/Loader";
 
 const App = observer(() => {
 
@@ -20,7 +22,7 @@ const App = observer(() => {
 
 	const initialModeState = localStorage.getItem('mode') ? localStorage.getItem('mode') : prefersDarkMode;
 
-	const [mode, setMode] = useState<'light' | 'dark'>(prefersDarkMode ? 'dark' : 'light');
+	const [mode, setMode] = useState<'light' | 'dark'>(initialModeState);
 	const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
 	const [selectedSchedule, setSelectedSchedule] = useState(null);
 
@@ -30,6 +32,10 @@ const App = observer(() => {
 
 		user.checkAuth()
 		console.log('effect1')
+
+	}, [])
+
+	useEffect(() => {
 
 	}, [])
 
@@ -89,6 +95,10 @@ const App = observer(() => {
 							<GlobalAlert
 								alert={alert.alert}
 							/>
+							{alerts.isLoading && <Loader/>}
+
+
+
 						</ThemeProvider>
 				</ColorContext.Provider>
 			</ColorModeContext.Provider>

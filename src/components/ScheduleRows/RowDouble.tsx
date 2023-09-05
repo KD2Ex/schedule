@@ -31,7 +31,11 @@ const RowDouble: FC<ScheduleRowDoubleProps> = ({firstRow, secondRow, replaces, e
 				{
 					firstRow.length !== 0
 						? (firstRow.map((item, index, array) => (
-					<TooltippedCell key={index} rowSpan={index === 0 ? 2 : 1} sx={{textAlign: index === 0 && 'center'}}>
+					<TooltippedCell
+						key={index}
+						rowSpan={index === 0 ? 2 : 1}
+						sx={{textAlign: index === 0 && 'center'}}
+					>
 						{item}
 					</TooltippedCell>)))
 						: useEmptyRow(secondRow[0], true)
@@ -48,11 +52,14 @@ const RowDouble: FC<ScheduleRowDoubleProps> = ({firstRow, secondRow, replaces, e
 						? secondRow
 							.slice(firstRow.length !== 0 ? 0 : 1)
 							.map((item, index, array) => (
-							<TooltippedCell key={index} sx={index === 0 && {
+							<TooltippedCell
+								key={index}
+								sx={index === 0 ? {
 								px: '8px !important',
 								borderRight: 'none !important',
 								textAlign: 'start !important'
-							}}>
+							} : {}}
+							>
 								{item}
 							</TooltippedCell>))
 						: useEmptyRow()

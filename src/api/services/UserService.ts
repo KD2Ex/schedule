@@ -45,7 +45,8 @@ export default class UserService {
 	}
 
 	static async removeLinkedNetwork(type: SocialType) {
-		return $api.post('/profile/update/remove_linked_network', {type})
+		console.log(type)
+		return $api.post('/profile/update/remove_linked_network', {type: type})
 	}
 
 

@@ -8,6 +8,7 @@ import {SCHEDULE_ENTITY} from "../../../models/enums/SCHEDULE_ENTITY";
 import schedule from "../../../store/schedule";
 import {ScheduleModalContext} from "../../../context";
 import {observer} from "mobx-react-lite";
+import ContainedButton from "../../styled/ContainedButton";
 
 interface ScheduleEditDialogProps {
 
@@ -87,13 +88,16 @@ const ScheduleEditDialog: FC<ScheduleEditDialogProps> = observer(() => {
             </DialogContent>
 
             <DialogActions>
-                <Button
-                    variant={'contained'}
+                <ContainedButton
                     onClick={handleSave}
+
                 >
                     Сохранить
-                </Button>
-                <Button>
+                </ContainedButton>
+                <Button
+					variant={'outlined'}
+					onClick={handleClose}
+				>
                     Отмена
                 </Button>
             </DialogActions>

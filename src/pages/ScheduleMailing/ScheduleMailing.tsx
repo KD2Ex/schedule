@@ -14,6 +14,7 @@ import user from "../../store/user";
 import {setLoadedOption} from "../../utils/setLoadedOption";
 import {observer} from "mobx-react-lite";
 import alert from "../../store/alerts";
+import ContainedButton from "../../components/styled/ContainedButton";
 
 const ScheduleMailing = observer(() => {
 
@@ -177,18 +178,12 @@ const ScheduleMailing = observer(() => {
             </Grid>
 
             <Grid item xs={12} sx={{gap: 2, display: 'flex', justifyContent: 'flex-end'}}>
-                <Button
-                    variant={'contained'}
-                    sx={{width: '180px', bgcolor: theme.palette.secondary.main, color: 'white',
-                        border:`1px solid ${theme.palette.primary.pale}`,
-                        '&:hover': {bgcolor: theme.palette.secondary.hover}
-                    }}
-
+                <ContainedButton
                     onClick={handleLinkSchedule}
-
                 >
                     Сохранить
-                </Button>
+                </ContainedButton>
+
                 <Button
                     variant={'outlined'}
                     sx={{width: '100px'}}

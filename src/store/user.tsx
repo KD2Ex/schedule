@@ -7,6 +7,7 @@ import {API_URL} from "../api/http";
 import {VK_AUTH_URL} from "../api/http/urls";
 import UserService from "../api/services/UserService";
 import alerts from "./alerts";
+import {SocialType} from "../models/types/SocialType";
 
 
 class User {
@@ -38,10 +39,11 @@ class User {
 			console.log(response)
 			localStorage.setItem('token', response.data.response.accessToken);
 			this.setAuth(true);
-			return true;
+			return {result: true, code: 200};
 			//this.setUser({id: '1', email:'qwer@mail.ru', isAcitvated: true});
 		} catch (e) {
-			return false;
+
+			return {result: false, code: e.code};
 		}
 	}
 
@@ -70,6 +72,14 @@ class User {
 			/*this.setAuth(true);
 			this.setUser({id: '1', email:'qwer@mail.ru', isAcitvated: true});*/
 
+		} catch (e) {
+
+		}
+	}
+
+	async unlinkSocial(type: SocialType) {
+		try {
+			await UserService.removeLinkedNetwork(type)
 		} catch (e) {
 
 		}

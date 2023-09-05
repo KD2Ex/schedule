@@ -20,9 +20,9 @@ const LoadedSchedule = observer(({newSchedule}) => {
             <Grid item container spacing={2} xs>
 
                 {newSchedule?.lessons?.map((group, index) => (
-                    <Grid item xs={12} md={6} lg={4}>
+                    <Grid item xs={12} md={6} lg={4} key={index}>
                         <ScheduleDayTable
-                            key={group[0].lessons[0].id}
+                            //key={group[0].lessons[0].id}
                             rows={group}
                             isSelected={false}
                             isReplacementEnabled={true}

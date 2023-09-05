@@ -5,10 +5,9 @@ import {Box, Skeleton} from "@mui/material";
 
 const ScheduleSkeleton = () => {
 
-
-
     return (
-        <Box sx={{
+        <Box
+			sx={{
             '& span': {
                 '&::after': {
                     /*bgcolor: 'rgba(65,64,64,0.63)',*/
@@ -30,9 +29,12 @@ const ScheduleSkeleton = () => {
            {/* <Skeleton animation={'wave'} variant={'rounded'} width={'100%'} height={250}/>*/}
 
             {[1,2,3,4,5,6].map((item, index) => (
-                <>
-                    <Skeleton key={index} animation={'wave'} variant={'text'} width={'100%'} height={30}/>
-                </>
+				<Skeleton
+					key={item}
+					animation={'wave'}
+					variant={'text'}
+					width={'100%'}
+					height={30}/>
 
             ))}
 

@@ -36,7 +36,7 @@ const Uuid = () => {
             }}>
 
             </Box>*/}
-            <Grid item xs={2}>
+            <Grid item xs={12} md={2}>
                 <Typography
                     variant={'h6'}
                     sx={{
@@ -49,9 +49,12 @@ const Uuid = () => {
 
             <Grid
                 item
-                xs={8}
+                xs={12}
+				md={10}
                 sx={{
-
+					display: 'flex',
+					justifyContent: 'space-between',
+					columnGap: 1,
                 }}
             >
                 <Typography
@@ -59,20 +62,27 @@ const Uuid = () => {
                     sx={{
                         /*bgcolor: `${theme.palette.background.accent}`,*/
                         borderRadius: 1,
-                        p:1,
+						p: 1,
+						width: '100%',
                         border:  `1px solid ${theme.palette.primary.pale}`,
+						fontSize: 13,
+						textAlign: 'center'
                     }}
                     onClick={handleUUIDClick}
                 >
                     52q234wrwe-gserg4-greg-34534ge-34535
                 </Typography>
+
+				<Button
+					sx={{
+						display: {xs: 'none', md: 'flex'}
+					}}
+					variant={'outlined'}
+					onClick={handleCopyToClipboard}>
+					Скопировать
+				</Button>
             </Grid>
 
-           <Grid item xs={2}>
-               <Button onClick={handleCopyToClipboard}>
-                   Скопировать
-               </Button>
-           </Grid>
 
         </>
 

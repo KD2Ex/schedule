@@ -7,6 +7,7 @@ import {SettingsBox} from "../styled/SettingsBox";
 import {isEmailValid} from "../../utils/validators";
 import UserService from "../../api/services/UserService";
 import user from "../../store/user";
+import alerts from "../../store/alerts";
 
 const ProfileInfo = () => {
 
@@ -43,57 +44,58 @@ const ProfileInfo = () => {
     }
 
     const handlePasswordChange = async () => {
-        if (oldPassword !== '' && newPassword !== '') {
-            try {
-                await UserService.updatePassword(oldPassword, newPassword).then(response => {
+        if (oldPassword === '' || newPassword === '') {
+			alerts.openWarningAlert('Введите старый и новый пароль для смены')
+		} else if (oldPassword === newPassword) {
+			alerts.openErrorAlert('Пароли совпадают')
+		} else {
+			try {
+				await UserService.updatePassword(oldPassword, newPassword).then(response => {
 
 
-                    setAlertStatus("success")
-                    setAlertMessage("Пароль успешно сменен")
-                    setOldPassword('');
-                    setNewPassword('');
+					alerts.openSuccessAlert("Пароль успешно сменен")
+					setOldPassword('');
+					setNewPassword('');
 
-                }).catch(error => {
-                    console.log(error.response.data.code)
-                    const code = error.response.data.code;
-                    switch (code) {
-                        case 1: {
-                            setAlertStatus("warning");
-                            setAlertMessage("Введите старый пароль")
-                            break;
-                        }
-                        case 2: {
-                            setAlertStatus("warning");
-                            setAlertMessage("Введите новый пароль")
-                            break;
-                        }
-                        case 3: {
-                            setAlertStatus("error");
-                            setAlertMessage("Действующий пароль не совпадает с введенным")
-                            break;
-                        }case 4: {
-                            setAlertStatus("warning");
-                            setAlertMessage("Пароли совпадают")
-                            break;
-                        }
-                    }
-                }).finally(() => {
-                    setOpenAlerts(true)
-                });
+				}).catch(error => {
+					console.log(error.response.data.code)
+					const code = error.response.data.code;
+					switch (code) {
+						case 1: {
+							alerts.openWarningAlert("Введите старый пароль")
+							break;
+						}
+						case 2: {
+							alerts.openWarningAlert("Введите новый пароль")
+							break;
+						}
+						case 3: {
+							alerts.openErrorAlert("Действующий пароль не совпадает с введенным")
+							break;
+						}case 4: {
+							alerts.openErrorAlert("Пароли совпадают")
+							break;
+						}
+					}
+				}).finally(() => {
+				});
 
-            }
-            catch (e) {
-                console.log(e.message)
-            }
-        }
+			}
+			catch (e) {
+				console.log(e.message)
+			}
+		}
     }
 
     return (
-        <SettingsBox>
+        <SettingsBox
+
+		>
             <Grid
                 container
                 sx={{
                     display: 'flex',
+					mb: 2
                 }}
             >
                 <UUID/>

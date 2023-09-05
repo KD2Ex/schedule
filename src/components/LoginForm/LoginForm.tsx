@@ -25,11 +25,15 @@ const LoginForm: FC = observer(() => {
 
 	const handleLogin = async () => {
 
-		if (await user.login(username, password)) {
+		const response = await user.login(username, password);
+
+		if (response.result) {
 			navigate('/schedule');
 			alerts.openInfoAlert('Вы успешно авторизованы')
 		} else {
-			alerts.openErrorAlert('Неверное имя пользователя или пароль');
+			if (response.code === 403) {
+				alerts.openErrorAlert('Неверное имя пользователя или пароль');
+			}
 		}
 
 	}

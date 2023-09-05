@@ -3,6 +3,7 @@ import {FilePond} from "react-filepond";
 import ScheduleService from "../../api/services/ScheduleService";
 import 'filepond/dist/filepond.min.css';
 import {Box, useTheme} from "@mui/material";
+import schedule from "../../store/schedule";
 
 
 
@@ -28,7 +29,6 @@ const ScheduleFileLoader = ({date}) => {
         // @ts-ignore
         console.log(filePond.current._pond.setOptions({
             server: {
-                url: 'https://kkep.su/api2/schedule/update',
                 // @ts-ignore
                 process: async (fieldName, file, metadata, load, error, progress, abort, transfer, options) => {
                     const formData = new FormData();
@@ -40,6 +40,7 @@ const ScheduleFileLoader = ({date}) => {
                     console.log(await ScheduleService.updateSchedule(formData))
                     console.log('process')
                     setFiles(files)
+					await schedule.fetchSavedSchedule(date.toISOString().split('T')[0]);
                 }
             }
         }))
@@ -53,9 +54,12 @@ const ScheduleFileLoader = ({date}) => {
                 "& div": {
                     '& .filepond--panel-root': {
                         bgcolor: `${theme.palette.primary.fileLoader}`,
-                    },
-                    color: theme.palette.primary.contrastText,
-                    fontFamily: 'SFUIText'
+						border: `1px ${theme.palette.primary.pale} dashed`
+					},
+                    //color: theme.palette.primary.contrastText,
+					color: 'white',
+                    fontFamily: 'SFUIText',
+
                 },
             }}
         >

@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, Fragment, useState} from 'react';
 import {Box, Button, Divider, Drawer, List, ListItem, ListItemButton, Toolbar} from "@mui/material";
 import {Link} from "react-router-dom";
 
@@ -59,13 +59,14 @@ const AdminNavDrawer: FC<AdminNavDrawerProps> = ({open, setOpen}) => {
                 onClick={() => setOpen(false)}
             >
 
-                {lists.map(list => (
-                    <>
+                {lists.map((list, index) => (
+                    <Fragment key={index}>
                         <Divider/>
                         <List
                         >
                             {list.map((item) => (
                                 <ListItem
+									key={item.url}
                                     sx={{
                                         py: 0,
                                     }}
@@ -82,7 +83,7 @@ const AdminNavDrawer: FC<AdminNavDrawerProps> = ({open, setOpen}) => {
                                 </ListItem>
                             ))}
                         </List>
-                    </>
+                    </Fragment>
                 ))}
 
 

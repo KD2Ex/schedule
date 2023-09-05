@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {
-	Autocomplete, Box, Checkbox, FormControlLabel, FormGroup, Skeleton, Switch, TextField, ToggleButton,
-	ToggleButtonGroup, Tooltip
+	Autocomplete, Box, Button, Checkbox, FormControlLabel, FormGroup, Skeleton, Switch, TextField, ToggleButton,
+	ToggleButtonGroup, Tooltip, Typography
 } from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import ScheduleDayTable from '../../components/ScheduleDayTable/ScheduleDayTable';
@@ -84,12 +84,12 @@ const SchedulePage = observer(() => {
 			
 			if (schedule.currentData.type) {
 				setScheduleEntityType({value: schedule.currentData.type, title: SCHEDULE_ENTITY[schedule.currentData.type]});
+				let entity = await switchFetching(schedule.currentData.type);
+				setFilterValue({label: entity.find((item) => item.id === schedule.currentData.entityId)?.fullName, id: schedule.currentData.entityId} as AutocompleteOption)
+
 			}
 
 
-			let entity = await switchFetching(schedule.currentData.type);
-
-			setFilterValue({label: entity.find((item) => item.id === schedule.currentData.entityId)?.fullName, id: schedule.currentData.entityId} as AutocompleteOption)
 			setWeek(schedule.currentData.firstWeek ? 1 : 2);
 			setCurrentWeek(schedule.currentData.firstWeek ? 1 : 2)
 		})()
@@ -263,7 +263,31 @@ const SchedulePage = observer(() => {
 			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
 
 				{
-					schedule.error && <p>{schedule.error.code}</p>
+					/*schedule.error &&
+					<Button
+
+						sx={{
+							display: 'flex',
+							margin: 'auto',
+							p: 1,
+							bgcolor: (theme) => theme.palette.secondary.error,
+							borderRadius: 2,
+							minWidth: '50%',
+							alignItems: 'center',
+							justifyContent: 'center',
+							'&:hover': {
+								backgroundColor: 'rgb(255,60,60)'
+							}
+						}}
+					>
+
+                        <Typography
+							variant={'h6'}
+						>
+							{schedule.error.message}. Нажмите чтобы перезагрузить
+                        </Typography>
+					</Button>*/
+
 				}
 
 				{
@@ -296,7 +320,7 @@ const SchedulePage = observer(() => {
 								height: '100%'
 							}}>Пар нет!</h1>
 						: [1,2,3,4,5,6].map((item, index) => (
-							<Grid2 key={index} xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
+							<Grid2 key={item} xs={12} md={6} lg={4} sx={{borderRadius: 1, mb: {xs: 2, md: 0}}} >
 								<ScheduleSkeleton/>
 							</Grid2>
 						))

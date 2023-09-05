@@ -18,7 +18,8 @@ export const getMode = (mode: any) => (
                 selected: 'rgba(0,19,69,0.82)',
             },
             primary: {
-                main: "rgba(3, 29, 96, 0.82)",
+                //main: "rgba(3, 29, 96, 0.82)",
+                main: "rgb(48, 70, 125)",
                 /*main: "rgba(232,232,232,0.82)",*/
                 contrastText: 'rgba(255,255,255,0.82)',
                 //main: "rgba(81,130,255,0.82)",
@@ -67,14 +68,17 @@ export const getMode = (mode: any) => (
                 pale: "rgba(78,78,78,0.82)",
                 contrastPale: 'rgba(24,24,24,0.82)',
                 //contrastPale: 'rgba(33,32,32,0.63)',
+				fileLoader: 'rgba(24,24,24,0.82)'
             },
             secondary: {
                 //main: "rgb(255, 255, 255)",
                 /*main: "rgb(3, 29, 96, 0.82)",*/
                 main: "rgba(3, 29, 96, 0.82)",
+                main2: "rgb(31,62,162)",
                 success: 'rgba(104,252,140,0.91)',
                 error: 'rgb(255,44,44)',
                 hover: "rgba(22,47,118,0.84)",
+                hover2: "rgba(45,78,176,0.84)",
                 lightMain: "rgba(3,29,96,0.82)",
             },
             text: {

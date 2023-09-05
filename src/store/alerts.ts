@@ -5,6 +5,12 @@ import {AlertType} from "../models/types/AlertType";
 
 class Alerts {
 
+	isLoading = false;
+
+	setIsLoading = (value: boolean) => {
+		this.isLoading = value;
+	}
+
     alert: IAlert = {
         severity: 'success',
         message: 'Success!'

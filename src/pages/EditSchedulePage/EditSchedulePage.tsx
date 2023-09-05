@@ -13,9 +13,9 @@ import {ScheduleEntityType} from "../../models/enums/ScheduleEntityType";
 import {observer} from "mobx-react-lite";
 import LoadedSchedule from "../../components/LoadedSchedule/LoadedSchedule";
 import ScheduleFileLoader from "../../components/ScheduleFileLoader/ScheduleFileLoader";
-import {HashLink} from 'react-router-hash-link'
 import {Link} from "react-router-dom";
 import Bookmarks from "../../components/Bookmarks/Bookmarks";
+import PromptDialog from "../../components/PromptDialog/PromptDialog";
 
 /*export const loader = async () => {
 	await ScheduleService.fetchSavedSchedule();
@@ -26,10 +26,23 @@ const EditSchedulePage = observer(() => {
 
 	const [scheduleType, setScheduleType] = useState<SCHEDULE_ENTITY>(SCHEDULE_ENTITY.GROUP);
 	const [selectedIndex, setSelectedIndex] = useState<number>(1);
+	const [save, setSave] = useState(false);
+	const [open, setOpen] = useState(false)
 	const [date, setDate] = useState(dayjs())
 
-	const handleHover = () => {
 
+	const handleSave = async () => {
+		console.log('save is pending')
+		//await schedule.saveSchedule(date.toISOString().split('T')[0], schedule.newSchedule.hideLessons);
+	}
+
+	const handleClose = (value: boolean) => {
+		setOpen(false)
+		setSave(value);
+	}
+
+	const handleOpen = () => {
+		setOpen(true);
 	}
 
 	useEffect(() => {
@@ -39,6 +52,17 @@ const EditSchedulePage = observer(() => {
 		})()*/
 
 	}, [selectedIndex])
+
+	useEffect(() => {
+
+		(async () => {
+			if (save) {
+				await handleSave();
+			}
+
+		})()
+
+	}, [save])
 
 	console.log('editPage')
 
@@ -99,7 +123,10 @@ const EditSchedulePage = observer(() => {
 				display: 'flex',
 				justifyContent: 'end'
 			}}>
-				<Button variant={'contained'}>
+				<Button
+					variant={'outlined'}
+					onClick={handleOpen}
+				>
 					Сохранить и отправить
 				</Button>
 			</Box>}
@@ -121,14 +148,20 @@ const EditSchedulePage = observer(() => {
 						overflow: 'hidden',
 					}}
 				>
-					{schedule.editedSchedules.map(item => (
-						<Bookmarks item={item}/>
+					{schedule.editedSchedules.map((item, index) => (
+						<Bookmarks item={item} key={index} />
 					))}
 				</Box>
 
 				<LoadedSchedule newSchedule={schedule.newSchedule}/>
 
 			</Box>
+
+			<PromptDialog
+				open={open}
+				onClose={handleClose}
+			/>
+
 		</Box>
 	);
 });
