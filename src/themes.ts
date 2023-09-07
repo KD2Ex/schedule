@@ -30,7 +30,8 @@ export const getMode = (mode: any) => (
             },
             secondary: {
                 //main: "rgb(255, 255, 255)",
-                main: "rgb(3, 29, 96, 0.82)",
+				main: 'rgb(255,255,255)',
+                //main: "rgb(3, 29, 96, 0.82)",
                 success: 'rgba(32,163,45,0.82)',
                 error: 'rgb(255,44,44)',
 
@@ -47,6 +48,7 @@ export const getMode = (mode: any) => (
                 block: 'rgba(238,238,238,0.63)',
                 dialog: 'rgb(255,255,255)',
                 accent: 'rgba(234,234,234,0.82)',
+				contrast: 'rgb(48, 70, 125)'
             },
             mode: "light"
         }
@@ -92,6 +94,8 @@ export const getMode = (mode: any) => (
                 block: 'rgba(33,32,32,0.63)',
                 dialog: 'rgb(28,28,28)',
                 accent: 'rgb(51,51,51)',
+				//contrast: 'rgba(255,255,255,0.82)'
+				contrast: 'rgba(51,51,51)'
             },
             mode: 'dark'
         }

@@ -18,6 +18,9 @@ import ScheduleFilter from '../../components/ScheduleFilter/ScheduleFilter';
 import { fillDays } from '../../utils/fillDays';
 import ScheduleSkeleton from "../../components/ScheduleSkeleton/ScheduleSkeleton";
 import {weekDays} from "../../models/consts/weekDays";
+import {WeekTooltip} from "../../components/styled/WeekTooltip";
+import { ScheduleTooltip } from '../../components/styled/TooltippedCell';
+import {StyledSwitch, WhiteSwitch} from "../../components/styled/StyledSwitch";
 
 
 export const loader = async () => {
@@ -168,42 +171,38 @@ const SchedulePage = observer(() => {
 					>
 						Предыдущая
 					</ToggleButton>*/}
+					<ToggleButton
+						value={1}
+						sx={{
+							p: 2,
+							height: '8px',
+							borderBottom: (theme) =>
+								currentWeek === 1 && `1px solid ${theme.palette.primary.main}`
+						}}
+					>
+						<WeekTooltip
+							leaveDelay={200}
 
-					<Tooltip  leaveDelay={200} value={1}
-							  title={
-								  <FormControlLabel
-									  sx={{
-										  m: 0,
+							   title={
+								   <FormControlLabel
 
-									  }}
-									  control={
-										  <Switch
-											  checked={isPrevWeek}
-											  onChange={handlePrevWeek}
-											  sx={{
-												  color: 'primary.main',
+									   control={
+										   <WhiteSwitch
+											   checked={isPrevWeek}
+											   onChange={handlePrevWeek}
 
-												  '&.Mui-checked': {
-													  color: (theme) => theme.palette.mode === 'light' ? `${theme.palette.primary.main} ` : `${theme.palette.primary.main}`
-												  }
-											  }}
-										  />
-									  }
-									  label={'Прошлая неделя'}
-									  labelPlacement={"start"}
-								  />
-							  }>
+										   />
+									   }
+									   label={'Прошлая неделя'}
+									   labelPlacement={"start"}
+								   />
+							   }>
+							<span>1</span>
 
-						<ToggleButton
-							value={1}
-							sx={{
-								borderBottom: (theme) =>
-									currentWeek === 1 && `1px solid ${theme.palette.primary.main}`
-							}}
-						>
-							1
-						</ToggleButton>
-					</Tooltip>
+
+						</WeekTooltip>
+					</ToggleButton>
+
 					<ToggleButton value={2}>
 						2
 					</ToggleButton>
