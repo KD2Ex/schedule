@@ -12,6 +12,7 @@ const AdminPage = observer(() => {
 		<>
 			<Box sx={{display: 'flex',
 				alignItems: 'center',
+				justifyContent: 'flex-end',
 				gap: 1,
 				mb: 1,
 				flexWrap: 'wrap',}}

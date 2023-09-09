@@ -27,21 +27,14 @@ const RowOne: FC<TableRowOneProps> = observer(({row, isReplaced, isEmpty, editab
 	}*/
 
 	const theme = useTheme();
+
+
 	const [hidden, setHidden] = useState<boolean>(
 		!!schedule.newSchedule?.hideLessons?.find(item => item === id)
 	)
-	const [styles, setStyles] = useState(isReplaced ? {...rowOneStyle, ...replacedStyle} : {...rowOneStyle})
 
-	useEffect(() => {
+	const styles = isReplaced ? {...rowOneStyle, ...replacedStyle} : {...rowOneStyle}
 
-		if (hidden) {
-			setStyles({...styles, opacity: 0.5})
-		} else {
-			setStyles({...styles, opacity: 'none'})
-		}
-
-
-	}, [hidden])
 
 	useEffect(() => {
 
@@ -49,9 +42,7 @@ const RowOne: FC<TableRowOneProps> = observer(({row, isReplaced, isEmpty, editab
 
 	}, [JSON.stringify(schedule.newSchedule?.hideLessons)])
 
-	useEffect(() => {
-		setStyles(isReplaced ? {...rowOneStyle, ...replacedStyle} : {...rowOneStyle})
-	}, [isReplaced])
+
 
 	const handleHide = () => {
 		if (hidden) {
@@ -63,7 +54,7 @@ const RowOne: FC<TableRowOneProps> = observer(({row, isReplaced, isEmpty, editab
 		}
 	}
 
-	if (id === 117) {
+	if (id === 487) {
 		console.log(hidden)
 	}
 
@@ -72,6 +63,7 @@ const RowOne: FC<TableRowOneProps> = observer(({row, isReplaced, isEmpty, editab
 		<TableRow
 			sx={{
 				...styles,
+				opacity: hidden ? 0.5 : 'none'
 			}}
 		>
 			{editable &&

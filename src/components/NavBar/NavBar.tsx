@@ -22,6 +22,7 @@ import kkep_white from '../../styles/logos/kkep_white.svg'
 import kkep from '../../styles/logos/kkep.svg'
 import {observer} from "mobx-react-lite";
 import MenuIcon from '@mui/icons-material/Menu';
+import CssBaseline from "@mui/material/CssBaseline";
 
 
 const NavBar = observer(() =>  {
@@ -60,9 +61,9 @@ const NavBar = observer(() =>  {
 	}
 
 	return (
-			<Box sx={{flexGrow: 1}}>
-
-				<AppBar position='sticky'
+			<Box sx={{display: 'unset'}}>
+				<CssBaseline />
+				<AppBar position="sticky"
 						sx={{
 							maxHeight: '90px',
 							zIndex: '1400',
@@ -70,9 +71,6 @@ const NavBar = observer(() =>  {
 						className={styles.appBar}>
 
 					<Toolbar disableGutters sx={{
-						position: 'sticky',
-						display: 'flex',
-						width: '100%',
 					}} >
 
 						<Box
@@ -97,8 +95,6 @@ const NavBar = observer(() =>  {
 								</img>
 							</Link>
 						</Box>
-
-
 
 
 						<Box
@@ -236,6 +232,7 @@ const NavBar = observer(() =>  {
 					</Toolbar>
 
 				</AppBar>
+
 			</Box>
 
 

@@ -15,6 +15,7 @@ import EditDataPage from "../pages/EditDataPage/EditDataPage";
 import EditGroupsPage from "../pages/EditGroupsPage/EditGroupsPage";
 import EditTeachersPage from "../pages/EditTeachersPage/EditTeachersPage";
 import EditRoomsPage from "../pages/EditRoomsPage/EditRoomsPage";
+import EditUsersPage from "../pages/EditUsersPage/EditUsersPage";
 
 const isAuth = true;
 
@@ -37,6 +38,10 @@ export const routes = [
                     {
                         path: "schedule",
                         element: <EditSchedulePage/>
+                    },
+                    {
+                        path: 'users',
+                        element: <EditUsersPage/>
                     },
                     {
                         path: "data",

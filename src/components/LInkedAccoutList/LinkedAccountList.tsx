@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Grid, Typography} from "@mui/material";
 import {SettingsBox} from "../styled/SettingsBox";
 import LinkedAccount from "../LinkedAccount/LinkedAccount";

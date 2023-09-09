@@ -10,7 +10,8 @@ interface AdminNavDrawerProps {
 const AdminNavDrawer: FC<AdminNavDrawerProps> = ({open, setOpen}) => {
 
     const scheduleList = [
-        {url: '/edit/schedule', title: 'Редактирование расписания'}
+        {url: '/edit/schedule', title: 'Редактирование расписания'},
+        {url: '/edit/users', title: 'Пользователи'}
     ]
 
     const dataEditList = [
@@ -21,7 +22,7 @@ const AdminNavDrawer: FC<AdminNavDrawerProps> = ({open, setOpen}) => {
     ]
     const lists = [
         scheduleList,
-        dataEditList
+        //dataEditList
     ]
 
     return (
@@ -29,6 +30,7 @@ const AdminNavDrawer: FC<AdminNavDrawerProps> = ({open, setOpen}) => {
         <Drawer
             variant={'persistent'}
             open={open}
+            anchor={'right'}
             sx={{
                 flexShrink: 0,
                 [`& .MuiDrawer-paper`]: {  boxSizing: 'border-box' },

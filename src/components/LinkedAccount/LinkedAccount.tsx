@@ -9,6 +9,7 @@ import AuthService from "../../api/services/AuthService";
 import user from "../../store/user";
 import {GITHUB_AUTH_URL, GOOGLE_AUTH_URL, REDIRECT_URL, VK_AUTH_URL, VK_LINK_URL} from "../../api/http/urls";
 import {API_URL} from "../../api/http";
+import {observer} from "mobx-react-lite";
 
 interface LinkedAccountProps {
 	type: SocialType,
@@ -56,6 +57,7 @@ const LinkedAccount: FC<LinkedAccountProps> = ({isLinked, type}) => {
 			</Box>
 		</Box>
 	)*/
+
 
 
 	const handleClick = async () => {
@@ -141,4 +143,4 @@ const LinkedAccount: FC<LinkedAccountProps> = ({isLinked, type}) => {
 	);
 };
 
-export default LinkedAccount;
+export default observer(LinkedAccount);

@@ -15,7 +15,7 @@ $api.interceptors.request.use(
 		if (localStorage.getItem('token')) {
 			config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
 		}
-		alerts.setIsLoading(false);
+
 		return config;
 
 	}
@@ -25,6 +25,7 @@ $api.interceptors.response.use(
 	(config) => {
 		schedule.removeError();
 		console.log(config)
+		alerts.setIsLoading(false);
 		return config;
 	},
 	async (error) => {
@@ -34,10 +35,14 @@ $api.interceptors.response.use(
 		console.log(error)
 		const originalRequest = error.config;
 		originalRequest._isRetry = true;
+
+
 		if (error.response.status == 401 && error.config && !error.config._isRetry) {
 			try {
 				const response = await axios.get(`${API_URL}/refresh`, {withCredentials: true});
 				localStorage.setItem('token', response.data.response.accessToken);
+				alerts.setIsLoading(false);
+
 				return $api.request(originalRequest);
 			} catch (e) {
 				console.log('Не авторизован')
@@ -47,12 +52,13 @@ $api.interceptors.response.use(
 		if (error.config.url === '/auth/login') {
 			errorMessage = 'Неправильная почта или пароль'
 		}
+		alerts.setIsLoading(false);
 
 		schedule.setError(error);
 		alerts.openErrorAlert(`Ошибка: ${errorMessage}`)
 		throw error;
 		//return Promise.reject(error);
-	}
+	},
 )
 
 

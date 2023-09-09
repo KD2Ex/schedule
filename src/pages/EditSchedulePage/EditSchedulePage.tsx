@@ -28,7 +28,7 @@ const EditSchedulePage = observer(() => {
 	const [selectedIndex, setSelectedIndex] = useState<number>(1);
 	const [save, setSave] = useState(false);
 	const [open, setOpen] = useState(false)
-	const [date, setDate] = useState(dayjs())
+	const [date, setDate] = useState()
 
 
 	const handleSave = async () => {

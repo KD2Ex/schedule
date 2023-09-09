@@ -8,6 +8,7 @@ import {isEmailValid} from "../../utils/validators";
 import UserService from "../../api/services/UserService";
 import user from "../../store/user";
 import alerts from "../../store/alerts";
+import AccountDataField from "../AccountDataField/AccountDataField";
 
 const ProfileInfo = () => {
 
@@ -16,6 +17,9 @@ const ProfileInfo = () => {
     const [emailEditing, setEmailEditing] = useState(false);
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [patronymic, setPatronymic] = useState('');
 
     const isEmailCorrect = isEmailValid(email);
 
@@ -43,9 +47,13 @@ const ProfileInfo = () => {
         setNewPassword(event.target.value)
     }
 
+    const handleNameChange = () => {
+
+    }
+
     const handlePasswordChange = async () => {
-        if (oldPassword === '' || newPassword === '') {
-			alerts.openWarningAlert('Введите старый и новый пароль для смены')
+        if (newPassword === '') {
+			alerts.openWarningAlert('Введите новый пароль для смены')
 		} else if (oldPassword === newPassword) {
 			alerts.openErrorAlert('Пароли совпадают')
 		} else {
@@ -100,13 +108,45 @@ const ProfileInfo = () => {
             >
                 <UUID/>
             </Grid>
-            <Typography sx={{
-                fontWeight: 200, fontSize: 18, marginBottom :2}}>
+           {/* <Typography sx={{
+                fontWeight: 400, fontSize: 22, marginBottom :2}}>
 
-                Изменить персональные данные учетной записи
+                Персональные данные
 
-            </Typography>
+            </Typography>*/}
             <Grid container spacing={2}>
+
+
+                <AccountDataField
+                    title={'Фамилия'}
+                    placeholder={'Введите фамилию'}
+                    value={lastName}
+                    setValue={setLastName}
+                />
+
+                <AccountDataField
+                    title={'Имя'}
+                    placeholder={'Введите имя'}
+                    value={firstName}
+                    setValue={setFirstName}
+                />
+
+                <AccountDataField
+                    title={'Отчество'}
+                    placeholder={'Введите отчество'}
+                    value={patronymic}
+                    setValue={setPatronymic}
+                />
+
+                <Grid item xs={12} sx={{display: 'flex', justifyContent: 'flex-end'}}>
+
+                    <ProfileButton
+                        onClick={handleNameChange}
+                    >
+                        Сохранить ФИО
+                    </ProfileButton>
+
+                </Grid>
 
                 <Grid item xs={12} md={2}>
                     <SettingTypography>
@@ -131,6 +171,13 @@ const ProfileInfo = () => {
 
                     </OutlinedInput>
                 </Grid>
+
+                <AccountDataField
+                    title={'Текущий пароль'}
+                    placeholder={'Введите пароль'}
+                    value={oldPassword}
+                    setValue={setOldPassword} />
+
                 <Grid item xs={12} md={2}>
                     <SettingTypography>
                         Старый пароль

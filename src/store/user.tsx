@@ -80,6 +80,7 @@ class User {
 	async unlinkSocial(type: SocialType) {
 		try {
 			await UserService.removeLinkedNetwork(type)
+			this.profile.linkedSocial[0].contain = false;
 		} catch (e) {
 
 		}
