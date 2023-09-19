@@ -20,6 +20,7 @@ const ProfileButton: FC<ProfileButtonProps> = ({children, ...props}) => {
 
 	return (
 		<StyledProfileButton
+
 			{...props}
 			variant={theme.palette.mode === 'light' ? 'contained' :'outlined'}>
 			{children}

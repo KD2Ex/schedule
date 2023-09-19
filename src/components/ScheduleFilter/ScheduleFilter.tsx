@@ -11,13 +11,14 @@ import schedule from "../../store/schedule";
 interface ScheduleFilterProps {
     filterValue: AutocompleteOption | null
     setFilterValue: React.Dispatch<AutocompleteOption>,
-    filterType: IScheduleEntity
+    filterType: IScheduleEntity,
 }
 
 const ScheduleFilter: FC<ScheduleFilterProps> = observer(({
     filterValue,
     setFilterValue,
-    filterType
+    filterType,
+	...rest
 }) => {
 
 	const [open, setOpen] = useState(false);
@@ -53,6 +54,7 @@ const ScheduleFilter: FC<ScheduleFilterProps> = observer(({
 
     return (
         <Autocomplete
+			isOptionEqualToValue={(option, value) => option.value === value.value}
             value={filterValue}
             size='small'
             open={open}
@@ -78,6 +80,7 @@ const ScheduleFilter: FC<ScheduleFilterProps> = observer(({
 				}
 				setFilterValue(newValue);
             }}
+			{...rest}
         />
     )
 

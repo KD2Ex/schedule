@@ -1,15 +1,16 @@
 import React from 'react';
 import { SettingsBox } from '../styled/SettingsBox';
-import {Box, Button, Grid, Typography, useTheme} from "@mui/material";
+import {Box, Button, Grid, TextField, Typography, useTheme} from "@mui/material";
 import ProfileButton from "../styled/ProfileButton";
 import alerts from "../../store/alerts";
 import {log} from "util";
+import user from "../../store/user";
 
 const Uuid = () => {
 
 
     const handleCopyToClipboard = () => {
-        navigator.clipboard.writeText('52q234wrwe-gserg4-greg-34534ge-34535')
+        navigator.clipboard.writeText(user.profile.uuid)
         alerts.openSuccessAlert('Скопировано в буфер обмена!');
     }
 
@@ -36,7 +37,7 @@ const Uuid = () => {
             }}>
 
             </Box>*/}
-            <Grid item xs={12} md={2}>
+           {/* <Grid item xs={12} md={2}>
                 <Typography
                     variant={'h6'}
                     sx={{
@@ -46,32 +47,41 @@ const Uuid = () => {
                     UUID
                 </Typography>
             </Grid>
-
+*/}
             <Grid
                 item
                 xs={12}
-				md={10}
                 sx={{
 					display: 'flex',
 					justifyContent: 'space-between',
 					columnGap: 1,
                 }}
             >
-                <Typography
+                {/*<Typography
                     id={'uuid'}
                     sx={{
-                        /*bgcolor: `${theme.palette.background.accent}`,*/
                         borderRadius: 1,
 						p: 1,
 						width: '100%',
                         border:  `1px solid ${theme.palette.primary.pale}`,
-						fontSize: 13,
+						fontSize: 14,
 						textAlign: 'center'
                     }}
                     onClick={handleUUIDClick}
                 >
-                    52q234wrwe-gserg4-greg-34534ge-34535
-                </Typography>
+                    {user.profile.uuid}
+                </Typography>*/}
+
+                <TextField
+                    sx={{
+                        width: '100%',
+                        textAlign: 'center'
+                    }}
+                    size={'small'}
+                    label={'UUID'}
+                    value={user.profile.uuid}
+                    onClick={handleUUIDClick}
+                />
 
 				<Button
 					sx={{

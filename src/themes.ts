@@ -39,7 +39,7 @@ export const getMode = (mode: any) => (
             text: {
                 primary: 'rgba(0,0,0,0.82)',
                 secondary: 'rgba(26,26,26,0.61)',
-                disabled: 'rgba(88,88,88,0.5)',
+                disabled: 'rgba(196,196,196,0.5)',
 
             },
             background: {
@@ -86,7 +86,8 @@ export const getMode = (mode: any) => (
             text: {
                 primary: 'rgba(255,255,255,0.82)',
                 secondary: 'rgba(194,194,194,0.61)',
-                disabled: 'rgba(88,88,88,0.5)',
+                //disabled: 'rgba(88,88,88,0.5)',
+                disabled: 'rgba(196,196,196,0.5)',
 
             },
             background: {
@@ -110,6 +111,11 @@ export const themeObject = {
             fontSize: '20',
             opacity: '1',
         },
+        fontSize: 14,
+        fontWeight: 700,
+        body1: {
+            fontWeight: 400,
+        }
     },
     components: {
         MuiCssBaseline: {
@@ -129,21 +135,54 @@ export const themeObject = {
             styleOverrides: {
                 root: {
                     fontWeight: '400',
+                    fontSize: 16,
+                    '&.Mui-disabled': {
+                        color: 'rgb(176,176,176)',
+                        backgroundColor: 'rgb(119,119,119)'
+                    },
+                    '&.MuiButton-contained': {
+                        //backgroundColor: 'rgb(2,71,161)',
+                        //color: 'rgb(229,229,229)'
+                    }
                 }
             }
         },
-        MuiButtonGroup: {
-            styleOverrides: {
-                root: {
-                }
-            }
-        },
+
+
         MuiInputBase: {
             styleOverrides: {
                 root: {
-                    fontSize: 14,
+                    fontSize: 16,
+                },
+                input: {
+                    "&:-webkit-autofill": {
+                        transitionDelay: "9999s",
+                        transitionProperty: "background-color, color",
+                    },
+                },
+            },
+        },
+        MuiFilledInput: {
+            styleOverrides: {
+                input: {
+                    '&:-webkit-autofill': {
+                        WebkitBoxShadow: 'inherit',
+                        WebkitTextFillColor: 'inherit',
+                        caretColor: 'inherit',
+                    },
                 }
-            }
+            },
+        },
+        MuiOutlinedInput: {
+            styleOverrides: {
+                input: {
+                    '&:-webkit-autofill': {
+                        WebkitBoxShadow: 'inherit',
+                        WebkitTextFillColor: 'inherit',
+                        caretColor: 'inherit',
+                    },
+                }
+            },
         },
         MuiInputLabel: {
             styleOverrides: {

@@ -20,7 +20,8 @@ import ScheduleSkeleton from "../../components/ScheduleSkeleton/ScheduleSkeleton
 import {weekDays} from "../../models/consts/weekDays";
 import {WeekTooltip} from "../../components/styled/WeekTooltip";
 import { ScheduleTooltip } from '../../components/styled/TooltippedCell';
-import {StyledSwitch, WhiteSwitch} from "../../components/styled/StyledSwitch";
+import {WhiteSwitch} from "../../components/styled/StyledSwitch";
+import TooltipToggleButton from "../../components/TooltipToggleButton/TooltipToggleButton";
 
 
 export const loader = async () => {
@@ -112,6 +113,7 @@ const SchedulePage = observer(() => {
 	const handleReplacementChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
 
 		setIsReplaceActive(event.target.checked);
+		setIsPrevWeek(false)
 	}
 
 	const handlePrevWeek = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -149,66 +151,76 @@ const SchedulePage = observer(() => {
 				/>
 
 
-				<ToggleButtonGroup
-					size='small'
-					onChange={handleWeekChange}
-					value={week}
-					exclusive
-					sx={{
-						'&>:nth-child(n + 2)': {
-							fontWeight: 400
-						},
+				<WeekTooltip
+					leaveDelay={200}
+					title={
+						<FormControlLabel
 
-					}}
+							control={
+								<WhiteSwitch
+									checked={isPrevWeek}
+									disabled={!isReplaceActive}
+									onChange={handlePrevWeek}
+
+								/>
+							}
+							label={'Прошлая неделя'}
+							labelPlacement={"start"}
+						/>
+					}
 				>
-					<ToggleButton
-						value="Неделя"
-						disabled>
-						Неделя
-					</ToggleButton>
-{/*					<ToggleButton
-						value={3}
-					>
-						Предыдущая
-					</ToggleButton>*/}
-					<ToggleButton
-						value={1}
+
+
+					<ToggleButtonGroup
+						size='small'
+						onChange={handleWeekChange}
+						value={week}
+						exclusive
 						sx={{
-							p: 2,
-							height: '8px',
-							borderBottom: (theme) =>
-								currentWeek === 1 && `1px solid ${theme.palette.primary.main}`
+							'&>:nth-child(n + 2)': {
+								fontWeight: 400
+							},
+
 						}}
 					>
-						<WeekTooltip
-							leaveDelay={200}
+						<ToggleButton
+							value="Неделя"
+							disabled>
+							Неделя
+						</ToggleButton>
+	{/*					<ToggleButton
+							value={3}
+						>
+							Предыдущая
+						</ToggleButton>*/}
 
-							   title={
-								   <FormControlLabel
 
-									   control={
-										   <WhiteSwitch
-											   checked={isPrevWeek}
-											   onChange={handlePrevWeek}
 
-										   />
-									   }
-									   label={'Прошлая неделя'}
-									   labelPlacement={"start"}
-								   />
-							   }>
+						<ToggleButton
+							value={1}
+							sx={{
+								p: 2,
+								height: '8px',
+								borderBottom: (theme) =>
+									currentWeek === 1 && `1px solid ${theme.palette.primary.main}`
+							}}
+						>
+
 							<span>1</span>
 
 
-						</WeekTooltip>
-					</ToggleButton>
+						</ToggleButton>
 
-					<ToggleButton value={2}>
-						2
-					</ToggleButton>
+						<ToggleButton
+							value={2}
+						>
+							2
+						</ToggleButton>
 
 
-				</ToggleButtonGroup>
+					</ToggleButtonGroup>
+				</WeekTooltip>
+
 
 				<ScheduleFilter
 					filterValue={filterValue}
@@ -259,7 +271,10 @@ const SchedulePage = observer(() => {
 			</Box>
 
 
-			<Grid2 container spacing={{xs: 0, md: 3}} sx={{mx: 0, my: 2}}>
+			<Grid2
+				container
+				spacing={{xs: 0, md: 3}}
+				sx={{mx: 0, my: 1}}>
 
 				{
 					/*schedule.error &&

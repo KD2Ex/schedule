@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Button, Grid, OutlinedInput} from "@mui/material";
+import {Button, Grid, OutlinedInput, TextField} from "@mui/material";
 import {SettingTypography} from "../styled/SettingTypography";
 
 interface AccountDataFieldProps {
@@ -25,21 +25,21 @@ const AccountDataField: FC<AccountDataFieldProps> =
 
     return (
         <React.Fragment>
-            <Grid item xs={12} md={2}>
+           {/* <Grid item xs={12} md={2}>
                 <SettingTypography>
                     {title}
                 </SettingTypography>
-            </Grid>
-            <Grid item xs={12} md={10}>
-                <OutlinedInput
+            </Grid>*/}
+            <Grid item xs={12}>
+                <TextField
                     sx={{width: '100%'}}
                     size={"small"}
-                    placeholder={placeholder}
+                    label={title}
                     value={value}
                     onChange={handleChange}
                     disabled={disabled}
                 >
-                </OutlinedInput>
+                </TextField>
             </Grid>
         </React.Fragment>
     );

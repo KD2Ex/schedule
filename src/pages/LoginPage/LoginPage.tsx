@@ -35,6 +35,8 @@ const LoginPage = observer(() => {
 
 			<LoginForm/>
 
+
+
 		</Box>
 
 	);

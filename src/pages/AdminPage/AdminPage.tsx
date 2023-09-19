@@ -14,12 +14,20 @@ const AdminPage = observer(() => {
 				alignItems: 'center',
 				justifyContent: 'flex-end',
 				gap: 1,
-				mb: 1,
+				mb: 0,
 				flexWrap: 'wrap',}}
 
 			>
-				<Button onClick={() => setOpen(true)}>
-					open
+				<Button
+					onClick={() => setOpen(true)}
+					size={''}
+					variant={'outlined'}
+					sx={{
+						position: 'absolute',
+						mt: 2
+					}}
+				>
+					Меню
 				</Button>
 				<AdminNavDrawer
 					open={open}

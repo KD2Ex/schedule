@@ -14,6 +14,7 @@ import {GITHUB_AUTH_URL, GOOGLE_AUTH_URL, VK_AUTH_URL} from "../../api/http/urls
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import css from './LoginForm.module.css';
 import alerts from "../../store/alerts";
+import {webcrypto} from "crypto";
 
 const LoginForm: FC = observer(() => {
 
@@ -55,8 +56,12 @@ const LoginForm: FC = observer(() => {
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
 					size={'small'}
-					sx={{width: '100%'}}
+					sx={{
+						width: '100%',
+
+					}}
 					variant="outlined"
+
 				>
 
 				</TextField>
@@ -117,6 +122,20 @@ const LoginForm: FC = observer(() => {
 					</Box>
 				</Box>
 
+				<Typography>
+					Нет аккаунта? {' '}
+					<Typography
+						component={Link}
+						to={'/signup'}
+						sx={{
+							color: (theme) => theme.palette.text.primary,
+							textDecoration: 'none',
+							fontWeight: 600
+						}}
+					>
+						Зарегистрируйтесь
+					</Typography>
+				</Typography>
 
 			</Box>
 

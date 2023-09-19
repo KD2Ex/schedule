@@ -21,6 +21,9 @@ const ScheduleDatePicker = ({date, setDate}) => {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'ru'}>
             <DatePicker
+                sx={{
+                    width: '30%'
+                }}
                 label={'Выберите дату'}
                 value={date}
                 onChange={(newValue) => setDate(newValue)}

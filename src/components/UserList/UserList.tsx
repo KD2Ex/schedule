@@ -1,11 +1,19 @@
 import React, {FC} from 'react';
-import {Box, Button, Tooltip} from "@mui/material";
+import {Autocomplete, Box, Button, TextField, Tooltip} from "@mui/material";
+import UserItem from "../UserItem/UserItem";
 
 interface UserListProps {
     data: any[]
 }
 
 const UserList: FC<UserListProps> = ({data}) => {
+
+    const permissions = [
+        {id: 1, label: 'Студент'},
+        {id: 2, label: 'Преподаватель'},
+        {id: 2, label: 'Администратор'},
+    ]
+
     return (
         <Box
             sx={{
@@ -15,38 +23,12 @@ const UserList: FC<UserListProps> = ({data}) => {
             }}
         >
 
-            {data.map((item) => (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        gap: 2,
-                        bgcolor: 'rgb(52,52,52)',
-                        borderRadius: 2,
-                        alignItems: 'center',
-                        px: 2
-                    }}>
-                    {Object.entries(item).map(item => (
-                        <p>
-                            {item[1]}
-                        </p>
-                    ))}
-
-
-
-                    <Tooltip title={'Нажмите, чтобы подвердить пользователя'}>
-                        <Button
-                            variant={'outlined'}
-                            sx={{
-
-                            }}
-                        >
-                            Подвердить
-                        </Button>
-                    </Tooltip>
-
-
-
-                </Box>
+            {data.map((item, index) => (
+                <UserItem
+                    key={index}
+                    info={item}
+                    permissions={permissions}
+                />
             ))}
         </Box>
     );

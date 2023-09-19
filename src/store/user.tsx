@@ -4,10 +4,13 @@ import AuthService from "../api/services/AuthService";
 import axios from "axios";
 import {AuthResponse} from "../models/response/AuthResponse";
 import {API_URL} from "../api/http";
-import {VK_AUTH_URL} from "../api/http/urls";
+import {REDIRECT_URL, VK_AUTH_URL} from "../api/http/urls";
 import UserService from "../api/services/UserService";
 import alerts from "./alerts";
 import {SocialType} from "../models/types/SocialType";
+import {ISocial} from "../models/interfaces/ISocial";
+import {ILinkedSchedule} from "../models/interfaces/ILinkedSchedule";
+import AdminService from "../api/services/AdminService";
 
 
 class User {
@@ -15,6 +18,8 @@ class User {
 	profile = {} as IUser;
 	isAuth = false;
 	isPretendedToAuth = false;
+	uuid = '';
+	permissions: any = [];
 
 
 	constructor() {
@@ -31,6 +36,7 @@ class User {
 
 	setUser(user: IUser) {
 		this.profile = user;
+
 	}
 
 	async login(email: string, password: string) {
@@ -38,6 +44,7 @@ class User {
 			const response = await AuthService.login(email, password);
 			console.log(response)
 			localStorage.setItem('token', response.data.response.accessToken);
+			localStorage.setItem('expiry', response.data.response.expiry);
 			this.setAuth(true);
 			return {result: true, code: 200};
 			//this.setUser({id: '1', email:'qwer@mail.ru', isAcitvated: true});
@@ -45,6 +52,12 @@ class User {
 
 			return {result: false, code: e.code};
 		}
+	}
+
+	async signup(email: string, password: string) {
+
+		const response = await AuthService.signup(email, password)
+
 	}
 
 	async checkAuth() {
@@ -55,6 +68,9 @@ class User {
 			if (localStorage.getItem('token')) {
 				this.setAuth(true);
 				this.setPretendingToAuth(false);
+
+				const response = await UserService.getPermissions();
+				this.permissions = response.permissions;
 			}
 
 			//this.setUser('');
@@ -114,9 +130,23 @@ class User {
 				email: response.mail,
 				linkedSchedule: response.linkedSchedule,
 				containPassword: response.containPassword,
-				uuid: '1'
+				uuid: response.uuid,
+				firstName: response.name,
+				lastName: response.surname,
+				patronymic: response.patronymic
 			});
 
+	}
+
+	async updateFullname(name: string, surname: string, patronymic: string) {
+		const response = await UserService.updateFullname(name, surname, patronymic);
+	}
+
+	async getAllUsers(value: string, size: number, page: number) {
+		const response = await AdminService.getAllUsers(value, size, page);
+
+		console.log(response)
+		return response
 	}
 
 }

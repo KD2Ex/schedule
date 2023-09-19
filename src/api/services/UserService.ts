@@ -22,6 +22,14 @@ export default class UserService {
 		return $api.post('/profile/update/mail', {mail})
 	}
 
+	static async updateFullname(name: string, surname: string, patronymic: string) {
+		return $api.post('/profile/update/fullname', {
+			name,
+			surname,
+			patronymic
+		})
+	}
+
 	static async updateMailing(type: SocialType) {
 		return $api.post('/profile/update/mailing', {type})
 	}
@@ -49,5 +57,10 @@ export default class UserService {
 		return $api.post('/profile/update/remove_linked_network', {type: type})
 	}
 
+	static async getPermissions() {
+		const response = await $api.get('/user/permissions/me');
+		console.log(response.data.response.permissions)
+		return response.data.response;
+	}
 
 }

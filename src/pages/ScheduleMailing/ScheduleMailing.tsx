@@ -71,7 +71,12 @@ const ScheduleMailing = observer(() => {
 
     return (
         <>
-            <Grid item container sm={7} lg={8} xl={6} xs={12} spacing={2}>
+            <Grid
+                item
+                container
+                xl={7}
+                xs={12}
+                spacing={2}>
 
                 <Grid item xs={12}>
                     <Typography sx={{
@@ -82,14 +87,16 @@ const ScheduleMailing = observer(() => {
                 </Grid>
 
 
-                <Grid item xs={12} md={4}>
+               {/* <Grid item xs={12} md={4}>
 
                     <SettingTypography>
                         Тип расписания
                     </SettingTypography>
 
-                </Grid>
-                <Grid item xs={12} md={8} sx={{justifyContent:'flex-start', display: 'flex'}}>
+                </Grid>*/}
+                <Grid item
+                      xs={12}
+                      sx={{justifyContent:'flex-start', display: 'flex'}}>
                     <TypeButtons
                         filterType={filterType}
                         setFilterType={setFilterType}
@@ -101,41 +108,51 @@ const ScheduleMailing = observer(() => {
                     />
                 </Grid>
 
-
+{/*
                 <Grid item xs={12} md={4}>
 
                     <SettingTypography>
                         {filterType.title.slice(0, -1) + filterLetter}
                     </SettingTypography>
 
-                </Grid>
-                <Grid item xs={12} md={8} sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-start'
-                }}>
+                </Grid>*/}
+                <Grid
+                    item
+                    xs={12}
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        gap: 2
+                    }}
+                >
 
                     <ScheduleFilter
                         setFilterValue={setFilterValue}
                         filterType={filterType}
                         filterValue={filterValue}
+                        sx={{
+                            width: '100%'
+                        }}
                     />
 
+                    <ContainedButton
+                        onClick={handleLinkSchedule}
+                    >
+                        Сохранить
+                    </ContainedButton>
+
                 </Grid>
+
             </Grid>
 
-            {/*<Grid item xs={0}>
-<Box>
-								<Divider sx={{
-									width: '100%',
-									height: '100%',
-								}} orientation={'vertical'}
-								/>
-							</Box>
-						</Grid>*/}
 
 
-
-            <Grid item container xs={12} sm={5} lg={3} spacing={2}
+            <Grid
+                item
+                container
+                xs={12}
+                sm={5}
+                spacing={2}
                   sx={isTablet && {
                       display: 'flex',
                       alignContent: 'start'
@@ -143,9 +160,10 @@ const ScheduleMailing = observer(() => {
             >
 
 
-                <Grid item xs={12} sx={{
-                    height: '35px'
-                }}>
+                <Grid
+                    item
+                    xs={12}
+                >
                     <Typography sx={{
                         fontSize: 18,
                     }}>
@@ -153,44 +171,43 @@ const ScheduleMailing = observer(() => {
                     </Typography>
                 </Grid>
 
+
+                <Grid item xs={12}
+                    sx={{
+                        height: '54px',
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}
+                >
+
+                    <div
+                        className={styles.vk_button}
+                        id="vk_allow_messages_from_community">
+
+                    </div>
+                </Grid>
+
                 <Grid item xs={12}>
 
                     <ProfileButton
                         onClick={handleMailingOn}
-                        sx={{display: isMailingActive ? 'none' : 'flex'}}
+                        sx={{
+                            display: isMailingActive ? 'none' : 'flex',
+                            width: '100%'
+                        }}
                     >
                         Включить расслыку
                     </ProfileButton>
                     <ProfileButton
                         onClick={handleMailingOff}
-                        sx={{display: isMailingActive ? 'flex' : 'none'}}
+                        sx={{
+                            display: isMailingActive ? 'flex' : 'none',
+                            width: '100%'
+                        }}
                     >
                         Отключить расслыку
                     </ProfileButton>
                 </Grid>
-
-                <Grid item xs={12}>
-
-                    <div className={styles.vk_button} id="vk_allow_messages_from_community">
-
-                    </div>
-                </Grid>
-            </Grid>
-
-            <Grid item xs={12} sx={{gap: 2, display: 'flex', justifyContent: 'flex-end'}}>
-                <ContainedButton
-                    onClick={handleLinkSchedule}
-                >
-                    Сохранить
-                </ContainedButton>
-
-                <Button
-                    variant={'outlined'}
-                    sx={{width: '100px'}}
-                    onClick={handleClearLinkedSchedule}
-                >
-                    Очистить
-                </Button>
             </Grid>
 
         </>

@@ -1,5 +1,5 @@
 import React, {FC, Fragment, useState} from 'react';
-import {Box, Button, Divider, Drawer, List, ListItem, ListItemButton, Toolbar} from "@mui/material";
+import {Box, Button, Divider, Drawer, List, ListItem, ListItemButton, Toolbar, useTheme} from "@mui/material";
 import {Link} from "react-router-dom";
 
 interface AdminNavDrawerProps {
@@ -25,15 +25,27 @@ const AdminNavDrawer: FC<AdminNavDrawerProps> = ({open, setOpen}) => {
         //dataEditList
     ]
 
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    const theme = useTheme();
+
     return (
 
         <Drawer
-            variant={'persistent'}
+           // variant={'persistent'}
             open={open}
             anchor={'right'}
+            onClose={handleClose}
             sx={{
                 flexShrink: 0,
-                [`& .MuiDrawer-paper`]: {  boxSizing: 'border-box' },
+                [`& .MuiDrawer-paper`]: {
+                    boxSizing: 'border-box',
+                    bgcolor: theme.palette.background.default,
+                    backgroundImage: 'none',
+                    borderLeft: `1px solid ${theme.palette.primary.pale}`
+                },
             }}
         >
 
@@ -43,18 +55,19 @@ const AdminNavDrawer: FC<AdminNavDrawerProps> = ({open, setOpen}) => {
                 }}/>
 
 
-            <Box
+           {/* <Box
                 sx={{
                     display: 'flex',
                     width: '100%',
-                    justifyContent: 'flex-start'
+                    justifyContent: 'flex-start',
+                    p: 1
                 }}
             >
                 <Button onClick={() => setOpen(false)}>
                     Скрыть
                 </Button>
             </Box>
-
+*/}
 
             <Box
                 sx={{ overflow: 'auto' }}

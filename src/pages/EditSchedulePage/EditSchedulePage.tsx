@@ -1,19 +1,12 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {Box, Button, Grid, Typography} from "@mui/material";
 import {SCHEDULE_ENTITY} from "../../models/enums/SCHEDULE_ENTITY";
-import ScheduleEditDialog from "../../components/Dialogs/ScheduleEditDialog/ScheduleEditDialog";
-import {ScheduleModalContext} from "../../context";
 import ScheduleDatePicker from "../../components/ScheduleDatePicker/ScheduleDatePicker";
-import dayjs, {Dayjs} from "dayjs";
 import '../../components/ScheduleFileLoader/ScheduleFileLoader.css'
-import ScheduleService from "../../api/services/ScheduleService";
 import schedule from "../../store/schedule";
-import ScheduleDayTable from "../../components/ScheduleDayTable/ScheduleDayTable";
-import {ScheduleEntityType} from "../../models/enums/ScheduleEntityType";
 import {observer} from "mobx-react-lite";
 import LoadedSchedule from "../../components/LoadedSchedule/LoadedSchedule";
 import ScheduleFileLoader from "../../components/ScheduleFileLoader/ScheduleFileLoader";
-import {Link} from "react-router-dom";
 import Bookmarks from "../../components/Bookmarks/Bookmarks";
 import PromptDialog from "../../components/PromptDialog/PromptDialog";
 
@@ -69,13 +62,15 @@ const EditSchedulePage = observer(() => {
 	useEffect(() => {
 
 		(async () => {
-			console.log('date changed')
-			const localeDate = date.toISOString().split('T')[0]
-			schedule.setEditDate(date)
+			if (date) {
+				console.log('date changed')
+				const localeDate = date.toISOString().split('T')[0]
+				schedule.setEditDate(date)
 
-			await schedule.fetchSavedSchedule(localeDate);
+				await schedule.fetchSavedSchedule(localeDate);
 
-			console.log(schedule.newSchedule)
+				console.log(schedule.newSchedule)
+			}
 
 		})()
 
@@ -103,6 +98,24 @@ const EditSchedulePage = observer(() => {
 					gap: 1
 				}}
 			>
+
+				<Typography
+					variant={'h4'}
+					sx={{
+						fontWeight: 'bold'
+					}}
+				>
+					Редактирование расписания
+				</Typography>
+				<Typography
+					sx={{
+						mb: 2
+					}}
+				>
+					Выберите дату, а затем загрузите файл с расписанием в формате .xls <br/>
+					После проверки и скрытия пар нажмите кнопку"Сохранить и отправить" для загрзки расписания в общий доступ
+				</Typography>
+
 				<ScheduleDatePicker
 					date={date}
 					setDate={setDate}
@@ -119,7 +132,7 @@ const EditSchedulePage = observer(() => {
 			</Box>
 
 
-			{schedule.newSchedule.type !== 'NONE' && <Box sx={{
+			{schedule.newSchedule.type !== 'NONE' && date && <Box sx={{
 				display: 'flex',
 				justifyContent: 'end'
 			}}>

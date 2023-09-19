@@ -19,7 +19,6 @@ class Schedule {
 	showedLessons: number[] = []
 	hiddenLessons: number[] = []
 	editableSchedule = []
-	error: any;
 
 	mockSchedule: any = [
 
@@ -233,13 +232,7 @@ class Schedule {
 
 	}
 
-	setError(error: any) {
-		this.error = error;
-	}
 
-	removeError() {
-		this.error = null;
-	}
 
 }
 

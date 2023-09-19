@@ -11,19 +11,29 @@ const $api = axios.create({
 
 $api.interceptors.request.use(
 	(config) => {
+
+
+		//console.log(config)
+		//console.log(new Date(Number(localStorage.getItem('expiry'))))
+		//console.log(new Date())
+		if (new Date(Number(localStorage.getItem('expiry'))) <= new Date()) {
+			console.log('refresh')
+		}
+
 		alerts.setIsLoading(true);
 		if (localStorage.getItem('token')) {
 			config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
 		}
 
+
 		return config;
 
+	}, (error) => {
 	}
 )
 
 $api.interceptors.response.use(
 	(config) => {
-		schedule.removeError();
 		console.log(config)
 		alerts.setIsLoading(false);
 		return config;
@@ -34,10 +44,11 @@ $api.interceptors.response.use(
 
 		console.log(error)
 		const originalRequest = error.config;
-		originalRequest._isRetry = true;
 
 
 		if (error.response.status == 401 && error.config && !error.config._isRetry) {
+			originalRequest._isRetry = true;
+
 			try {
 				const response = await axios.get(`${API_URL}/refresh`, {withCredentials: true});
 				localStorage.setItem('token', response.data.response.accessToken);
@@ -49,12 +60,11 @@ $api.interceptors.response.use(
 			}
 		}
 
-		if (error.config.url === '/auth/login') {
+		if (error.config.url === '/auth/login' && error.response.status === 400) {
 			errorMessage = 'Неправильная почта или пароль'
 		}
 		alerts.setIsLoading(false);
 
-		schedule.setError(error);
 		alerts.openErrorAlert(`Ошибка: ${errorMessage}`)
 		throw error;
 		//return Promise.reject(error);

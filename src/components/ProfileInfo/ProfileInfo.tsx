@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Grid, OutlinedInput, Typography} from "@mui/material";
+import {Button, Grid, OutlinedInput, TextField, Typography} from "@mui/material";
 import UUID from "../UUID/UUID";
 import {SettingTypography} from "../styled/SettingTypography";
 import ProfileButton from "../styled/ProfileButton";
@@ -9,6 +9,7 @@ import UserService from "../../api/services/UserService";
 import user from "../../store/user";
 import alerts from "../../store/alerts";
 import AccountDataField from "../AccountDataField/AccountDataField";
+import {observer} from "mobx-react-lite";
 
 const ProfileInfo = () => {
 
@@ -25,6 +26,9 @@ const ProfileInfo = () => {
 
     useEffect(() => {
         setEmail(user.profile?.email)
+        setFirstName(user.profile?.firstName)
+        setLastName(user.profile?.lastName)
+        setPatronymic(user.profile?.patronymic)
     }, [])
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +51,9 @@ const ProfileInfo = () => {
         setNewPassword(event.target.value)
     }
 
-    const handleNameChange = () => {
+    const handleNameChange = async () => {
+
+        await user.updateFullname(firstName, lastName, patronymic)
 
     }
 
@@ -97,7 +103,6 @@ const ProfileInfo = () => {
 
     return (
         <SettingsBox
-
 		>
             <Grid
                 container
@@ -148,67 +153,56 @@ const ProfileInfo = () => {
 
                 </Grid>
 
-                <Grid item xs={12} md={2}>
+               {/* <Grid item xs={12} md={2}>
                     <SettingTypography>
                         Электронная почта
                     </SettingTypography>
-                </Grid>
-                <Grid item xs={12} md={10}>
-                    <OutlinedInput
+                </Grid>*/}
+                <Grid item xs={12}>
+                    <TextField
                         sx={{width: '100%'}}
                         size={"small"}
                         placeholder={'E-mail'}
                         value={email}
+                        label={'Email'}
                         onChange={handleEmailChange}
                         error={!isEmailCorrect}
                         disabled={!emailEditing}
-                        endAdornment={
+                        InputProps={{
+                            endAdornment:
                             <Button onClick={handleEnableEmailEditing}>
                                 Изменить
                             </Button>
-                        }
+
+                        }}
+
                     >
 
-                    </OutlinedInput>
+                    </TextField>
                 </Grid>
 
-                <AccountDataField
-                    title={'Текущий пароль'}
-                    placeholder={'Введите пароль'}
-                    value={oldPassword}
-                    setValue={setOldPassword} />
+                {
+                    user.profile?.containPassword ? <>
 
-                <Grid item xs={12} md={2}>
-                    <SettingTypography>
-                        Старый пароль
-                    </SettingTypography>
-                </Grid>
-                <Grid item xs={12} md={10}>
-                    <OutlinedInput
-                        sx={{width: '100%'}}
-                        size={"small"}
-                        placeholder={'Введите пароль'}
-                        value={oldPassword}
-                        onChange={handleOldPasswordChange}
-                    >
-                    </OutlinedInput>
-                </Grid>
+                        <AccountDataField
+                            title={'Текущий пароль'}
+                            placeholder={'Введите пароль'}
+                            value={oldPassword}
+                            setValue={setOldPassword} />
 
-                <Grid item xs={12} md={2}>
-                    <SettingTypography>
-                        Новый пароль
-                    </SettingTypography>
-                </Grid>
-                <Grid item xs={12} md={10}>
-                    <OutlinedInput
-                        sx={{width: '100%'}}
-                        size={"small"}
-                        placeholder={'Введите пароль'}
-                        value={newPassword}
-                        onChange={handleNewPasswordChange}
-                    >
-                    </OutlinedInput>
-                </Grid>
+                        <AccountDataField
+                            title={'Новый пароль'}
+                            placeholder={'Введите пароль'}
+                            value={newPassword}
+                            setValue={setNewPassword} />
+                    </>
+                    :  <AccountDataField
+                            title={'Создайте пароль'}
+                            placeholder={'Введите пароль'}
+                            value={newPassword}
+                            setValue={setNewPassword} />
+                }
+
 
 
                 <Grid item xs={12} sx={{display: 'flex', justifyContent: 'flex-end'}}>
@@ -224,4 +218,4 @@ const ProfileInfo = () => {
     );
 };
 
-export default ProfileInfo;
+export default observer(ProfileInfo);

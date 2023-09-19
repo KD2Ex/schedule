@@ -15,5 +15,6 @@ export const WhiteSwitch = styled(Switch)(({theme}) => ({
 	},
 	'& .MuiSwitch-track': {
 		backgroundColor: 'white',
-	}
+	},
+
 }))

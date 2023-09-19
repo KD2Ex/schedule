@@ -78,7 +78,6 @@ const ProfilePage = observer(() =>  {
 
 	const tabs = [
 		{title: 'Настройки', url: '/profile'},
-		{title: 'Верификация', url: '/profile/verification'},
 	]
 	const location = useLocation();
 	console.log(location)
@@ -119,12 +118,28 @@ const ProfilePage = observer(() =>  {
 
 		<Grid container spacing={2}>
 
-			<Grid item xs={12} lg={8} sx={{'h4': {marginBottom: 1}}}>
+			<Grid item xs={12} lg={6} sx={{'h4': {marginBottom: 1}}}>
 
+
+
+
+
+				<Typography variant={'h4'}>
+					Аккаунт
+
+				</Typography>
+
+				<ProfileInfo/>
+
+
+			</Grid>
+
+
+			<Grid item xs={12} lg>
+				{/*<UserPermission/>*/}
 				<Typography variant={'h4'}>
 					Расписание
 				</Typography>
-
 				<SettingsBox>
 
 					<Grid container spacing={2}>
@@ -134,19 +149,6 @@ const ProfilePage = observer(() =>  {
 					</Grid>
 
 				</SettingsBox>
-
-				<Typography variant={'h4'}>
-					Аккаунт
-
-				</Typography>
-
-				<ProfileInfo/>
-			</Grid>
-
-
-			<Grid item xs={12} lg={4}>
-				{/*<UserPermission/>*/}
-
 				<LinkedAccountList/>
 
 			</Grid>

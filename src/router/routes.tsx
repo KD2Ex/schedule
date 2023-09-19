@@ -16,6 +16,7 @@ import EditGroupsPage from "../pages/EditGroupsPage/EditGroupsPage";
 import EditTeachersPage from "../pages/EditTeachersPage/EditTeachersPage";
 import EditRoomsPage from "../pages/EditRoomsPage/EditRoomsPage";
 import EditUsersPage from "../pages/EditUsersPage/EditUsersPage";
+import SignupPage from "../pages/SignupPage/SignupPage";
 
 const isAuth = true;
 
@@ -24,7 +25,6 @@ export const routes = [
         path: "/",
         element: <MainPage/>,
         errorElement: <ErrorPage/>,
-
         children: [
             {
                 path: "schedule",
@@ -89,6 +89,10 @@ export const routes = [
     {
         path: 'login',
         element: <LoginPage/>,
+    },
+    {
+        path: 'signup',
+        element: <SignupPage/>,
     },
     {
         path: "*",

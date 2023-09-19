@@ -6,4 +6,8 @@ export interface ProfileResponse {
 	linkedSchedule: ILinkedSchedule,
 	linkedSocial: ISocial[],
 	mail: string,
+	name: string,
+	surname: string,
+	patronymic: string,
+	uuid: string
 }

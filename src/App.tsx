@@ -30,8 +30,11 @@ const App = observer(() => {
 
 	useEffect(() => {
 
-		user.checkAuth()
-		console.log('effect1')
+		(async () => {
+			await user.checkAuth()
+			console.log('check auth')
+
+		})()
 
 	}, [])
 
