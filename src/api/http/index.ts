@@ -10,7 +10,7 @@ const $api = axios.create({
 })
 
 $api.interceptors.request.use(
-	(config) => {
+	async (config) => {
 
 
 		//console.log(config)
@@ -18,6 +18,30 @@ $api.interceptors.request.use(
 		//console.log(new Date())
 		if (new Date(Number(localStorage.getItem('expiry'))) <= new Date()) {
 			console.log('refresh')
+			const originalRequest = config;
+/*
+
+
+			if (config && !config._isRetry) {
+				originalRequest._isRetry = true;
+				try {
+					const response = await $api.post(`/auth/refresh`, {
+						refreshToken: localStorage.getItem('refreshToken')
+					});
+					localStorage.setItem('token', response.data.response.accessToken);
+					localStorage.setItem('expiry', response.data.response.expiry);
+					localStorage.setItem('refreshToken', response.data.response.refreshToken);
+					alerts.setIsLoading(false);
+
+					return $api.request(originalRequest);
+				} catch (e) {
+					console.log(e)
+					console.log('Не авторизован')
+				}
+			}
+*/
+
+
 		}
 
 		alerts.setIsLoading(true);
@@ -43,6 +67,12 @@ $api.interceptors.response.use(
 		let errorMessage = error;
 
 		console.log(error)
+
+		/*const refreshResponse = RefreshToken(error);
+
+		if (refreshResponse) {
+			return refreshResponse
+		}*/
 		const originalRequest = error.config;
 
 
@@ -50,16 +80,20 @@ $api.interceptors.response.use(
 			originalRequest._isRetry = true;
 
 			try {
-				const response = await axios.get(`${API_URL}/refresh`, {withCredentials: true});
+				const response = await $api.post(`/auth/refresh`, {
+						refreshToken: localStorage.getItem('refreshToken')
+				});
 				localStorage.setItem('token', response.data.response.accessToken);
+				localStorage.setItem('expiry', response.data.response.expiry);
+				localStorage.setItem('refreshToken', response.data.response.refreshToken);
 				alerts.setIsLoading(false);
 
 				return $api.request(originalRequest);
 			} catch (e) {
+				console.log(e)
 				console.log('Не авторизован')
 			}
 		}
-
 		if (error.config.url === '/auth/login' && error.response.status === 400) {
 			errorMessage = 'Неправильная почта или пароль'
 		}
@@ -70,6 +104,34 @@ $api.interceptors.response.use(
 		//return Promise.reject(error);
 	},
 )
+
+/*
+
+async function RefreshToken(config) {
+	const originalRequest = config.config;
+
+	console.log(config)
+	if (config.response.status == 401 && config.config && !config.config._isRetry) {
+		originalRequest._isRetry = true;
+
+		try {
+			const response = await $api.post(`/auth/refresh`, {
+				refreshToken: localStorage.getItem('refreshToken')
+			});
+			localStorage.setItem('token', response.data.response.accessToken);
+			localStorage.setItem('expiry', response.data.response.expiry);
+			localStorage.setItem('refreshToken', response.data.response.refreshToken);
+			alerts.setIsLoading(false);
+
+			return $api.request(originalRequest);
+		} catch (e) {
+			console.log(e)
+			console.log('Не авторизован')
+		}
+	}
+
+}
+*/
 
 
 export default $api;

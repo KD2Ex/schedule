@@ -140,6 +140,15 @@ const EditUsersPage = () => {
         setPage(value)
     }
 
+    const handleSearch = async () => {
+
+        const response = await user.getAllUsers(value, size, 0);
+
+        setList(response.users);
+        setPages(Math.ceil(response.totalElements / size))
+        setPage(0);
+    }
+
     useEffect(() => {
 
       /*  const newList = data.filter(item => item.uuid === value
@@ -151,6 +160,10 @@ const EditUsersPage = () => {
 
         setList(newList);
 */
+
+
+
+
     }, [value])
 
     useEffect(() => {
@@ -167,7 +180,7 @@ const EditUsersPage = () => {
 
         console.log('effect')
 
-    }, [page, pages])
+    }, [page])
 
 
 
@@ -224,9 +237,27 @@ const EditUsersPage = () => {
                         sx={{
                             height: '100%'
                         }}
+                        onClick={handleSearch}
                     >
                         Поиск
                     </ContainedButton>
+
+                    <Button
+                        variant={'outlined'}
+                        onClick={async () => {
+                            setValue('');
+
+                            const response = await user.getAllUsers('', size, 0);
+
+                            setList(response.users);
+                            setPages(Math.ceil(response.totalElements / size))
+                            setPage(0);
+                        }}
+                    >
+
+                        Очистить
+                    </Button>
+
                 </Box>
 
 

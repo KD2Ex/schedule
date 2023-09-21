@@ -15,4 +15,20 @@ export default class AdminService {
 
         return response.data.response
     }
+
+    static async verifyUser(uuid: string) {
+
+        return $api.post('/verified/add',  {
+            uuid
+        })
+
+    }
+
+    static async removeUserVerification(uuid: string) {
+
+        return $api.post('/verified/remove',  {
+            uuid
+        })
+
+    }
 }

@@ -1,7 +1,9 @@
 import React, {FC, useState} from 'react';
-import {Autocomplete, Box, Button, Grid, TextField, Tooltip} from "@mui/material";
+import {Autocomplete, Box, Button, Grid, TextField, Tooltip, Typography} from "@mui/material";
 import {AutocompleteOption} from "../../models/interfaces/IAutocompleteOption";
 import schedule from "../../store/schedule";
+import user from "../../store/user";
+import alerts from "../../store/alerts";
 
 
 interface UserItemProps {
@@ -16,6 +18,123 @@ const UserItem: FC<UserItemProps> = ({info, permissions}) => {
     const [open, setOpen] = useState(false);
 
     const isFullNameSet = info.name !== null && info.surname !== null;
+
+    const handleVerify = async () => {
+
+
+        try {
+            await user.verifyUser(info.uuid);
+            alerts.openSuccessAlert('Пользователь подтвержден')
+        } catch (e) {
+
+            switch (e.response.data.code) {
+                case 1: {
+                    alerts.openErrorAlert('Ошибка: UUID отсутствует')
+                    break;
+                }
+                case 2: {
+                    alerts.openErrorAlert('Ошибка: Пользователь не существует')
+                    break;
+                }
+                case 3: {
+                    alerts.openErrorAlert('Ошибка: ФИО не заполнено')
+                    break;
+                }
+                case 4: {
+                    alerts.openErrorAlert('Ошибка: Пользователь уже верифицирован')
+                    break;
+                }
+
+            }
+
+        }
+
+    }
+
+    const handleRemove = async () => {
+
+    }
+
+    return (
+        <Box
+            sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                gap: 2,
+                alignItems: 'center',
+                flexWrap: {xs: 'wrap', md: 'nowrap'}
+            }}
+        >
+
+            <Box
+                sx={{
+                    flex: 2
+                }}
+            >
+                <Typography
+                    sx={{
+                        flexGrow: 4
+                    }}
+                >
+                    {
+                        isFullNameSet ?
+                            `${info.surname} 
+                         ${info.name} 
+                        ${info.patronymic}`
+                            : 'Имя не задано'
+                    }
+                </Typography>
+            </Box>
+
+
+            <Typography
+                sx={{
+                    flexGrow: 2
+                }}
+            >
+                {info.uuid}
+            </Typography>
+
+            <Button
+                variant={'contained'}
+                disabled={!isFullNameSet}
+                onClick={handleVerify}
+                sx={{
+                    flexGrow: 2
+                }}
+            >
+                <Tooltip title={'Нажмите, чтобы подвердить пользователя'}>
+                    <span>Подвердить</span>
+
+                </Tooltip>
+            </Button>
+            <Autocomplete
+                value={value}
+                open={open}
+                size='small'
+                multiple
+                sx={{width: '100%', flexGrow: 2}}
+                onOpen={() => {
+                    setOpen(true)
+                }}
+                onClose={() => {
+                    setOpen(false);
+                }}
+                renderInput={(params) => (<TextField
+                    {...params}
+                    label={`Роль`}
+                    InputProps={{
+                        ...params.InputProps,
+                    }}
+                />)}
+                options={permissions}
+                onChange={(event: any, newValue: any) => {
+
+                    setValue(newValue);
+                }}
+            />
+        </Box>
+    )
 
     return (
         <Grid
@@ -54,7 +173,7 @@ const UserItem: FC<UserItemProps> = ({info, permissions}) => {
 
             <Grid
                 item
-                md={1.5}
+                md={2}
             >
                 <Button
                     variant={'contained'}

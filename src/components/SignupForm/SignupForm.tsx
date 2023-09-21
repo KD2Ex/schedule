@@ -16,17 +16,18 @@ const SignupForm = () => {
 
     const handleSignup = async () => {
 
-        if (password === repeatPassword
-            && isEmailValid(email)
-        ) {
-
+        if (password !== repeatPassword) {
+            alerts.openErrorAlert('Пароли не совпдаают')
+        } else if (!isEmailValid(email)) {
+            alerts.openErrorAlert('Некорректный Email')
+        } else {
             console.log('signup')
             try {
                 await user.signup(email, password)
                 alerts.openSuccessAlert('Вы успешно зарегистрированы')
                 navigate('/')
             } catch (e) {
-
+                alerts.openErrorAlert(e.message);
             }
 
         }

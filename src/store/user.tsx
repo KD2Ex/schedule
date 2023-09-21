@@ -44,6 +44,7 @@ class User {
 			const response = await AuthService.login(email, password);
 			console.log(response)
 			localStorage.setItem('token', response.data.response.accessToken);
+			localStorage.setItem('refreshToken', response.data.response.refreshToken);
 			localStorage.setItem('expiry', response.data.response.expiry);
 			this.setAuth(true);
 			return {result: true, code: 200};
@@ -147,6 +148,11 @@ class User {
 
 		console.log(response)
 		return response
+	}
+
+	async verifyUser(uuid: string) {
+		const response = await AdminService.verifyUser(uuid);
+
 	}
 
 }
