@@ -17,6 +17,7 @@ import alert from "../../store/alerts";
 import ContainedButton from "../../components/styled/ContainedButton";
 import UserScheduleService from "../../api/services/UserScheduleService";
 import schedule from "../../store/schedule";
+import MailingButton from "../../components/MailingButton/MailingButton";
 
 const ScheduleMailing = observer(() => {
 
@@ -34,8 +35,13 @@ const ScheduleMailing = observer(() => {
             ? 'ь'
             : 'я'
 
-    const handleMailingOn = () => {
+    const handleMailingOn = async () => {
         setIsMailingActive(true);
+
+
+        await user.updateMailing("VK")
+
+
     }
 
     const handleMailingOff = () => {
@@ -71,6 +77,11 @@ const ScheduleMailing = observer(() => {
                 setFilterValue(await setLoadedOption(user.profile.linkedSchedule.linkedEntityType,
                     user.profile.linkedSchedule.linkedEntityId))
             }
+
+            if (user.profile.linkedSocial.find(item => item.type === "VK")?.needMailing) {
+
+            }
+
         })()
 
     }, [])
@@ -193,7 +204,28 @@ const ScheduleMailing = observer(() => {
                     </div>
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid
+                    item
+                    xs={12}
+                    sx={{
+                        display: 'flex',
+                        gap: 1
+                    }}
+                >
+
+
+                    <MailingButton
+                        type={'VK'}
+                    >
+
+                    </MailingButton>
+
+                    <MailingButton
+                        type={'TELEGRAM'}
+                    >
+
+                    </MailingButton>
+{/*
 
                     <ProfileButton
                         onClick={handleMailingOn}
@@ -213,6 +245,8 @@ const ScheduleMailing = observer(() => {
                     >
                         Отключить расслыку
                     </ProfileButton>
+*/}
+
                 </Grid>
             </Grid>
 

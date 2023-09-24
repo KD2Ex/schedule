@@ -37,6 +37,7 @@ const OAuth2RedirectHandler = () => {
 
 	if (searchParams.get('accessToken') != null) {
 		localStorage.setItem('token', searchParams.get('accessToken'))
+		localStorage.setItem('refreshToken', searchParams.get('refreshToken'))
 		localStorage.setItem('expiry', searchParams.get('expiry'))
 		user.setAuth(true);
 

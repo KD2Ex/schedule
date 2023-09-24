@@ -41,7 +41,7 @@ const ProfilePage = observer(() =>  {
 		)()
 
 
-		//VK.Widgets.AllowMessagesFromCommunity("vk_allow_messages_from_community", {}, 220122071);
+		VK.Widgets.AllowMessagesFromCommunity("vk_allow_messages_from_community", {}, 220122071);
 
 	}, [])
 

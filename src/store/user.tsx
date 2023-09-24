@@ -95,7 +95,8 @@ class User {
 	async unlinkSocial(type: SocialType) {
 		try {
 			await UserService.removeLinkedNetwork(type)
-			this.profile.linkedSocial[0].contain = false;
+			this.profile.linkedSocial.find(item => item.type === type)
+				.contain = false;
 		} catch (e) {
 
 		}
@@ -156,6 +157,34 @@ class User {
 		} catch (e) {
 			console.log(e)
 		}
+
+	}
+
+	async updateMailing(type: SocialType) {
+
+		try {
+			const response = await UserService.updateMailing(type);
+
+			const social = this.profile.linkedSocial.find((item) => item.type === type);
+
+			if (social) {
+				social.enabledMailing = true;
+
+				if (social.enabledMailing) { // проверка обратна логике, потому что состояние обновляется только по
+					// окончанию выполнения хэндлера
+					alerts.openSuccessAlert('Расслка успешно включена!')
+				} else {
+					alerts.openWarningAlert('Расслка отключена')
+				}
+
+			}
+
+		} catch (e) {
+
+			//alerts.openErrorAlert('Ошибка: ' + e.message)
+
+		}
+
 
 	}
 
