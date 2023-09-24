@@ -16,18 +16,19 @@ const LinkedAccountList = observer(() => {
 
             <SettingsBox>
                 <Grid container spacing={3}>
-                    {/*{user.profile.linkedSocial?.map((account, index) => (
+                    {user.profile.linkedSocial?.map((account, index) => (
+                        (account.type === 'VK' || account.type === 'TELEGRAM') &&
                         <Grid item xs={12} key={index}>
                             <LinkedAccount
                                 type={account.type}
                                 isLinked={account.contain}
                             />
                         </Grid>
-                    ))}*/}
+                    ))}
 					{
 						/*Вывод только ВК, пока не будет привязки под остальные социалки*/
 					}
-					{user.profile.linkedSocial
+					{/*{user.profile.linkedSocial
 						&&
 						<Grid item xs={12}>
 							<LinkedAccount
@@ -36,7 +37,7 @@ const LinkedAccountList = observer(() => {
 							/>
 						</Grid>
 					}
-
+*/}
 
                 </Grid>
             </SettingsBox>

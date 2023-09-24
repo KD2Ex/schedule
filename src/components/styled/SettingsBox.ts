@@ -7,5 +7,5 @@ export const SettingsBox = styled(Box)<BoxProps>(({theme}) => ({
 	borderRadius: 4,
 	backgroundColor: theme.palette.primary.contrastPale,
 	padding: 24,
-	marginBottom: 24,
+	marginBottom: 8,
 }))

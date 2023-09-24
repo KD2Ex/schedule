@@ -61,6 +61,7 @@ class User {
 
 		const response = await AuthService.signup(email, password)
 
+
 	}
 
 	async checkAuth() {
@@ -168,13 +169,14 @@ class User {
 			const social = this.profile.linkedSocial.find((item) => item.type === type);
 
 			if (social) {
-				social.enabledMailing = true;
 
-				if (social.enabledMailing) { // проверка обратна логике, потому что состояние обновляется только по
+				if (!social.enabledMailing) { // проверка обратна логике, потому что состояние обновляется только по
 					// окончанию выполнения хэндлера
+					social.enabledMailing = true;
 					alerts.openSuccessAlert('Расслка успешно включена!')
 				} else {
 					alerts.openWarningAlert('Расслка отключена')
+					social.enabledMailing = false;
 				}
 
 			}

@@ -213,7 +213,7 @@ const ScheduleMailing = observer(() => {
                     }}
                 >
 
-
+{/*
                     <MailingButton
                         type={'VK'}
                     >
@@ -224,7 +224,7 @@ const ScheduleMailing = observer(() => {
                         type={'TELEGRAM'}
                     >
 
-                    </MailingButton>
+                    </MailingButton>*/}
 {/*
 
                     <ProfileButton

@@ -37,12 +37,12 @@ const NavBar = observer(() =>  {
 		{
 			title: 'Расписание',
 			url: '/schedule',
+
 		},
 		{
 			title: 'Администрирование',
 			url: '/edit',
 		},
-
 	]
 
 	const isMobile = useMediaQuery('xs');

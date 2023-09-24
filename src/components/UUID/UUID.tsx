@@ -3,27 +3,27 @@ import { SettingsBox } from '../styled/SettingsBox';
 import {Box, Button, Grid, TextField, Typography, useTheme} from "@mui/material";
 import ProfileButton from "../styled/ProfileButton";
 import alerts from "../../store/alerts";
-import {log} from "util";
 import user from "../../store/user";
 
 const Uuid = () => {
 
 
-    const handleCopyToClipboard = () => {
-        navigator.clipboard.writeText(user.profile.uuid)
+    const handleCopyToClipboard = async () => {
+        await navigator.clipboard.writeText(user.profile.uuid)
+        console.log(user.profile.uuid)
         alerts.openSuccessAlert('Скопировано в буфер обмена!');
     }
 
     const theme = useTheme()
 
-    const handleUUIDClick = (e) => {
+    const handleUUIDClick = async (e) => {
         let range = new Range();
-        console.log(e)
+        //console.log(e)
         range.selectNode(e.target)
-        console.log(range)
+        //console.log(range)
         document.getSelection().removeAllRanges()
         document.getSelection().addRange(range)
-        handleCopyToClipboard()
+        await handleCopyToClipboard()
     }
 
     return (

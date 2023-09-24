@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Outlet } from 'react-router-dom';
 import NavBar from "../../components/NavBar/NavBar";
 import {Box} from "@mui/material";
@@ -7,8 +7,10 @@ import GlobalAlert from "../../components/GlobalAlert/GlobalAlert";
 import alert from "../../store/alerts";
 import {observer} from "mobx-react-lite";
 import ScheduleEditDialog from "../../components/Dialogs/ScheduleEditDialog/ScheduleEditDialog";
+import InfoDialog from "../../components/InfoDialog/InfoDialog";
 
 const MainPage = observer(() => {
+
 
 	const navigate = useNavigate();
 
@@ -26,6 +28,10 @@ const MainPage = observer(() => {
 			</Box>
 
 
+
+			<InfoDialog
+
+			/>
 
 			<ScheduleEditDialog
 

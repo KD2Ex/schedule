@@ -94,7 +94,6 @@ const App = observer(() => {
 							<RouterProvider router={router}/>
 
 							<GlobalAlert
-								alert={alert.alert}
 							/>
 							{alerts.isLoading && <Loader/>}
 

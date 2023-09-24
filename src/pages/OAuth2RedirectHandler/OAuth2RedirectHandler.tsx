@@ -1,11 +1,6 @@
 import React, {useEffect} from 'react';
 import {useLocation, useNavigate, Navigate, useParams, useSearchParams} from 'react-router-dom';
-
 import user from '../../store/user';
-import jwtDecode from "jwt-decode";
-import UserService from "../../api/services/UserService";
-import schedule from "../../store/schedule";
-import {log} from "util";
 import alerts from "../../store/alerts";
 
 const OAuth2RedirectHandler = () => {
@@ -47,14 +42,14 @@ const OAuth2RedirectHandler = () => {
 			<Navigate to={"/schedule"}/>
 		);
 	} else {
+
+		alerts.openErrorAlert('Ошибка авторизации')
+
 		return (
 			<Navigate to={'/error'}/>
 		)
 	}
-/*
-	const func = async () => {
-		await UserService.getLoggedUser();
-	}*/
+
 };
 
 export default OAuth2RedirectHandler;

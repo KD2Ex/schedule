@@ -10,6 +10,7 @@ import user from "../../store/user";
 import {GITHUB_AUTH_URL, GOOGLE_AUTH_URL, REDIRECT_URL, VK_AUTH_URL, VK_LINK_URL} from "../../api/http/urls";
 import {API_URL} from "../../api/http";
 import {observer} from "mobx-react-lite";
+import MailingButton from "../MailingButton/MailingButton";
 
 interface LinkedAccountProps {
 	type: SocialType,
@@ -97,13 +98,13 @@ const LinkedAccount: FC<LinkedAccountProps> = ({isLinked, type}) => {
 
 	return (
 		<Grid container sx={{alignItems: 'center'}} spacing={2}>
-			<Grid item xs={12} sm={2} lg={3} xl={3}>
+			<Grid item xs={12} md={2} lg={3} xl={3}>
 				<Typography>
 					{type}
 				</Typography>
 			</Grid>
 
-			<Grid item xs={12} sm={7} lg={8} xl={6} sx={{display: 'flex', gap: 1}}>
+			<Grid item xs={12} md={4} lg={8} xl={4} sx={{display: 'flex', gap: 1}}>
 				{ isLinked
 					? <>
 						<CheckCircleIcon sx={{color: theme => theme.palette.secondary.success}}/>
@@ -119,11 +120,24 @@ const LinkedAccount: FC<LinkedAccountProps> = ({isLinked, type}) => {
 					</>
 				}
 			</Grid>
-			<Grid item sx={{flexGrow: 0}} xs={12} sm={3} lg={12} xl={3}>
+			<Grid
+				item
+				xs={12}
+				md={3}
+				lg={6}
+				xl={2}
+				sx={{
+					display: 'flex',
+					justifyContent: 'space-between',
+					gap: 2
+				}}
+			>
 				{isLinked
 					?
 					<ProfileButton
-						sx={{width: '100%'}}
+						sx={{
+							width: '100%'
+						}}
 						onClick={handleRemove}
 					>
 						Отключить
@@ -136,8 +150,21 @@ const LinkedAccount: FC<LinkedAccountProps> = ({isLinked, type}) => {
 						Подключить
 					</ProfileButton>
 				}
+
 			</Grid>
 
+
+			<Grid
+				item
+				xs={12}
+				md={3}
+				lg={6}
+				xl={3}
+			>
+				<MailingButton
+					type={type}
+				/>
+			</Grid>
 		</Grid>
 
 	);

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, Button, Divider, TextField, Typography} from "@mui/material";
+import {Box, Button, Divider, FormControl, TextField, Typography} from "@mui/material";
 import ContainedButton from "../styled/ContainedButton";
 import {Link, useNavigate} from "react-router-dom";
 import user from "../../store/user";
@@ -14,7 +14,9 @@ const SignupForm = () => {
 
     const navigate = useNavigate()
 
-    const handleSignup = async () => {
+    const handleSignup = async (e) => {
+
+        e.preventDefault()
 
         if (password !== repeatPassword) {
             alerts.openErrorAlert('Пароли не совпдаают')
@@ -24,8 +26,13 @@ const SignupForm = () => {
             console.log('signup')
             try {
                 await user.signup(email, password)
-                alerts.openSuccessAlert('Вы успешно зарегистрированы')
+
+                alerts.openInfoDialog('Подтверждение регистрации',
+                'На указанную при регистрации почту было отправлено письмо с подтверждением. ' +
+                        'Для завершения регистрации перейдите по ссылке в письме')
+                //alerts.openSuccessAlert('Вы успешно зарегистрированы')
                 navigate('/')
+
             } catch (e) {
                 alerts.openErrorAlert(e.message);
             }
@@ -36,93 +43,103 @@ const SignupForm = () => {
     return (
         <Box
             sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                border: '1px solid',
-                borderRadius: '0.5em',
-                padding: 4,
-                flexDirection: 'column',
-                gap: 2,
-                width: '350px',
-                borderColor: (theme) => theme.palette.primary.pale
+                '& form': {
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    border: '1px solid',
+                    borderRadius: '0.5em',
+                    padding: 4,
+                    flexDirection: 'column',
+                    gap: 2,
+                    width: '350px',
+                    borderColor: (theme) => theme.palette.primary.pale
+
+                }
             }}
         >
 
 
 
-            <TextField
-                size={'small'}
-                label={'Email'}
-                autoComplete={'off'}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                sx={{
-                    width: '100%'
-                }}
-            />
-            <TextField
-                size={'small'}
-                label={'Пароль'}
-                autoComplete={'chrome-off'}
-                type={'password'}
-                id={'field1'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                sx={{
-                    width: '100%'
-                }}
-                inputProps={{
-                    autoComplete: 'new-password',
-                }}
-            />
-            <TextField
-                size={'small'}
-                type={'password'}
-                label={'Повторите пароль'}
-                value={repeatPassword}
-                onChange={(e) => setRepeatPassword(e.target.value)}
-                sx={{
-                    width: '100%'
-                }}
-                inputProps={{
-                    autoComplete: 'new-password',
-                }}
-            />
+            <form
+                onSubmit={handleSignup}
 
-            <Button
-                variant={'contained'}
-                onClick={handleSignup}
-                sx={{
-                    width: '100%'
-                }}
             >
-                Зарегистрироваться
-            </Button>
 
-            <Divider
-                sx={{
-                    width: '100%',
-                    mt: 1
-                }}
-            />
-
-            <Typography>
-
-                Уже зарегистрированы? {' '}
-                <Typography
-                    component={Link}
-                    to={'/login'}
+                <TextField
+                    size={'small'}
+                    label={'Email'}
+                    autoComplete={'off'}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     sx={{
-                        textDecoration: 'none',
-                        color: (theme) => theme.palette.text.primary,
-                        fontWeight: 600
+                        width: '100%'
+                    }}
+                />
+                <TextField
+                    size={'small'}
+                    label={'Пароль'}
+                    autoComplete={'chrome-off'}
+                    type={'password'}
+                    id={'field1'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    sx={{
+                        width: '100%'
+                    }}
+                    inputProps={{
+                        autoComplete: 'new-password',
+                    }}
+                />
+                <TextField
+                    size={'small'}
+                    type={'password'}
+                    label={'Повторите пароль'}
+                    value={repeatPassword}
+                    onChange={(e) => setRepeatPassword(e.target.value)}
+                    sx={{
+                        width: '100%'
+                    }}
+                    inputProps={{
+                        autoComplete: 'new-password',
+                    }}
+                />
+
+                <Button
+                    variant={'contained'}
+                    //onClick={handleSignup}
+                    type={'submit'}
+                    sx={{
+                        width: '100%'
                     }}
                 >
-                    Войти
+                    Зарегистрироваться
+                </Button>
 
+                <Divider
+                    sx={{
+                        width: '100%',
+                        mt: 1
+                    }}
+                />
+
+                <Typography>
+
+                    Уже зарегистрированы? {' '}
+                    <Typography
+                        component={Link}
+                        to={'/login'}
+                        sx={{
+                            textDecoration: 'none',
+                            color: (theme) => theme.palette.text.primary,
+                            fontWeight: 600
+                        }}
+                    >
+                        Войти
+
+                    </Typography>
                 </Typography>
-            </Typography>
+            </form>
 
         </Box>
     );

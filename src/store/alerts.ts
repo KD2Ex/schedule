@@ -1,6 +1,5 @@
 import {makeAutoObservable} from "mobx";
 import {IAlert} from "../models/interfaces/IAlert";
-import {AlertType} from "../models/types/AlertType";
 
 
 class Alerts {
@@ -14,6 +13,11 @@ class Alerts {
     alert: IAlert = {
         severity: 'success',
         message: 'Success!'
+    }
+
+    dialog = {
+        title: '',
+        body: ''
     }
 
     constructor() {
@@ -35,6 +39,13 @@ class Alerts {
 	openInfoAlert(message: string) {
 		this.alert = {message: message, severity: 'info'};
 	}
+
+    openInfoDialog(title: string, body: string) {
+        this.dialog = {
+            title: title,
+            body: body
+        }
+    }
 
 }
 

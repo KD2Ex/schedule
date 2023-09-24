@@ -47,18 +47,22 @@ const MailingButton: FC<MailingButtonProps> = ({type}) => {
                 disabled={!enabled}
                 sx={{
                     display: mailing ? 'none' : 'flex',
-                    flexWrap: 'nowrap'
+                    flexWrap: 'nowrap',
+                    minWidth: '100%',
+                    fontSize: 14
                 }}
             >
-                Включить расслыку {type}
+                Включить расслыку
             </ProfileButton>
             <ProfileButton
                 onClick={handleMailing}
                 sx={{
                     display: mailing ? 'flex' : 'none',
+                    width: '100%',
+                    fontSize: 14
                 }}
             >
-                Отключить расслыку {type}
+                Отключить расслыку
             </ProfileButton>
         </>
     );

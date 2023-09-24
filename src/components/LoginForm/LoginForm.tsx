@@ -1,7 +1,17 @@
 import React, {FC, useState} from 'react';
 import styles from "../../pages/LoginPage/LoginPage.module.css";
 import {useNavigation, useNavigate} from 'react-router-dom'
-import {Box, Button, Divider, IconButton, InputAdornment, TextField, Typography} from "@mui/material";
+import {
+	Box,
+	Button,
+	Divider,
+	FormControl,
+	IconButton,
+	InputAdornment,
+	TextField,
+	Typography,
+	useTheme
+} from "@mui/material";
 import GoogleIcon from '@mui/icons-material/Google'
 import GitHubIcon from '@mui/icons-material/GitHub';
 import {Link} from "react-router-dom";
@@ -24,8 +34,10 @@ const LoginForm: FC = observer(() => {
 	const navigate = useNavigate();
 
 
-	const handleLogin = async () => {
 
+	const handleLogin = async (e) => {
+
+		e.preventDefault()
 		const response = await user.login(username, password);
 
 		if (response.result) {
@@ -46,11 +58,16 @@ const LoginForm: FC = observer(() => {
 		event.preventDefault();
 	};
 
+	const theme = useTheme()
+
 	return (
 
-			<Box className={styles.loginBox}
-				 sx={{borderColor: (theme) => theme.palette.primary.pale}}
+			<form className={styles.loginBox}
+				  onSubmit={handleLogin}
+				  style={{borderColor: theme.palette.primary.pale}}
 			>
+
+
 				<TextField
 					placeholder={'Email'}
 					value={username}
@@ -58,7 +75,6 @@ const LoginForm: FC = observer(() => {
 					size={'small'}
 					sx={{
 						width: '100%',
-
 					}}
 					variant="outlined"
 
@@ -67,31 +83,46 @@ const LoginForm: FC = observer(() => {
 				</TextField>
 				<TextField
 					type={showPassword ? 'text' : 'password'}
-					sx={{width: '100%'}}
+					sx={{
+						width: '100%',
+					}}
 					placeholder={'Пароль'} value={password} onChange={(e) => setPassword(e.target.value)}
 					size={'small'}
 					variant="outlined"
-
 					InputProps={{endAdornment:
-						<InputAdornment position="end" sx={{m: 0}}>
-							<IconButton
+							<InputAdornment position="end" sx={{m: 0}}>
+								<IconButton
 
-								onClick={handleClickShowPassword}
-								onMouseDown={handleMouseDownPassword}
-								edge="end"
-							>
-								{showPassword ? <VisibilityOff sx={{m: 0}}/> : <Visibility sx={{m: 0}}/>}
-							</IconButton>
-						</InputAdornment>
+									onClick={handleClickShowPassword}
+									onMouseDown={handleMouseDownPassword}
+									edge="end"
+								>
+									{showPassword ? <VisibilityOff sx={{m: 0}}/> : <Visibility sx={{m: 0}}/>}
+								</IconButton>
+							</InputAdornment>
 					}}
 				>
 
 				</TextField>
-
-				<Button type={"submit"} onClick={handleLogin} size={'small'} variant={'contained'} sx={{width: '100%'}}>
+				<Button
+					type={"submit"}
+					//onClick={handleLogin}
+					size={'small'}
+					variant={'contained'}
+					sx={{width: '100%'}}>
 					Войти
 				</Button>
 
+
+				<form onSubmit={handleLogin}
+					 style={{
+						 flexDirection: 'column',
+						 gap: 12,
+						 alignItems: 'center'
+					 }}
+				>
+
+				</form>
 
 				<Divider sx={{width: '100%', pt: 1}} variant={'middle'}>ИЛИ</Divider>
 
@@ -137,7 +168,7 @@ const LoginForm: FC = observer(() => {
 					</Typography>
 				</Typography>
 
-			</Box>
+			</form>
 
 	);
 });

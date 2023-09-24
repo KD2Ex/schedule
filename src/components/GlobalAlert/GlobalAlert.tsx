@@ -1,12 +1,13 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Alert, Snackbar} from "@mui/material";
 import {IAlert} from "../../models/interfaces/IAlert";
+import alerts from "../../store/alerts";
+import {observer} from "mobx-react-lite";
 
 interface GlobalAlertProps {
-    alert: IAlert
 }
 
-const GlobalAlert: FC<GlobalAlertProps> = ({alert}) => {
+const GlobalAlert: FC<GlobalAlertProps> = () => {
     const [open, setOpen] = useState(false);
 
     const handleAlertClose = () => {
@@ -14,10 +15,13 @@ const GlobalAlert: FC<GlobalAlertProps> = ({alert}) => {
     }
 
     useEffect(() => {
-        if (alert.message !== 'Success!') {
+        // алерт, как и модалка, открывается при перезагрузке странице,
+        // поэтому идет проверка на определенное дефолтное значение, во избежание
+        // пустых алертов/модалок после загрузки сайта
+        if (alerts.alert.message !== 'Success!') {
             setOpen(true);
         }
-    }, [alert])
+    }, [alerts.alert])
 
     return (
         <Snackbar
@@ -29,13 +33,13 @@ const GlobalAlert: FC<GlobalAlertProps> = ({alert}) => {
             <Alert
                 variant={'filled'}
                 onClose={handleAlertClose}
-                severity={alert.severity}
+                severity={alerts.alert.severity}
                 sx={{ width: '100%' }}
             >
-                {alert.message}
+                {alerts.alert.message}
             </Alert>
         </Snackbar>
     );
 };
 
-export default GlobalAlert;
+export default observer(GlobalAlert);

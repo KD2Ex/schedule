@@ -22,6 +22,7 @@ import {WeekTooltip} from "../../components/styled/WeekTooltip";
 import { ScheduleTooltip } from '../../components/styled/TooltippedCell';
 import {WhiteSwitch} from "../../components/styled/StyledSwitch";
 import TooltipToggleButton from "../../components/TooltipToggleButton/TooltipToggleButton";
+import InfoDialog from "../../components/InfoDialog/InfoDialog";
 
 
 export const loader = async () => {
@@ -158,19 +159,29 @@ const SchedulePage = observer(() => {
 				<WeekTooltip
 					leaveDelay={200}
 					title={
-						<FormControlLabel
+						<>
+							<FormControlLabel
+								control={
+									<WhiteSwitch
+										checked={isPrevWeek}
+										disabled={!isReplaceActive}
+										onChange={handlePrevWeek}
 
-							control={
-								<WhiteSwitch
-									checked={isPrevWeek}
-									disabled={!isReplaceActive}
-									onChange={handlePrevWeek}
+									/>
+								}
+								label={'Прошлая неделя'}
+								labelPlacement={"start"}
+							/>
+							<Typography
+								sx={{
+									pl: 2,
+									py: 1
+								}}
+							>
+								Текущая неделя: {currentWeek}
+							</Typography>
+						</>
 
-								/>
-							}
-							label={'Прошлая неделя'}
-							labelPlacement={"start"}
-						/>
 					}
 				>
 
@@ -205,9 +216,9 @@ const SchedulePage = observer(() => {
 							sx={{
 								p: 2,
 								height: '8px',
-								borderBottom: (theme) =>
+							/*	borderBottom: (theme) =>
 									currentWeek === 1 && `1px solid ${theme.palette.primary.main}`
-							}}
+					*/		}}
 						>
 
 							<span>1</span>
@@ -349,6 +360,7 @@ const SchedulePage = observer(() => {
 				{filterValue !== null && !isScheduleEmpty() && fillDays()}
 
 			</Grid2>
+
 
 		</>
 	)

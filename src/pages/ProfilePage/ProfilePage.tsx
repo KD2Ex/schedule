@@ -106,7 +106,12 @@ const ProfilePage = observer(() =>  {
 
 			<Grid item xs={12} lg>
 				{/*<UserPermission/>*/}
-				<Typography variant={'h4'}>
+				<Typography
+					variant={'h4'}
+				 	sx={{
+						 mb: 1
+					}}
+				>
 					Расписание
 				</Typography>
 				<SettingsBox>
