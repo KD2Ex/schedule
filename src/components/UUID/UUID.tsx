@@ -57,20 +57,6 @@ const Uuid = () => {
 					columnGap: 1,
                 }}
             >
-                {/*<Typography
-                    id={'uuid'}
-                    sx={{
-                        borderRadius: 1,
-						p: 1,
-						width: '100%',
-                        border:  `1px solid ${theme.palette.primary.pale}`,
-						fontSize: 14,
-						textAlign: 'center'
-                    }}
-                    onClick={handleUUIDClick}
-                >
-                    {user.profile.uuid}
-                </Typography>*/}
 
                 <TextField
                     sx={{
@@ -81,6 +67,7 @@ const Uuid = () => {
                     label={'UUID'}
                     value={user.profile.uuid}
                     onClick={handleUUIDClick}
+                    InputLabelProps={{ shrink: true }}
                 />
 
 				<Button

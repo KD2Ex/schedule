@@ -1,5 +1,5 @@
 import React, {FC, useState} from 'react';
-import {Autocomplete, Box, Button, Grid, TextField, Tooltip, Typography} from "@mui/material";
+import {Autocomplete, Box, Button, Grid, TextField, Toolbar, Tooltip, Typography} from "@mui/material";
 import {AutocompleteOption} from "../../models/interfaces/IAutocompleteOption";
 import schedule from "../../store/schedule";
 import user from "../../store/user";
@@ -62,18 +62,14 @@ const UserItem: FC<UserItemProps> = ({info, permissions}) => {
                 justifyContent: 'space-between',
                 gap: 2,
                 alignItems: 'center',
-                flexWrap: {xs: 'wrap', md: 'nowrap'}
+                flexWrap: {xs: 'wrap', md: 'nowrap'},
+                width: '100%'
             }}
         >
 
-            <Box
-                sx={{
-                    flex: 2
-                }}
-            >
                 <Typography
                     sx={{
-                        flexGrow: 4
+                        minWidth: '30%'
                     }}
                 >
                     {
@@ -84,12 +80,11 @@ const UserItem: FC<UserItemProps> = ({info, permissions}) => {
                             : 'Имя не задано'
                     }
                 </Typography>
-            </Box>
 
 
             <Typography
                 sx={{
-                    flexGrow: 2
+                    minWidth: '30%'
                 }}
             >
                 {info.uuid}
@@ -100,7 +95,7 @@ const UserItem: FC<UserItemProps> = ({info, permissions}) => {
                 disabled={!isFullNameSet}
                 onClick={handleVerify}
                 sx={{
-                    flexGrow: 2
+                    minWidth: '130px'
                 }}
             >
                 <Tooltip title={'Нажмите, чтобы подвердить пользователя'}>
@@ -113,7 +108,7 @@ const UserItem: FC<UserItemProps> = ({info, permissions}) => {
                 open={open}
                 size='small'
                 multiple
-                sx={{width: '100%', flexGrow: 2}}
+                sx={{width: '100%'}}
                 onOpen={() => {
                     setOpen(true)
                 }}
@@ -136,7 +131,7 @@ const UserItem: FC<UserItemProps> = ({info, permissions}) => {
         </Box>
     )
 
-    return (
+   /* return (
         <Grid
             container
             spacing={1}
@@ -152,7 +147,7 @@ const UserItem: FC<UserItemProps> = ({info, permissions}) => {
             <Grid
                 item
                 xs={12}
-                md={2}
+                md={3}
             >
                 {
                     isFullNameSet ?
@@ -193,7 +188,7 @@ const UserItem: FC<UserItemProps> = ({info, permissions}) => {
 
             <Grid
                 item
-                md
+                md={3}
             >
                 <Autocomplete
                     value={value}
@@ -221,10 +216,8 @@ const UserItem: FC<UserItemProps> = ({info, permissions}) => {
                     }}
                 />
             </Grid>
-
-
         </Grid>
-    );
+    );*/
 };
 
 export default UserItem;

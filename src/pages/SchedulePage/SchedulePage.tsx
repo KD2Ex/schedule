@@ -78,9 +78,13 @@ const SchedulePage = observer(() => {
 
 		(async () => {
 			//setIsScheduleLoading(true);
-			await schedule.fetchCurrentData().catch((error) => {
-				console.log('err: ' + error)
-			});
+
+			if (schedule.currentData === null) {
+				await schedule.fetchCurrentData().catch((error) => {
+					console.log('err: ' + error)
+				});
+			}
+
 			schedule.setIsLoading(false);
 
 			console.log(schedule.currentData)

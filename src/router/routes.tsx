@@ -2,12 +2,10 @@ import React from "react";
 import SchedulePage, {loader} from '../pages/SchedulePage/SchedulePage'
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import ProfilePage, {loader as profileLoader} from "../pages/ProfilePage/ProfilePage";
-import DataListsPage from "../pages/DataListsPage/DataListsPage";
 import MainPage from "../pages/MainPage/MainPage";
 import AdminPage from "../pages/AdminPage/AdminPage";
 import LoginPage from "../pages/LoginPage/LoginPage";
 import {redirect} from 'react-router-dom'
-import ValidationErrorPage from "../pages/ValidationErrorPage/ValidationErrorPage";
 import OAuth2RedirectHandler from "../pages/OAuth2RedirectHandler/OAuth2RedirectHandler";
 import EditSchedulePage from "../pages/EditSchedulePage/EditSchedulePage";
 import EditSubjectsPage from "../pages/EditSubjectsPage/EditSubjectsPage";
@@ -17,8 +15,13 @@ import EditTeachersPage from "../pages/EditTeachersPage/EditTeachersPage";
 import EditRoomsPage from "../pages/EditRoomsPage/EditRoomsPage";
 import EditUsersPage from "../pages/EditUsersPage/EditUsersPage";
 import SignupPage from "../pages/SignupPage/SignupPage";
+import ProtectedPage from "../pages/ProtectedPage/ProtectedPage";
+import user from "../store/user";
+import {isAdmin} from "../api/http/data";
 
 const isAuth = true;
+
+console.log(user.permissions.length)
 
 export const routes = [
     {
@@ -33,7 +36,13 @@ export const routes = [
 
             {
                 path: "edit",
-                element: <AdminPage/>,
+                element: <ProtectedPage
+                    predicate={isAdmin(user.permissions)}
+                    redirectURL={'/'}
+                >
+                    <AdminPage/>
+                </ProtectedPage>,
+                //element: <AdminPage/>,
                 children: [
                     {
                         path: "schedule",
@@ -81,7 +90,6 @@ export const routes = [
             },
         ]
     },
-
     {
         path: '/profile/page',
         element: <div>123</div>

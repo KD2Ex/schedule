@@ -1,6 +1,8 @@
 import axios from 'axios';
 import schedule from "../../store/schedule";
 import alerts from "../../store/alerts";
+import user from "../../store/user";
+import {actions} from "./data";
 
 export const API_URL = 'https://dev.kkep.su/api';
 
@@ -44,25 +46,54 @@ $api.interceptors.request.use(
 
 		}
 
+
+
 		alerts.setIsLoading(true);
 		if (localStorage.getItem('token')) {
 			config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
 		}
 
 
+	/*	if (!actions.find(item => item.url === config.url)) {
+			return config;
+		}*/
+
+		const permitCheck = actions.find(item => item.url === config.url);
+
+		console.log(permitCheck)
+
+		if (permitCheck) {
+			if (user.permissions.find(item => item === permitCheck.permission)) {
+				console.log('aprovved')
+				return config;
+			} else {
+				console.log('declined')
+				throw new axios.Cancel('Canceled')
+				//return false
+			}
+		}
+
 		return config;
 
 	}, (error) => {
+		return Promise.reject(error)
 	}
 )
 
 $api.interceptors.response.use(
 	(config) => {
+		console.log(config.config.url)
 		console.log(config)
 		alerts.setIsLoading(false);
 		return config;
 	},
 	async (error) => {
+
+		if (error.code == "ERR_CANCELED") {
+			alerts.setIsLoading(false);
+			return Promise.reject(error)
+
+		}
 
 		let errorMessage = error;
 
@@ -90,8 +121,10 @@ $api.interceptors.response.use(
 
 				return $api.request(originalRequest);
 			} catch (e) {
-				console.log(e)
 				console.log('Не авторизован')
+
+				user.logout()
+
 			}
 		}
 		if (error.config.url === '/auth/login' && error.response.status === 400) {

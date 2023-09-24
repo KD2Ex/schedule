@@ -26,19 +26,17 @@ const App = observer(() => {
 	const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
 	const [selectedSchedule, setSelectedSchedule] = useState(null);
 
-
-
 	useEffect(() => {
 
 		(async () => {
+
 			await user.checkAuth()
+			if (user.isAuth) {
+				await user.getPermissions();
+			}
 			console.log('check auth')
 
 		})()
-
-	}, [])
-
-	useEffect(() => {
 
 	}, [])
 
@@ -84,7 +82,7 @@ const App = observer(() => {
 	//console.log(user.isAuth)
 	//console.log(localStorage.getItem('token') )
 
-	console.log('arpp')
+	console.log('app')
 
 	return (
 		<>

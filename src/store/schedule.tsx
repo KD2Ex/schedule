@@ -10,7 +10,7 @@ import dayjs, {Dayjs} from "dayjs";
 class Schedule {
 	weekSchedule: any = [];
 	newSchedule: IUploadedSchedule = {};
-	currentData: any = {};
+	currentData: any = null;
 	firstPair: number = 0;
 	lastPair: number = 4;
 	isLoading: boolean = false;
@@ -167,15 +167,15 @@ class Schedule {
 		}
 	}
 
-	async setIsLoading(value: boolean) {
+	setIsLoading(value: boolean) {
 		this.isLoading = value;
 	}
 
 	async fetchCurrentData() {
 		if (!this.isLoading) {
 			this.isLoading = true;
-			this.currentData = await UserScheduleService.getCurrentData()
 		}
+		this.currentData = await UserScheduleService.getCurrentData()
 
 	}
 

@@ -10,7 +10,6 @@ export default class UserService {
 
 	static async getProfileInfo(): Promise<ProfileResponse> {
 		const user = await $api.get<AxiosResponse<ProfileResponse>>('/profile/me');
-		console.log(user.data);
 		return user.data;
 	}
 

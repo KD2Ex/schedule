@@ -12,22 +12,22 @@ import {ISocial} from "../models/interfaces/ISocial";
 import {ILinkedSchedule} from "../models/interfaces/ILinkedSchedule";
 import AdminService from "../api/services/AdminService";
 
+const defaultPermissions = [
+	'permissions.me'
+]
 
 class User {
 	user = {} as IUser;
 	profile = {} as IUser;
 	isAuth = false;
-	isPretendedToAuth = false;
 	uuid = '';
-	permissions: any = [];
+	permissions: any = [
+		...defaultPermissions
+	];
 
 
 	constructor() {
 		makeAutoObservable(this)
-	}
-
-	setPretendingToAuth(pretending: boolean) {
-		this.isPretendedToAuth = pretending;
 	}
 
 	setAuth(isAuth: boolean) {
@@ -47,7 +47,9 @@ class User {
 			localStorage.setItem('refreshToken', response.data.response.refreshToken);
 			localStorage.setItem('expiry', response.data.response.expiry);
 			this.setAuth(true);
+			await this.getPermissions();
 			return {result: true, code: 200};
+
 			//this.setUser({id: '1', email:'qwer@mail.ru', isAcitvated: true});
 		} catch (e) {
 
@@ -68,10 +70,6 @@ class User {
 			//localStorage.setItem('token', response.data.accessToken);
 			if (localStorage.getItem('token')) {
 				this.setAuth(true);
-				this.setPretendingToAuth(false);
-
-				const response = await UserService.getPermissions();
-				this.permissions = response.permissions;
 			}
 
 			//this.setUser('');
@@ -111,14 +109,9 @@ class User {
 
 	logout() {
 		this.setAuth(false);
-		this.setPretendingToAuth(false);
 		localStorage.clear();
-
+		this.permissions = [...defaultPermissions];
 		alerts.openWarningAlert('Вы вышли из системы')
-	}
-
-	loginPretending() {
-		this.setPretendingToAuth(true);
 	}
 
 	async fetchProfile() {
@@ -152,6 +145,17 @@ class User {
 
 	async verifyUser(uuid: string) {
 		const response = await AdminService.verifyUser(uuid);
+
+	}
+
+	async getPermissions() {
+
+		try {
+			const response = await UserService.getPermissions();
+			this.permissions = response.permissions;
+		} catch (e) {
+			console.log(e)
+		}
 
 	}
 

@@ -70,8 +70,7 @@ const NavBar = observer(() =>  {
 						}}
 						className={styles.appBar}>
 
-					<Toolbar disableGutters sx={{
-					}} >
+					<Toolbar disableGutters>
 
 						<Box
 							sx={{
@@ -102,7 +101,6 @@ const NavBar = observer(() =>  {
 								display: {xs: 'none', md: 'flex'},
 								justifyContent: 'space-between',
 								width: '100%',
-
 							}}
 						>
 

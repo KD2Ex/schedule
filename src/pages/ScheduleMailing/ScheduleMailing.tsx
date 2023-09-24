@@ -15,6 +15,8 @@ import {setLoadedOption} from "../../utils/setLoadedOption";
 import {observer} from "mobx-react-lite";
 import alert from "../../store/alerts";
 import ContainedButton from "../../components/styled/ContainedButton";
+import UserScheduleService from "../../api/services/UserScheduleService";
+import schedule from "../../store/schedule";
 
 const ScheduleMailing = observer(() => {
 
@@ -47,6 +49,10 @@ const ScheduleMailing = observer(() => {
         } else {
             //await UserService.setLinkedSchedule(ScheduleEntityType.TEACHER, -1);
         }
+
+        console.log(schedule.currentData)
+
+        await schedule.fetchCurrentData();
 
         alert.openSuccessAlert('Настройки профиля обновлены')
 
