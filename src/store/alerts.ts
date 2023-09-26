@@ -1,5 +1,6 @@
 import {makeAutoObservable} from "mobx";
 import {IAlert} from "../models/interfaces/IAlert";
+import {IDialog} from "../models/interfaces/IDialog";
 
 
 class Alerts {
@@ -15,9 +16,11 @@ class Alerts {
         message: 'Success!'
     }
 
-    dialog = {
+    dialog: IDialog = {
         title: '',
-        body: ''
+        body: '',
+        open: false
+        //callback: () => null,
     }
 
     constructor() {
@@ -40,10 +43,29 @@ class Alerts {
 		this.alert = {message: message, severity: 'info'};
 	}
 
-    openInfoDialog(title: string, body: string) {
-        this.dialog = {
+    openInfoDialog(title: string, body: string, callback?: () => any, props?: any[]) {
+        const newDialog = {
             title: title,
-            body: body
+            body: body,
+            open: true
+        }
+
+        if (callback) {
+            this.dialog = {...newDialog, callback: callback, props: [...props]}
+        } else {
+            this.dialog = {
+                ...newDialog
+            }
+        }
+
+        console.log(this.dialog)
+    }
+
+    resetDialog() {
+        this.dialog = {
+            title: '',
+            body: '',
+            open: false
         }
     }
 

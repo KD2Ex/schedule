@@ -3,7 +3,7 @@ import {IUser} from "../models/interfaces/IUser";
 import AuthService from "../api/services/AuthService";
 import axios from "axios";
 import {AuthResponse} from "../models/response/AuthResponse";
-import {API_URL} from "../api/http";
+import $api, {API_URL} from "../api/http";
 import {REDIRECT_URL, VK_AUTH_URL} from "../api/http/urls";
 import UserService from "../api/services/UserService";
 import alerts from "./alerts";
@@ -21,7 +21,7 @@ class User {
 	profile = {} as IUser;
 	isAuth = false;
 	uuid = '';
-	permissions: any = [
+	permissions: string[] = [
 		...defaultPermissions
 	];
 
@@ -81,6 +81,9 @@ class User {
 
 	async loginWithServices(url: string) {
 		try {
+
+
+
 			await window.location.replace(url);
 			console.log(window.location.toString());
 			//window.open(url)
@@ -116,6 +119,27 @@ class User {
 		alerts.openWarningAlert('Вы вышли из системы')
 	}
 
+	async refresh() {
+		if (new Date(Number(localStorage.getItem('expiry'))) <= new Date()) {
+			try {
+				const response = await $api.post(`/auth/refresh`, {
+					refreshToken: localStorage.getItem('refreshToken')
+				});
+				localStorage.setItem('token', response.data.response.accessToken);
+				localStorage.setItem('expiry', response.data.response.expiry);
+				localStorage.setItem('refreshToken', response.data.response.refreshToken);
+				alerts.setIsLoading(false);
+
+
+
+			} catch (e) {
+				console.log('Не авторизован')
+
+				this.logout()
+			}
+		}
+	}
+
 	async fetchProfile() {
 
 		const response = await UserService.getProfileInfo()
@@ -145,9 +169,12 @@ class User {
 		return response
 	}
 
-	async verifyUser(uuid: string) {
+	async verify(uuid: string) {
 		const response = await AdminService.verifyUser(uuid);
+	}
 
+	async removeVerify(uuid: string) {
+		const response = await AdminService.removeUserVerification(uuid)
 	}
 
 	async getPermissions() {
@@ -186,8 +213,6 @@ class User {
 			//alerts.openErrorAlert('Ошибка: ' + e.message)
 
 		}
-
-
 	}
 
 }

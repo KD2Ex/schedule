@@ -85,7 +85,7 @@ const LinkedAccount: FC<LinkedAccountProps> = ({isLinked, type}) => {
 		// }
 		//await user.loginWithServices(`${url}&link=1`);
 
-
+		await user.refresh();
 		await user.loginWithServices(
 			API_URL + `/oauth2/authorize/${type.toLowerCase()}?redirect_uri=${REDIRECT_URL}&link=1&token_bearer=${localStorage.getItem('token')}`
 		);

@@ -140,8 +140,9 @@ const EditUsersPage = () => {
         setPage(value)
     }
 
-    const handleSearch = async () => {
+    const handleSearch = async (e) => {
 
+        e.preventDefault()
         const response = await user.getAllUsers(value, size, 0);
 
         setList(response.users);
@@ -213,50 +214,57 @@ const EditUsersPage = () => {
 
                 <Box
                     sx={{
-                       display: 'flex',
-                       alignItems: 'baseline',
-                        justifyContent: 'flex-start',
-                        gap: 1
+                        '& form': {
+                            display: 'flex',
+                            alignItems: 'baseline',
+                            justifyContent: 'flex-start',
+                            gap: 1
+                        }
                     }}
                 >
-                    <TextField
-                        label="Поиск"
-                        size={'small'}
-                        variant="outlined"
-                        placeholder={'Введите UUID'}
-                        sx={{
-                            width: '350px',
-                            mb: 2
-                        }}
-                        value={value}
-                        onChange={(e) => setValue(e.target.value)}
-                    />
-
-                    <ContainedButton
-                        size={''}
-                        sx={{
-                            height: '100%'
-                        }}
-                        onClick={handleSearch}
+                    <form
+                        onSubmit={handleSearch}
                     >
-                        Поиск
-                    </ContainedButton>
+                        <TextField
+                            label="Поиск"
+                            size={'small'}
+                            variant="outlined"
+                            placeholder={'Введите UUID'}
+                            sx={{
+                                width: '350px',
+                                mb: 2
+                            }}
+                            value={value}
+                            onChange={(e) => setValue(e.target.value)}
+                        />
 
-                    <Button
-                        variant={'outlined'}
-                        onClick={async () => {
-                            setValue('');
+                        <ContainedButton
+                            size={''}
+                            sx={{
+                                height: '100%'
+                            }}
+                            type={'submit'}
+                            //onClick={handleSearch}
+                        >
+                            Поиск
+                        </ContainedButton>
 
-                            const response = await user.getAllUsers('', size, 0);
+                        <Button
+                            variant={'outlined'}
+                            onClick={async () => {
+                                setValue('');
 
-                            setList(response.users);
-                            setPages(Math.ceil(response.totalElements / size))
-                            setPage(0);
-                        }}
-                    >
+                                const response = await user.getAllUsers('', size, 0);
 
-                        Очистить
-                    </Button>
+                                setList(response.users);
+                                setPages(Math.ceil(response.totalElements / size))
+                                setPage(0);
+                            }}
+                        >
+
+                            Очистить
+                        </Button>
+                    </form>
 
                 </Box>
 

@@ -20,11 +20,10 @@ const AdminPage = observer(() => {
 			>
 				<Button
 					onClick={() => setOpen(true)}
-					size={''}
 					variant={'outlined'}
 					sx={{
 						position: 'absolute',
-						mt: 2
+						mt: 4
 					}}
 				>
 					Меню

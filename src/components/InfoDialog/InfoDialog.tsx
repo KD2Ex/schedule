@@ -1,6 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import alerts from "../../store/alerts";
+import {observer} from "mobx-react-lite";
 
 interface InfoDialogProps {
 }
@@ -9,16 +10,27 @@ const InfoDialog:FC <InfoDialogProps> = () => {
 
     const [open, setOpen] = useState(false);
 
+    const handleOk = async () => {
 
-    const handleOk = () => {
+        if (alerts.dialog.callback) {
+            await alerts.dialog.callback(...alerts.dialog.props);
+        }
+
         setOpen(false)
+        alerts.resetDialog();
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+        alerts.resetDialog();
+        console.log(alerts.dialog)
     }
 
     useEffect(() => {
 
-        if (alerts.dialog.title !== '') {
+        console.log(alerts.dialog)
+        if (alerts.dialog.open) {
             setOpen(true);
-
         }
 
     }, [alerts.dialog])
@@ -26,7 +38,7 @@ const InfoDialog:FC <InfoDialogProps> = () => {
     return (
         <Dialog
             open={open}
-            onClose={() => setOpen(false)}
+            onClose={handleClose}
         >
 
             <DialogTitle>
@@ -47,4 +59,4 @@ const InfoDialog:FC <InfoDialogProps> = () => {
     );
 };
 
-export default InfoDialog;
+export default observer (InfoDialog);

@@ -1,5 +1,4 @@
 import React, {useEffect, useMemo, useState} from 'react';
-//import {router} from "./components/AppRouter";
 import {createBrowserRouter, RouterProvider, useNavigate} from "react-router-dom";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {getMode, themeObject} from "./themes";
@@ -11,7 +10,6 @@ import user from './store/user'
 import {router} from "./router";
 import {useVK} from "./hooks/useVK";
 import { ruRU } from '@mui/x-data-grid'
-import alert from "./store/alerts";
 import GlobalAlert from "./components/GlobalAlert/GlobalAlert";
 import alerts from "./store/alerts";
 import Loader from "./components/Loader/Loader";

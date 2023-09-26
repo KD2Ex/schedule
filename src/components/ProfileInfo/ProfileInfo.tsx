@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Grid, OutlinedInput, TextField, Typography} from "@mui/material";
+import {Button, FormControl, Grid, OutlinedInput, TextField, Typography} from "@mui/material";
 import UUID from "../UUID/UUID";
 import {SettingTypography} from "../styled/SettingTypography";
 import ProfileButton from "../styled/ProfileButton";
@@ -21,14 +21,21 @@ const ProfileInfo = () => {
     const [lastName, setLastName] = useState('');
     const [firstName, setFirstName] = useState('');
     const [patronymic, setPatronymic] = useState('');
+    const [nameDisabled, setNameDisabled] = useState(false);
 
     const isEmailCorrect = isEmailValid(email);
 
     useEffect(() => {
+
         setEmail(user.profile?.email)
         setFirstName(user.profile?.firstName)
         setLastName(user.profile?.lastName)
         setPatronymic(user.profile?.patronymic)
+
+        if (!user.permissions.includes('profile.updating.name')) {
+            setNameDisabled(true);
+        }
+
     }, [])
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,28 +43,32 @@ const ProfileInfo = () => {
         setEmail(event.target.value);
     }
 
-    const handleEnableEmailEditing = async () => {
+    const handleEnableEmailEditing = async (e) => {
+        e.preventDefault()
+
         setEmailEditing(prev => !prev);
         if (emailEditing) {
             await UserService.updateEmail(email);
         }
     }
 
-    const handleOldPasswordChange = (event) => {
-        setOldPassword(event.target.value)
+    const handleNameChange = (e) => {
+        e.preventDefault()
+
+        alerts.openInfoDialog(
+            'Подтверждение ФИО',
+            'После подтверждения аккаунта администратором, вы больше не сможете ' +
+            'изменить ФИО, поэтому убедитесь что введенные данные корректны',
+            user.updateFullname,
+            [firstName, lastName, patronymic]
+        )
+
     }
 
-    const handleNewPasswordChange = (event) => {
-        setNewPassword(event.target.value)
-    }
+    const handlePasswordChange = async (e) => {
 
-    const handleNameChange = async () => {
+        e.preventDefault()
 
-        await user.updateFullname(firstName, lastName, patronymic)
-
-    }
-
-    const handlePasswordChange = async () => {
         if (newPassword === '') {
 			alerts.openWarningAlert('Введите новый пароль для смены')
 		} else if (oldPassword === newPassword) {
@@ -119,14 +130,19 @@ const ProfileInfo = () => {
                 Персональные данные
 
             </Typography>*/}
-            <Grid container spacing={2}>
-
+            <Grid
+                container
+                spacing={2}
+                component={'form'}
+                onSubmit={handleNameChange}
+            >
 
                 <AccountDataField
                     title={'Фамилия'}
                     placeholder={'Введите фамилию'}
                     value={lastName}
                     setValue={setLastName}
+                    disabled={nameDisabled}
                 />
 
                 <AccountDataField
@@ -134,6 +150,7 @@ const ProfileInfo = () => {
                     placeholder={'Введите имя'}
                     value={firstName}
                     setValue={setFirstName}
+                    disabled={nameDisabled}
                 />
 
                 <AccountDataField
@@ -141,23 +158,38 @@ const ProfileInfo = () => {
                     placeholder={'Введите отчество'}
                     value={patronymic}
                     setValue={setPatronymic}
+                    disabled={nameDisabled}
                 />
 
                 <Grid item xs={12} sx={{display: 'flex', justifyContent: 'flex-end'}}>
 
                     <ProfileButton
-                        onClick={handleNameChange}
+                        type={'submit'}
+                        disabled={nameDisabled}
+                        //onClick={handleNameChange}
                     >
                         Сохранить ФИО
                     </ProfileButton>
 
                 </Grid>
 
+            </Grid>
+
+
                {/* <Grid item xs={12} md={2}>
                     <SettingTypography>
                         Электронная почта
                     </SettingTypography>
                 </Grid>*/}
+            <Grid
+                container
+                spacing={2}
+                sx={{
+                    mt: 0
+                }}
+                component={'form'}
+            >
+
                 <Grid item xs={12}>
                     <TextField
                         sx={{width: '100%'}}
@@ -170,16 +202,28 @@ const ProfileInfo = () => {
                         disabled={!emailEditing}
                         InputProps={{
                             endAdornment:
-                            <Button onClick={handleEnableEmailEditing}>
-                                Изменить
-                            </Button>
+                                <Button
+                                    onClick={handleEnableEmailEditing}
+                                >
+                                    Изменить
+                                </Button>
 
                         }}
+                    />
 
-                    >
-
-                    </TextField>
                 </Grid>
+            </Grid>
+
+            <Grid
+                container
+                spacing={2}
+                sx={{
+                    mt: 0,
+                }}
+                component={'form'}
+                onSubmit={handlePasswordChange}
+            >
+
 
                 {
                     user.profile?.containPassword ? <>
@@ -207,12 +251,12 @@ const ProfileInfo = () => {
 
                 <Grid item xs={12} sx={{display: 'flex', justifyContent: 'flex-end'}}>
                     <ProfileButton
-                        onClick={handlePasswordChange}
+                        type={'submit'}
+                        //onClick={handlePasswordChange}
                     >
                         Сменить пароль
                     </ProfileButton>
                 </Grid>
-
             </Grid>
         </SettingsBox>
     );

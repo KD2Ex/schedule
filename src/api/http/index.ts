@@ -1,5 +1,4 @@
 import axios from 'axios';
-import schedule from "../../store/schedule";
 import alerts from "../../store/alerts";
 import user from "../../store/user";
 import {actions} from "./data";
@@ -18,12 +17,36 @@ $api.interceptors.request.use(
 		//console.log(config)
 		//console.log(new Date(Number(localStorage.getItem('expiry'))))
 		//console.log(new Date())
-		if (new Date(Number(localStorage.getItem('expiry'))) <= new Date()) {
+		let refreshRequest = true;
+
+		const originalRequest = config;
+
+		if (new Date(Number(localStorage.getItem('expiry'))) <= new Date()
+			&& config.url !== '/auth/refresh'
+		) {
 			console.log('refresh')
-			const originalRequest = config;
-/*
+
+			//originalRequest._isRetry = true;
+
+		/*	try {
+				const response = await $api.post(`/auth/refresh`, {
+					refreshToken: localStorage.getItem('refreshToken')
+				});
+				localStorage.setItem('token', response.data.response.accessToken);
+				localStorage.setItem('expiry', response.data.response.expiry);
+				localStorage.setItem('refreshToken', response.data.response.refreshToken);
+				alerts.setIsLoading(false);
+				//originalRequest.method = 'get'
+				return $api.request(originalRequest);
+			} catch (e) {
+				console.log('Не авторизован')
+
+				user.logout()
+
+			}*/
 
 
+			/*
 			if (config && !config._isRetry) {
 				originalRequest._isRetry = true;
 				try {
@@ -46,8 +69,6 @@ $api.interceptors.request.use(
 
 		}
 
-
-
 		alerts.setIsLoading(true);
 		if (localStorage.getItem('token')) {
 			config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
@@ -58,7 +79,9 @@ $api.interceptors.request.use(
 			return config;
 		}*/
 
+		console.log(config.url)
 		const permitCheck = actions.find(item => item.url === config.url);
+
 
 		console.log(permitCheck)
 

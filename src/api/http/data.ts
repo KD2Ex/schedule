@@ -19,7 +19,7 @@ export const actions = [
         permission: "profile.updating.remove_linked_network"
     },
     {
-        url: '/proflie/update/linked_schedule',
+        url: '/profile/update/linked_schedule',
         permission: "profile.updating.linked_schedule"
     },
     {
@@ -39,7 +39,7 @@ export const actions = [
         permission: "schedule.updating.standard"
     },*/
     {
-        url: '/proflie/update/mail',
+        url: '/proflie/me',
         permission: "profile.me"
     },
     {
@@ -49,6 +49,10 @@ export const actions = [
     {
         url: '/verified/remove',
         permission: "verified.remove"
+    },
+    {
+        url: '/profile/update/fullname',
+        permission: "profile.updating.name"
     }
 ]
 

@@ -26,7 +26,7 @@ const UserList: FC<UserListProps> = ({data}) => {
             {data.map((item, index) => (
                 <UserItem
                     key={index}
-                    info={item}
+                    userInfo={item}
                     permissions={permissions}
                 />
             ))}

@@ -4,56 +4,22 @@ import {AutocompleteOption} from "../../models/interfaces/IAutocompleteOption";
 import schedule from "../../store/schedule";
 import user from "../../store/user";
 import alerts from "../../store/alerts";
+import {IUserItem} from "../../models/interfaces/IUserItem";
+import ButtonUserVerify from "../ButtonUserVerify/ButtonUserVerify";
 
 
 interface UserItemProps {
-    info: any,
+    userInfo: IUserItem,
     permissions: any[]
 }
 
-const UserItem: FC<UserItemProps> = ({info, permissions}) => {
+const UserItem: FC<UserItemProps> = ({userInfo, permissions}) => {
 
 
     const [value, setValue] = useState([])
     const [open, setOpen] = useState(false);
 
-    const isFullNameSet = info.name !== null && info.surname !== null;
-
-    const handleVerify = async () => {
-
-
-        try {
-            await user.verifyUser(info.uuid);
-            alerts.openSuccessAlert('Пользователь подтвержден')
-        } catch (e) {
-
-            switch (e.response.data.code) {
-                case 1: {
-                    alerts.openErrorAlert('Ошибка: UUID отсутствует')
-                    break;
-                }
-                case 2: {
-                    alerts.openErrorAlert('Ошибка: Пользователь не существует')
-                    break;
-                }
-                case 3: {
-                    alerts.openErrorAlert('Ошибка: ФИО не заполнено')
-                    break;
-                }
-                case 4: {
-                    alerts.openErrorAlert('Ошибка: Пользователь уже верифицирован')
-                    break;
-                }
-
-            }
-
-        }
-
-    }
-
-    const handleRemove = async () => {
-
-    }
+    const isFullNameSet = userInfo.name !== null && userInfo.surname !== null;
 
     return (
         <Box
@@ -74,35 +40,26 @@ const UserItem: FC<UserItemProps> = ({info, permissions}) => {
                 >
                     {
                         isFullNameSet ?
-                            `${info.surname} 
-                         ${info.name} 
-                        ${info.patronymic}`
+                            `${userInfo.surname} 
+                         ${userInfo.name} 
+                        ${userInfo.patronymic}`
                             : 'Имя не задано'
                     }
                 </Typography>
-
 
             <Typography
                 sx={{
                     minWidth: '30%'
                 }}
             >
-                {info.uuid}
+                {userInfo.uuid}
             </Typography>
 
-            <Button
-                variant={'contained'}
-                disabled={!isFullNameSet}
-                onClick={handleVerify}
-                sx={{
-                    minWidth: '130px'
-                }}
-            >
-                <Tooltip title={'Нажмите, чтобы подвердить пользователя'}>
-                    <span>Подвердить</span>
+            <ButtonUserVerify
+                verified={userInfo.verified}
+                uuid={userInfo.uuid}
+            />
 
-                </Tooltip>
-            </Button>
             <Autocomplete
                 value={value}
                 open={open}
