@@ -74,6 +74,7 @@ export const useScheduleRow = (pair: IPair, filterType, key: number, editable: b
                     firstRow={cells[0]}
                     secondRow={cells[1]}
                     replaces={replaces}
+                    ids={[pair.lessons[0]?.id, pair.lessons[1]?.id]}
                 />
             )
         }
@@ -85,6 +86,7 @@ export const useScheduleRow = (pair: IPair, filterType, key: number, editable: b
                     firstRow={cells[1]}
                     secondRow={cells[0]}
                     replaces={replaces}
+                    ids={[pair.lessons[0]?.id, pair.lessons[1]?.id]}
                 />
             )
         }

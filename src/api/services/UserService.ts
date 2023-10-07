@@ -5,12 +5,13 @@ import {ProfileResponse} from "../../models/response/ProfileResponse";
 import {SocialType} from "../../models/types/SocialType";
 import {ScheduleEntityType} from "../../models/enums/ScheduleEntityType";
 import {UserResponse} from "../../models/response/UserResponse";
+import {REDIRECT_URL} from "../http/urls";
 
 export default class UserService {
 
 	static async getProfileInfo(): Promise<ProfileResponse> {
 		const user = await $api.get<AxiosResponse<ProfileResponse>>('/profile/me');
-		return user.data;
+		return user.data.response;
 	}
 
 	static async setLinkedSchedule(type: ScheduleEntityType, entityId: number) {
@@ -18,7 +19,10 @@ export default class UserService {
 	}
 
 	static async updateEmail(mail: string) {
-		return $api.post('/profile/update/mail', {mail})
+		return $api.post('/profile/update/mail', {
+			mail,
+			redirectUrl: REDIRECT_URL
+		})
 	}
 
 	static async updateFullname(name: string, surname: string, patronymic: string) {
@@ -61,5 +65,13 @@ export default class UserService {
 		console.log(response.data.response.permissions)
 		return response.data.response;
 	}
+
+	static async getRoles() {
+		const response = await $api.get('/user/roles/available');
+
+		return response.data.response
+	}
+
+
 
 }

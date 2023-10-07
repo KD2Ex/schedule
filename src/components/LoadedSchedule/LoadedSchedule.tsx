@@ -1,11 +1,12 @@
 import React, {memo} from 'react';
-import {Box, Button, Grid} from "@mui/material";
+import {Box, Button, Grid, TextField} from "@mui/material";
 import ScheduleDayTable from "../ScheduleDayTable/ScheduleDayTable";
 import {ScheduleEntityType} from "../../models/enums/ScheduleEntityType";
 import {SCHEDULE_ENTITY} from "../../models/enums/SCHEDULE_ENTITY";
 import {observer} from "mobx-react-lite";
 import alerts from "../../store/alerts";
 import schedule from '../../store/schedule';
+import {isEdited} from "../../utils/isEdited";
 
 const LoadedSchedule = observer(({newSchedule}) => {
 
@@ -13,10 +14,12 @@ const LoadedSchedule = observer(({newSchedule}) => {
         alerts.openSuccessAlert('test')
 
     }
+
     console.log(schedule)
 
     return (
         <>
+
             <Grid item container spacing={2} xs>
 
                 {newSchedule?.lessons?.map((group, index) => (
@@ -36,7 +39,7 @@ const LoadedSchedule = observer(({newSchedule}) => {
                             minPairNumber={schedule.firstPair}
                             maxPairNumber={schedule.lastPair}
                             clickable={true}
-
+                            edited={isEdited(group[0].lessons[0].group)}
                         />
                     </Grid>
 

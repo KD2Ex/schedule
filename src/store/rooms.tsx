@@ -13,19 +13,20 @@ class Room {
 	}
 
 	async fetchRooms() {
-		const response = await fetchEntities(ScheduleEntityType.ROOM);
+		if (this.rooms.length === 0) {
+			const response = await fetchEntities(ScheduleEntityType.ROOM);
 
-		this.rooms = response.filter((item: IRoom) => {
-				//console.log(item.fullName.match(/[^сз_/тирВЦИ\d]+/gi))
+			this.rooms = response.filter((item: IRoom) => {
+					//console.log(item.fullName.match(/[^сз_/тирВЦИ\d]+/gi))
 
-				//|| item.fullName.includes('ИЦ')
-			return !item.fullName.match(/[^сз_/тирВЦИЦ\d]+/gi)
-				|| item.fullName.toUpperCase().includes('ИЦ')
-				|| item.fullName.toUpperCase().includes('ВЦ')
+					//|| item.fullName.includes('ИЦ')
+					return !item.fullName.match(/[^сз_/тирВЦИЦ\d]+/gi)
+						|| item.fullName.toUpperCase().includes('ИЦ')
+						|| item.fullName.toUpperCase().includes('ВЦ')
+				}
+			)
+			console.log(response);
 		}
-
-		)
-		console.log(response);
 
 	}
 

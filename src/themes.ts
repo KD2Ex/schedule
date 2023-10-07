@@ -147,8 +147,15 @@ export const themeObject = {
                 }
             }
         },
-
-
+        MuiCheckbox: {
+            styleOverrides: {
+                root: {
+                    '&.Mui-disabled': {
+                        color: 'rgb(101,101,101)',
+                    }
+                }
+            }
+        },
         MuiInputBase: {
             styleOverrides: {
                 root: {

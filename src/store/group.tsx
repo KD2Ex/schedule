@@ -23,8 +23,11 @@ class Group {
 
 	async fetchGroups() {
 
-		const result = await fetchEntities(ScheduleEntityType.GROUP);
-		this.groups = result;
+		if (this.groups.length === 0) {
+			const result = await fetchEntities(ScheduleEntityType.GROUP);
+			this.groups = result;
+		}
+
 
 	}
 

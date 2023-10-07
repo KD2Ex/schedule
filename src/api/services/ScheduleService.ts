@@ -24,7 +24,8 @@ export default class ScheduleService {
 		return $api.post('/schedule/update', file, {
 			headers: {
 				'Content-Type': 'multipart/form-data'
-			}
+			},
+			//cancelToken: source.token
 		})
 
 		/*return $api.post('/schedule/update', {

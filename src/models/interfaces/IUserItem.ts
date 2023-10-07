@@ -3,5 +3,6 @@ export interface IUserItem {
     surname: string,
     patronymic: string,
     uuid: string,
-    verified: boolean
+    verified: boolean,
+    roles: string[]
 }

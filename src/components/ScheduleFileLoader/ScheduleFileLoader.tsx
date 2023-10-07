@@ -4,6 +4,7 @@ import ScheduleService from "../../api/services/ScheduleService";
 import 'filepond/dist/filepond.min.css';
 import {Box, useTheme} from "@mui/material";
 import schedule from "../../store/schedule";
+import axios from "axios";
 
 
 
@@ -34,13 +35,47 @@ const ScheduleFileLoader = ({date}) => {
                     const formData = new FormData();
                     formData.append('file', file);
                     formData.append('date', date.toISOString().split('T')[0]);
+
+                    const CancelToken = axios.CancelToken;
+                    const source = CancelToken.source();
+
                     console.log(formData.entries())
                     console.log(date.toISOString())
                     console.log(formData);
-                    console.log(await ScheduleService.updateSchedule(formData))
-                    console.log('process')
-                    setFiles(files)
-					await schedule.fetchSavedSchedule(date.toISOString().split('T')[0]);
+                    try {
+                        await ScheduleService.updateSchedule(formData)
+                       /* axios({
+                            method: 'post',
+                            url: '/schedule/update',
+                            data: formData,
+                            cancelToken: source.token,
+                            onUploadProgress: (e) => {
+                                progress(e.lengthComputable, e.loaded, e.total);
+                            }
+                        }).then(response => {
+                            // passing the file id to FilePond
+                            load(response.data.data.id)
+                            .catch((thrown) => {
+                                        if (axios.isCancel(thrown)) {
+                                            console.log('Request canceled', thrown.message);
+                                        } else {
+                                            // handle error
+                                        }
+                                    })
+                        */
+                        console.log('process')
+                        setFiles(files)
+                        await schedule.fetchSavedSchedule(date.toISOString().split('T')[0]);
+
+                    } catch (e) {
+
+                    }
+
+                    return {
+                        abort: () => {
+                            //source.cancel('Operation canceled by the user.');
+                        }
+                    }
                 }
             }
         }))
@@ -68,6 +103,9 @@ const ScheduleFileLoader = ({date}) => {
                 allowMultiple={false}
                 onupdatefiles={setFiles}
                 ref={filePond}
+                //server={'/'}
+                name={'files'}
+                allowRemove
                 labelIdle={'Выберите или перетащите файл с расписанием в эту область'}
             />
         </Box>

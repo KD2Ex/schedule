@@ -31,4 +31,20 @@ export default class AdminService {
         })
 
     }
+
+    static async addRole(roleName: string, userId: number) {
+        return $api.post('/user/roles/add', {
+
+            roleName,
+            userId
+        })
+    }
+
+    static async removeRole(roleName: string, userId: number) {
+        return $api.post('/user/roles/remove', {
+            roleName,
+            userId
+        })
+    }
+
 }

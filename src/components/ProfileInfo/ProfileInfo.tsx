@@ -49,6 +49,10 @@ const ProfileInfo = () => {
         setEmailEditing(prev => !prev);
         if (emailEditing) {
             await UserService.updateEmail(email);
+			alerts.openInfoDialog(
+				'Подтверждение смены почты',
+				'На новую почту придет письмо. Перейдите по ссылке, указанной в нем, чтобы завершить смену почты'
+			)
         }
     }
 

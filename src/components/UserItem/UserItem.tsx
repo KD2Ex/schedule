@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Autocomplete, Box, Button, Grid, TextField, Toolbar, Tooltip, Typography} from "@mui/material";
 import {AutocompleteOption} from "../../models/interfaces/IAutocompleteOption";
 import schedule from "../../store/schedule";
@@ -6,20 +6,59 @@ import user from "../../store/user";
 import alerts from "../../store/alerts";
 import {IUserItem} from "../../models/interfaces/IUserItem";
 import ButtonUserVerify from "../ButtonUserVerify/ButtonUserVerify";
+import role, {roleAliases} from "../../store/role";
 
 
 interface UserItemProps {
     userInfo: IUserItem,
-    permissions: any[]
 }
 
-const UserItem: FC<UserItemProps> = ({userInfo, permissions}) => {
+const UserItem: FC<UserItemProps> = ({userInfo}) => {
 
 
-    const [value, setValue] = useState([])
+    const [value, setValue] = useState([...userInfo.roles.map(item => roleAliases.find(role => role.value === item)?.alias)])
     const [open, setOpen] = useState(false);
-
+    const [options, setOptions] = useState<AutocompleteOption[]>([...role.list]);
+    const loading = open && role.list.length === 0;
     const isFullNameSet = userInfo.name !== null && userInfo.surname !== null;
+
+    useEffect(() => {
+
+        let active = true;
+
+        if (!loading) {
+            return undefined
+        }
+
+        (async () => {
+            await role.fetchRoles();
+            const roles = role.getList()
+            console.log(roles)
+            roles.map((item, index) => (
+                {
+                    id: index,
+                    label: item
+                }
+            ));
+
+            if (active) {
+
+                setOptions(roles)
+
+            }
+
+
+        })()
+
+    }, [loading])
+
+    useEffect(() => {
+
+
+
+    }, [open])
+
+
 
     return (
         <Box
@@ -67,6 +106,7 @@ const UserItem: FC<UserItemProps> = ({userInfo, permissions}) => {
                 multiple
                 sx={{width: '100%'}}
                 onOpen={() => {
+
                     setOpen(true)
                 }}
                 onClose={() => {
@@ -79,8 +119,26 @@ const UserItem: FC<UserItemProps> = ({userInfo, permissions}) => {
                         ...params.InputProps,
                     }}
                 />)}
-                options={permissions}
-                onChange={(event: any, newValue: any) => {
+                options={options}
+                onChange={async (event: any, newValue: any) => {
+
+                    console.log('Новое значение')
+                    let roleName;
+                    if (value.length > newValue.length) {
+                        roleName = value.filter(item => !newValue.includes(item))
+                    } else {
+                        roleName = newValue.filter(item => !value.includes(item))
+                    }
+
+                    roleName = roleAliases.find(item => item.alias === roleName[0])?.value
+                    console.log(roleName)
+                    if (value.length > newValue.length) {
+
+                        await role.removeRole(roleName, userInfo.id)
+
+                    } else {
+                        await role.addRole(roleName, userInfo.id)
+                    }
 
                     setValue(newValue);
                 }}

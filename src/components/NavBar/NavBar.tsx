@@ -23,6 +23,7 @@ import kkep from '../../styles/logos/kkep.svg'
 import {observer} from "mobx-react-lite";
 import MenuIcon from '@mui/icons-material/Menu';
 import CssBaseline from "@mui/material/CssBaseline";
+import {isAdmin} from "../../api/http/data";
 
 
 const NavBar = observer(() =>  {
@@ -37,11 +38,12 @@ const NavBar = observer(() =>  {
 		{
 			title: 'Расписание',
 			url: '/schedule',
-
+			isAdmin: false,
 		},
 		{
 			title: 'Администрирование',
 			url: '/edit',
+			isAdmin: true,
 		},
 	]
 
@@ -113,14 +115,18 @@ const NavBar = observer(() =>  {
 								}}
 							>
 
-								<NavBarButton component={link} to="/schedule" sx={{
+								{menuList.map(item => (
+									item.isAdmin && !isAdmin(user.permissions) ? null :
+									<NavBarButton component={link} to={item.url} >
+										{item.title}
+									</NavBarButton>
 
-								}} >
-									Расписание
-								</NavBarButton>
-								<Button sx={{color: 'white'}} component={link} to="/edit" >
+								))}
+
+
+								{/*<Button sx={{color: 'white'}} component={link} to="/edit" >
 									Администрирование
-								</Button>
+								</Button>*/}
 
 
 
@@ -192,6 +198,7 @@ const NavBar = observer(() =>  {
 										}}
 									>
 										{menuList.map(item => (
+											item.isAdmin && !isAdmin(user.permissions) ? null :
 											<ListItemButton
 												key={item.url}
 												component={Link}

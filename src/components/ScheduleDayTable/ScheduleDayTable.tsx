@@ -27,6 +27,7 @@ interface DayGridProps {
 	minPairNumber: number;
 	editable?: boolean;
 	clickable?: boolean;
+	edited?: boolean
 }
 
 const color = `rgba(0, 68, 255, 0.82)`
@@ -41,7 +42,8 @@ const ScheduleDayTable: React.FC<DayGridProps> = observer(
 		maxPairNumber,
 		minPairNumber,
 		editable,
-		clickable
+		clickable,
+		edited
 	}) => {
 
 
@@ -119,7 +121,7 @@ const ScheduleDayTable: React.FC<DayGridProps> = observer(
 
 			<TableContainer
 				sx={{
-					border: isEdited(rows[0]?.lessons[0]?.group)
+					border: edited
 						? `${theme.palette.primary.main} 2px solid`
 						: `${theme.palette.primary.pale} 1px solid`,
 					borderRadius: "0px 4px 4px 4px",

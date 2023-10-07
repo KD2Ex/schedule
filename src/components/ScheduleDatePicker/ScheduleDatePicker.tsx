@@ -26,7 +26,14 @@ const ScheduleDatePicker = ({date, setDate}) => {
                 }}
                 label={'Выберите дату'}
                 value={date}
-                onChange={(newValue) => setDate(newValue)}
+                onChange={(newValue) => {
+                    newValue = dayjs(newValue).hour(9)
+                    console.log(newValue.toISOString())
+                    setDate(newValue)
+
+                    //console.log(newValue = dayjs(newValue).hour(12))
+                }
+                }
                 shouldDisableDate={isSunday}
             />
 

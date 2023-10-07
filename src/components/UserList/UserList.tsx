@@ -27,7 +27,6 @@ const UserList: FC<UserListProps> = ({data}) => {
                 <UserItem
                     key={index}
                     userInfo={item}
-                    permissions={permissions}
                 />
             ))}
         </Box>

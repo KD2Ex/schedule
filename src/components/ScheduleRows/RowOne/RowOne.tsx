@@ -26,7 +26,7 @@ const RowOne: FC<TableRowOneProps> = observer(({row, isReplaced, isEmpty, editab
 		}
 	}*/
 
-	const theme = useTheme();
+
 
 
 	const [hidden, setHidden] = useState<boolean>(
@@ -58,7 +58,6 @@ const RowOne: FC<TableRowOneProps> = observer(({row, isReplaced, isEmpty, editab
 		console.log(hidden)
 	}
 
-
 	return (
 		<TableRow
 			sx={{
@@ -72,6 +71,7 @@ const RowOne: FC<TableRowOneProps> = observer(({row, isReplaced, isEmpty, editab
 					value={hidden}
 					handleCheck={handleHide}
 					id={id}
+					disabled={!isReplaced || isEmpty}
 				/>
 			}
 			{isEmpty
@@ -83,8 +83,6 @@ const RowOne: FC<TableRowOneProps> = observer(({row, isReplaced, isEmpty, editab
 				))
 			}
 		</TableRow>
-
-
 
 	);
 });

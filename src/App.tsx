@@ -21,8 +21,6 @@ const App = observer(() => {
 	const initialModeState = localStorage.getItem('mode') ? localStorage.getItem('mode') : prefersDarkMode;
 
 	const [mode, setMode] = useState<'light' | 'dark'>(initialModeState);
-	const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
-	const [selectedSchedule, setSelectedSchedule] = useState(null);
 
 	useEffect(() => {
 

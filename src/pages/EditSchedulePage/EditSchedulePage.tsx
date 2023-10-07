@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import {Box, Button, Grid, Typography} from "@mui/material";
+import {Box, Button, Grid, TextField, Typography} from "@mui/material";
 import {SCHEDULE_ENTITY} from "../../models/enums/SCHEDULE_ENTITY";
 import ScheduleDatePicker from "../../components/ScheduleDatePicker/ScheduleDatePicker";
 import '../../components/ScheduleFileLoader/ScheduleFileLoader.css'
@@ -9,6 +9,7 @@ import LoadedSchedule from "../../components/LoadedSchedule/LoadedSchedule";
 import ScheduleFileLoader from "../../components/ScheduleFileLoader/ScheduleFileLoader";
 import Bookmarks from "../../components/Bookmarks/Bookmarks";
 import PromptDialog from "../../components/PromptDialog/PromptDialog";
+import dayjs from "dayjs";
 
 /*export const loader = async () => {
 	await ScheduleService.fetchSavedSchedule();
@@ -26,7 +27,9 @@ const EditSchedulePage = observer(() => {
 
 	const handleSave = async () => {
 		console.log('save is pending')
-		//await schedule.saveSchedule(date.toISOString().split('T')[0], schedule.newSchedule.hideLessons);
+		console.log(date.toISOString())
+		await schedule.saveSchedule(date.toISOString().split('T')[0], schedule.newSchedule.hideLessons);
+		setSave(false)
 	}
 
 	const handleClose = (value: boolean) => {
@@ -64,12 +67,22 @@ const EditSchedulePage = observer(() => {
 		(async () => {
 			if (date) {
 				console.log('date changed')
-				const localeDate = date.toISOString().split('T')[0]
-				schedule.setEditDate(date)
 
+
+				const newDate = dayjs(date).hour(12)
+				const localeDate = newDate.toISOString().split('T')[0]
+				schedule.setEditDate(date)
+				console.log(localeDate)
 				await schedule.fetchSavedSchedule(localeDate);
 
 				console.log(schedule.newSchedule)
+
+				schedule.newSchedule.lessons.sort((a, b) => {
+
+
+					return Number(a[0].lessons[0].group.split(/[а-я]/ig)[0])
+					- Number(b[0].lessons[0].group.split(/[а-я]/ig)[0])
+				})
 			}
 
 		})()
@@ -144,7 +157,6 @@ const EditSchedulePage = observer(() => {
 				</Button>
 			</Box>}
 
-
 			<Box
 				sx={{
 					display: 'flex',
@@ -157,8 +169,9 @@ const EditSchedulePage = observer(() => {
 					sx={{
 						position: 'sticky',
 						height: '100%',
-						top: 0,
+						top: '100px',
 						overflow: 'hidden',
+
 					}}
 				>
 					{schedule.editedSchedules.map((item, index) => (

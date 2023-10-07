@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 import NavBar from "../../components/NavBar/NavBar";
 import {Box} from "@mui/material";
 import {useNavigate} from 'react-router-dom'
@@ -9,12 +9,10 @@ import InfoDialog from "../../components/InfoDialog/InfoDialog";
 
 const MainPage = observer(() => {
 
-
 	const navigate = useNavigate();
 
 	useEffect(() => {
-
-		//navigate('/schedule')
+		//navigate('/schedule)
 	}, [])
 
 	return (

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import alerts from "../../store/alerts";
 import user from "../../store/user";
-import {actions} from "./data";
+import {actions, errorsList} from "./data";
 
 export const API_URL = 'https://dev.kkep.su/api';
 
@@ -79,7 +79,7 @@ $api.interceptors.request.use(
 			return config;
 		}*/
 
-		console.log(config.url)
+		//console.log(config.url)
 		const permitCheck = actions.find(item => item.url === config.url);
 
 
@@ -114,6 +114,7 @@ $api.interceptors.response.use(
 
 		if (error.code == "ERR_CANCELED") {
 			alerts.setIsLoading(false);
+			alerts.openErrorAlert(`Недостаточно прав`)
 			return Promise.reject(error)
 
 		}
@@ -150,10 +151,18 @@ $api.interceptors.response.use(
 
 			}
 		}
-		if (error.config.url === '/auth/login' && error.response.status === 400) {
+
+		if (error.response.status === 400) {
+			errorMessage = errorsList.find((item) => {
+				return item.url === error.config.url
+			})?.status.find(item => item.code === error.response.data.code)?.message
+		}
+		if (error.config.url === '/auth/login' && (error.response.status === 404 || error.response.status === 400) ) {
 			errorMessage = 'Неправильная почта или пароль'
 		}
 		alerts.setIsLoading(false);
+
+		console.log(errorMessage)
 
 		alerts.openErrorAlert(`Ошибка: ${errorMessage}`)
 		throw error;

@@ -34,7 +34,7 @@ const SignupForm = () => {
                 navigate('/')
 
             } catch (e) {
-                alerts.openErrorAlert(e.message);
+                //alerts.openErrorAlert(e.message);
             }
 
         }

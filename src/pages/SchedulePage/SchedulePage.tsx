@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {
-	Autocomplete, Box, Button, Checkbox, FormControlLabel, FormGroup, Skeleton, Switch, TextField, ToggleButton,
-	ToggleButtonGroup, Tooltip, Typography
-} from '@mui/material'
+import {Box, Checkbox, FormControlLabel, FormGroup, ToggleButton, ToggleButtonGroup, Typography} from '@mui/material'
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import ScheduleDayTable from '../../components/ScheduleDayTable/ScheduleDayTable';
 import {observer} from "mobx-react-lite";
@@ -15,22 +12,22 @@ import schedule from "../../store/schedule";
 import {IScheduleEntity} from "../../models/interfaces/IScheduleEntity";
 import switchFetching from "../../utils/switchFetching";
 import ScheduleFilter from '../../components/ScheduleFilter/ScheduleFilter';
-import { fillDays } from '../../utils/fillDays';
+import {fillDays} from '../../utils/fillDays';
 import ScheduleSkeleton from "../../components/ScheduleSkeleton/ScheduleSkeleton";
 import {weekDays} from "../../models/consts/weekDays";
 import {WeekTooltip} from "../../components/styled/WeekTooltip";
-import { ScheduleTooltip } from '../../components/styled/TooltippedCell';
 import {WhiteSwitch} from "../../components/styled/StyledSwitch";
-import TooltipToggleButton from "../../components/TooltipToggleButton/TooltipToggleButton";
-import InfoDialog from "../../components/InfoDialog/InfoDialog";
+import {useSearchParams} from "react-router-dom";
 
 
 export const loader = async () => {
+
 	return null
 }
 
 const SchedulePage = observer(() => {
 
+	const [searchParams, setSearchParams] = useSearchParams();
 	const [week, setWeek] = useState(2);
 	const [currentWeek, setCurrentWeek] = useState(1);
 	const [isReplaceActive, setIsReplaceActive] = useState(true);
@@ -63,6 +60,10 @@ const SchedulePage = observer(() => {
 				//setIsScheduleLoading(false);
 				schedule.setIsLoading(false);
 
+				setSearchParams({
+					type: filterType.value,
+					value: filterValue.id
+				})
 
 			})();
 		} else {
@@ -90,13 +91,32 @@ const SchedulePage = observer(() => {
 
 			console.log(schedule.currentData)
 
-			
-			if (schedule.currentData.type) {
+			if (searchParams.size !== 0) {
+				console.log(searchParams.size)
+
+				const type: ScheduleEntityType = searchParams.get('type');
+				const value: number = +searchParams.get('value');
+
+				let entity = await switchFetching(type);
+				setScheduleEntityType(
+					{
+						value: type,
+						title: SCHEDULE_ENTITY[type]
+					}
+				)
+				setFilterValue(
+					{
+						label: entity.find(item => item.id === value)?.fullName,
+						id: value
+					}
+				)
+
+			} else if (schedule.currentData.type) {
 				setScheduleEntityType({value: schedule.currentData.type, title: SCHEDULE_ENTITY[schedule.currentData.type]});
 				let entity = await switchFetching(schedule.currentData.type);
 				setFilterValue({label: entity.find((item) => item.id === schedule.currentData.entityId)?.fullName, id: schedule.currentData.entityId} as AutocompleteOption)
-
 			}
+
 
 
 			setWeek(schedule.currentData.firstWeek ? 1 : 2);
