@@ -23,7 +23,7 @@ const UserItem: FC<UserItemProps> = ({userInfo}) => {
     const loading = open && role.list.length === 0;
     const isFullNameSet = userInfo.name !== '' && userInfo.surname !== '';
 
-
+    const isAdmin = user.permissions.find(item => item === "role.manager.available")
 
     /*useEffect(() => {
 
@@ -164,6 +164,7 @@ const UserItem: FC<UserItemProps> = ({userInfo}) => {
     return (
         <Grid
             container
+            columns={isAdmin ? 12 : 8}
             spacing={1}
             sx={{
                 display: 'flex',
@@ -224,61 +225,66 @@ const UserItem: FC<UserItemProps> = ({userInfo}) => {
             </Grid>
 
 
-            <Grid
-                item
-                xs={12}
-                md={4}
-                lg={4.5}
-            >
-                <Autocomplete
-                    value={value}
-                    open={open}
-                    size='small'
-                    multiple
-                    disabled={user.permissions.find(item => item === '')}
-                    sx={{
-                        width: '100%',
-                        mt: {xs: 1, md: 0},
-                    }}
-                    onOpen={() => {
+            {
+                isAdmin && (
+                    <Grid
+                        item
+                        xs={12}
+                        md={4}
+                        lg={4.5}
+                    >
+                        <Autocomplete
+                            value={value}
+                            open={open}
+                            size='small'
+                            multiple
+                            //disabled={!user.permissions.find(item => item === 'role.manager.add')}
+                            sx={{
+                                width: '100%',
+                                mt: {xs: 1, md: 0},
+                            }}
+                            onOpen={() => {
 
-                        setOpen(true)
-                    }}
-                    onClose={() => {
-                        setOpen(false);
-                    }}
-                    renderInput={(params) => (<TextField
-                        {...params}
-                        label={`Роль`}
-                        InputProps={{
-                            ...params.InputProps,
-                        }}
-                    />)}
-                    options={options}
-                    onChange={async (event: any, newValue: any) => {
+                                setOpen(true)
+                            }}
+                            onClose={() => {
+                                setOpen(false);
+                            }}
+                            renderInput={(params) => (<TextField
+                                {...params}
+                                label={`Роль`}
+                                InputProps={{
+                                    ...params.InputProps,
+                                }}
+                            />)}
+                            options={options}
+                            onChange={async (event: any, newValue: any) => {
+                                console.log('Новое значение')
+                                let roleName;
+                                if (value.length > newValue.length) {
+                                    roleName = value.filter(item => !newValue.includes(item))
+                                } else {
+                                    roleName = newValue.filter(item => !value.includes(item))
+                                }
 
-                        console.log('Новое значение')
-                        let roleName;
-                        if (value.length > newValue.length) {
-                            roleName = value.filter(item => !newValue.includes(item))
-                        } else {
-                            roleName = newValue.filter(item => !value.includes(item))
-                        }
+                                roleName = roleAliases.find(item => item.alias === roleName[0])?.value
+                                console.log(roleName)
+                                if (value.length > newValue.length) {
 
-                        roleName = roleAliases.find(item => item.alias === roleName[0])?.value
-                        console.log(roleName)
-                        if (value.length > newValue.length) {
+                                    await role.removeRole(roleName, userInfo.id)
 
-                            await role.removeRole(roleName, userInfo.id)
+                                } else {
+                                    await role.addRole(roleName, userInfo.id)
+                                }
 
-                        } else {
-                            await role.addRole(roleName, userInfo.id)
-                        }
+                                setValue(newValue);
+                            }}
+                        />
+                    </Grid>
+                )
+            }
 
-                        setValue(newValue);
-                    }}
-                />
-            </Grid>
+
         </Grid>
     );
 };

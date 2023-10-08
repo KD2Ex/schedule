@@ -77,12 +77,10 @@ const EditSchedulePage = observer(() => {
 
 				console.log(schedule.newSchedule)
 
-				schedule.newSchedule.lessons.sort((a, b) => {
-
-
+				/*schedule.newSchedule.lessons.sort((a, b) => {
 					return Number(a[0].lessons[0].group.split(/[а-я]/ig)[0])
 					- Number(b[0].lessons[0].group.split(/[а-я]/ig)[0])
-				})
+				})*/
 			}
 
 		})()

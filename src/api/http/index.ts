@@ -148,7 +148,7 @@ $api.interceptors.response.use(
 				console.log('Не авторизован')
 
 				user.logout()
-
+				window.location.replace('/schedule ')
 			}
 		}
 

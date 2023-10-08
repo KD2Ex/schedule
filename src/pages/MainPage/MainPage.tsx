@@ -6,13 +6,23 @@ import {useNavigate} from 'react-router-dom'
 import {observer} from "mobx-react-lite";
 import ScheduleEditDialog from "../../components/Dialogs/ScheduleEditDialog/ScheduleEditDialog";
 import InfoDialog from "../../components/InfoDialog/InfoDialog";
+import user from "../../store/user";
+
+export const loader = async () => {
+
+	await user.checkAuth()
+	if (user.isAuth) {
+		await user.getPermissions();
+	}
+	return null
+}
 
 const MainPage = observer(() => {
 
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		//navigate('/schedule)
+		//navigate('/schedule')
 	}, [])
 
 	return (

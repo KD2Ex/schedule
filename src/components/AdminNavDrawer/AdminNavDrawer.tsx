@@ -1,6 +1,7 @@
 import React, {FC, Fragment, useState} from 'react';
 import {Box, Button, Divider, Drawer, List, ListItem, ListItemButton, Toolbar, useTheme} from "@mui/material";
 import {Link} from "react-router-dom";
+import user from "../../store/user";
 
 interface AdminNavDrawerProps {
     open: boolean,
@@ -10,8 +11,16 @@ interface AdminNavDrawerProps {
 const AdminNavDrawer: FC<AdminNavDrawerProps> = ({open, setOpen}) => {
 
     const scheduleList = [
-        {url: '/edit/schedule', title: 'Редактирование расписания'},
-        {url: '/edit/users', title: 'Пользователи'}
+        {
+            url: '/edit/schedule',
+            title: 'Редактирование расписания',
+            visible: !!user.permissions.find(item => item === "schedule.updating.replacement")
+        },
+        {
+            url: '/edit/users',
+            title: 'Пользователи',
+            visible: !!user.permissions.find(item => item === "verified.add")
+        }
     ]
 
     const dataEditList = [
@@ -80,6 +89,7 @@ const AdminNavDrawer: FC<AdminNavDrawerProps> = ({open, setOpen}) => {
                         <List
                         >
                             {list.map((item) => (
+                                item.visible &&
                                 <ListItem
 									key={item.url}
                                     sx={{

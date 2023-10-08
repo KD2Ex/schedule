@@ -23,6 +23,11 @@ class Role {
 	list: string[] = []
 
 	async fetchRoles() {
+
+		if (!user.permissions.find(item => item === "role.manager.available")) {
+
+			return
+		}
 		const response = await UserService.getRoles();
 
 		this.list = response.roles.map(item => (

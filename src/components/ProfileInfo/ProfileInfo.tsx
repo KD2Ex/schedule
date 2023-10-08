@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, FormControl, Grid, OutlinedInput, TextField, Typography} from "@mui/material";
+import {Box, Button, FormControl, Grid, OutlinedInput, TextField, Typography} from "@mui/material";
 import UUID from "../UUID/UUID";
 import {SettingTypography} from "../styled/SettingTypography";
 import ProfileButton from "../styled/ProfileButton";
@@ -205,17 +205,30 @@ const ProfileInfo = () => {
                         error={!isEmailCorrect}
                         disabled={!emailEditing}
                         InputProps={{
-                            endAdornment:
-                                <Button
-                                    onClick={handleEnableEmailEditing}
-                                >
-                                    Изменить
-                                </Button>
+
+
 
                         }}
                     />
 
                 </Grid>
+
+				<Grid
+					item
+					xs={12}
+					sx={{
+						display: 'flex',
+						justifyContent: 'flex-end'
+					}}
+				>
+					<Button
+						variant={'outlined'}
+						onClick={handleEnableEmailEditing}
+					>
+						Изменить
+					</Button>
+				</Grid>
+
             </Grid>
 
             <Grid

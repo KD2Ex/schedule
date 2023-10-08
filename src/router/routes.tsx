@@ -19,6 +19,7 @@ import ProtectedPage from "../pages/ProtectedPage/ProtectedPage";
 import user from "../store/user";
 import {isAdmin} from "../api/http/data";
 import {loader as usersLoader} from '../pages/EditUsersPage/EditUsersPage'
+import {loader as mainLoader} from '../pages/MainPage/MainPage'
 
 const isAuth = true;
 
@@ -28,6 +29,7 @@ export const routes = [
     {
         path: "/",
         element: <MainPage/>,
+        loader: mainLoader,
         errorElement: <ErrorPage/>,
         children: [
             {

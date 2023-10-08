@@ -1,5 +1,5 @@
 import React, {FC, ReactNode} from 'react';
-import {Navigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import {isAdmin} from "../../api/http/data";
 import user from "../../store/user";
 import {observer} from "mobx-react-lite";
@@ -17,18 +17,24 @@ const ProtectedPage: FC<ProtectedPageProps> =
          redirectURL
     }) => {
 
-        console.log(user.permissions)
-    if (!isAdmin(user.permissions)) {
-        return (
-            <Navigate to={redirectURL}/>
-        )
-    }
+        const navigate = useNavigate();
 
-    return (
-        <>
-            {children}
-        </>
-    );
+        console.log(user.permissions)
+        setTimeout(() => {
+            if (!isAdmin(user.permissions)) {
+                navigate(redirectURL)
+                /*return (
+                    <Navigate to={redirectURL}/>
+                )*/
+            }
+        }, 1000)
+
+
+        return (
+            <>
+                {children}
+            </>
+        );
 };
 
 export default observer(ProtectedPage);

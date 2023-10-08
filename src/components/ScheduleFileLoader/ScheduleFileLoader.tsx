@@ -1,13 +1,16 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {FilePond} from "react-filepond";
+import {FilePond, registerPlugin} from "react-filepond";
 import ScheduleService from "../../api/services/ScheduleService";
 import 'filepond/dist/filepond.min.css';
 import {Box, useTheme} from "@mui/material";
 import schedule from "../../store/schedule";
 import axios from "axios";
+import {API_URL} from "../../api/http";
 
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 
-
+// Register the plugin
+registerPlugin(FilePondPluginFileValidateType);
 const ScheduleFileLoader = ({date}) => {
     const filePond = useRef(null);
 
@@ -46,25 +49,28 @@ const ScheduleFileLoader = ({date}) => {
                         await ScheduleService.updateSchedule(formData)
                        /* axios({
                             method: 'post',
-                            url: '/schedule/update',
+                            url: API_URL + '/schedule/update',
                             data: formData,
                             cancelToken: source.token,
                             onUploadProgress: (e) => {
                                 progress(e.lengthComputable, e.loaded, e.total);
+                            },
+                            headers: {
+                                Authorization: `Bearer ${localStorage.getItem('token')}`
                             }
                         }).then(response => {
                             // passing the file id to FilePond
-                            load(response.data.data.id)
-                            .catch((thrown) => {
-                                        if (axios.isCancel(thrown)) {
-                                            console.log('Request canceled', thrown.message);
-                                        } else {
-                                            // handle error
-                                        }
-                                    })
-                        */
+                            load(response.data.id)
+                        }).catch((thrown) => {
+                                    if (axios.isCancel(thrown)) {
+                                        console.log('Request canceled', thrown.message);
+                                    } else {
+                                        // handle error
+                                        console.log(thrown)
+                                    }
+                                });*/
                         console.log('process')
-                        setFiles(files)
+                        setFiles(files);
                         await schedule.fetchSavedSchedule(date.toISOString().split('T')[0]);
 
                     } catch (e) {
@@ -73,7 +79,7 @@ const ScheduleFileLoader = ({date}) => {
 
                     return {
                         abort: () => {
-                            //source.cancel('Operation canceled by the user.');
+                            source.cancel('Operation canceled by the user.');
                         }
                     }
                 }
@@ -107,6 +113,8 @@ const ScheduleFileLoader = ({date}) => {
                 name={'files'}
                 allowRemove
                 labelIdle={'Выберите или перетащите файл с расписанием в эту область'}
+                allowFileTypeValidation={true}
+                acceptedFileTypes={['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']}
             />
         </Box>
 

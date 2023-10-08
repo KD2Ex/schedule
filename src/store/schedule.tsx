@@ -153,6 +153,10 @@ class Schedule {
 		this.lastPair = this.getLastPair(schedule.lessons);
 		console.log(this.firstPair)
 		console.log(this.lastPair)
+		schedule.lessons.sort((a, b) => {
+			return Number(a[0].lessons[0].group.split(/[а-я]/ig)[0])
+				- Number(b[0].lessons[0].group.split(/[а-я]/ig)[0])
+		})
 		this.newSchedule = schedule;
 	}
 
