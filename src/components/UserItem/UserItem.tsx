@@ -7,6 +7,7 @@ import alerts from "../../store/alerts";
 import {IUserItem} from "../../models/interfaces/IUserItem";
 import ButtonUserVerify from "../ButtonUserVerify/ButtonUserVerify";
 import role, {roleAliases} from "../../store/role";
+import {observer} from "mobx-react-lite";
 
 
 interface UserItemProps {
@@ -15,14 +16,16 @@ interface UserItemProps {
 
 const UserItem: FC<UserItemProps> = ({userInfo}) => {
 
-
+    console.log(userInfo.roles)
     const [value, setValue] = useState([...userInfo.roles.map(item => roleAliases.find(role => role.value === item)?.alias)])
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState<AutocompleteOption[]>([...role.list]);
     const loading = open && role.list.length === 0;
-    const isFullNameSet = userInfo.name !== null && userInfo.surname !== null;
+    const isFullNameSet = userInfo.name !== '' && userInfo.surname !== '';
 
-    useEffect(() => {
+
+
+    /*useEffect(() => {
 
         let active = true;
 
@@ -47,19 +50,31 @@ const UserItem: FC<UserItemProps> = ({userInfo}) => {
 
             }
 
-
         })()
 
-    }, [loading])
+        return () => {
+            active = false;
+        }
+
+    }, [loading])*/
 
     useEffect(() => {
-
 
 
     }, [open])
 
 
+    useEffect(() => {
 
+
+        console.log(userInfo.roles)
+
+        setValue([...userInfo.roles.map(item => roleAliases.find(role => role.value === item)?.alias)])
+
+    }, [userInfo])
+
+
+/*
     return (
         <Box
             sx={{
@@ -72,19 +87,19 @@ const UserItem: FC<UserItemProps> = ({userInfo}) => {
             }}
         >
 
-                <Typography
-                    sx={{
-                        minWidth: '30%'
-                    }}
-                >
-                    {
-                        isFullNameSet ?
-                            `${userInfo.surname} 
-                         ${userInfo.name} 
-                        ${userInfo.patronymic}`
-                            : 'Имя не задано'
-                    }
-                </Typography>
+            <Typography
+                sx={{
+                    minWidth: '30%'
+                }}
+            >
+                {
+                    isFullNameSet ?
+                        `${userInfo.surname}
+                     ${userInfo.name}
+                    ${userInfo.patronymic}`
+                        : 'Имя не задано'
+                }
+            </Typography>
 
             <Typography
                 sx={{
@@ -144,9 +159,9 @@ const UserItem: FC<UserItemProps> = ({userInfo}) => {
                 }}
             />
         </Box>
-    )
+    )*/
 
-   /* return (
+    return (
         <Grid
             container
             spacing={1}
@@ -166,9 +181,9 @@ const UserItem: FC<UserItemProps> = ({userInfo}) => {
             >
                 {
                     isFullNameSet ?
-                        `${info.surname} 
-                         ${info.name} 
-                        ${info.patronymic}`
+                        `${userInfo.surname} 
+                         ${userInfo.name} 
+                        ${userInfo.patronymic}`
                             : 'Имя не задано'
                 }
             </Grid>
@@ -178,14 +193,15 @@ const UserItem: FC<UserItemProps> = ({userInfo}) => {
                 xs={12}
                 md={3}
             >
-                {info.uuid}
+                {userInfo.uuid}
             </Grid>
 
             <Grid
                 item
                 md={2}
+                lg={1.5}
             >
-                <Button
+               {/* <Button
                     variant={'contained'}
                     disabled={!isFullNameSet}
                     sx={{
@@ -196,22 +212,35 @@ const UserItem: FC<UserItemProps> = ({userInfo}) => {
                         <span>Подвердить</span>
 
                     </Tooltip>
-                </Button>
+                </Button>*/}
+
+                <ButtonUserVerify
+                    disabled={!isFullNameSet}
+                    verified={userInfo.verified}
+                    uuid={userInfo.uuid}
+                />
+
 
             </Grid>
 
 
             <Grid
                 item
-                md={3}
+                xs={12}
+                md={4}
+                lg={4.5}
             >
                 <Autocomplete
                     value={value}
                     open={open}
                     size='small'
                     multiple
-                    sx={{width: '100%'}}
+                    sx={{
+                        width: '100%',
+                        mt: {xs: 1, md: 0},
+                    }}
                     onOpen={() => {
+
                         setOpen(true)
                     }}
                     onClose={() => {
@@ -224,15 +253,33 @@ const UserItem: FC<UserItemProps> = ({userInfo}) => {
                             ...params.InputProps,
                         }}
                     />)}
-                    options={permissions}
-                    onChange={(event: any, newValue: any) => {
+                    options={options}
+                    onChange={async (event: any, newValue: any) => {
+
+                        console.log('Новое значение')
+                        let roleName;
+                        if (value.length > newValue.length) {
+                            roleName = value.filter(item => !newValue.includes(item))
+                        } else {
+                            roleName = newValue.filter(item => !value.includes(item))
+                        }
+
+                        roleName = roleAliases.find(item => item.alias === roleName[0])?.value
+                        console.log(roleName)
+                        if (value.length > newValue.length) {
+
+                            await role.removeRole(roleName, userInfo.id)
+
+                        } else {
+                            await role.addRole(roleName, userInfo.id)
+                        }
 
                         setValue(newValue);
                     }}
                 />
             </Grid>
         </Grid>
-    );*/
+    );
 };
 
-export default UserItem;
+export default observer(UserItem);

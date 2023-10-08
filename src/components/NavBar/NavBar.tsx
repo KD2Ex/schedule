@@ -120,15 +120,12 @@ const NavBar = observer(() =>  {
 									<NavBarButton component={link} to={item.url} >
 										{item.title}
 									</NavBarButton>
-
 								))}
 
 
 								{/*<Button sx={{color: 'white'}} component={link} to="/edit" >
 									Администрирование
 								</Button>*/}
-
-
 
 							</Box>
 

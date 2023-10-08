@@ -18,13 +18,13 @@ import {Link} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import user from '../../store/user';
 import vklogo from '../../styles/logos/VK_Compact_Logo.png'
+import tgLogo from '../../styles/logos/tgIcon.png'
 import gllogo from '../../styles/logos/google.png'
 import kkeplogo from '../../styles/logos/kkep.svg'
-import {GITHUB_AUTH_URL, GOOGLE_AUTH_URL, VK_AUTH_URL} from "../../api/http/urls";
+import {GITHUB_AUTH_URL, GOOGLE_AUTH_URL, REDIRECT_URL, VK_AUTH_URL} from "../../api/http/urls";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import css from './LoginForm.module.css';
 import alerts from "../../store/alerts";
-import {webcrypto} from "crypto";
+import {API_URL} from "../../api/http";
 
 const LoginForm: FC = observer(() => {
 
@@ -140,6 +140,10 @@ const LoginForm: FC = observer(() => {
 						<IconButton onClick={() => user.loginWithServices(VK_AUTH_URL)}>
 							<img src={vklogo} style={{width: '32px', height: '32px', margin: 0}}/>
 						</IconButton>
+						<IconButton onClick={() => user.loginWithServices(API_URL + '/auth/telegram/login?redirectUrl=' + REDIRECT_URL)}>
+							<img src={tgLogo} style={{width: '32px', height: '32px', margin: 0}}/>
+						</IconButton>
+
 						{/*<IconButton onClick={() => user.loginWithServices(GOOGLE_AUTH_URL)}>
 							<GoogleIcon sx={{width: '32px', height: '32px', margin: 0}}/>
 							<img src={gllogo} style={{width: '32px', height: '32px', margin: 0}}/>

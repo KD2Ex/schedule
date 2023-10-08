@@ -5,10 +5,11 @@ import alerts from "../../store/alerts";
 
 interface ButtonUserVerifyProps {
     verified: boolean,
-    uuid: string
+    uuid: string,
+    disabled: boolean
 }
 
-const ButtonUserVerify: FC<ButtonUserVerifyProps> = ({verified, uuid}) => {
+const ButtonUserVerify: FC<ButtonUserVerifyProps> = ({disabled, verified, uuid}) => {
 
     const [verify, setVerify] = useState(verified)
 
@@ -60,6 +61,7 @@ const ButtonUserVerify: FC<ButtonUserVerifyProps> = ({verified, uuid}) => {
             {!verify
                 ?
                 <Button
+                    disabled={disabled}
                     variant={'contained'}
                     onClick={handleVerify}
                     sx={{

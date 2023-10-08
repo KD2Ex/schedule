@@ -79,10 +79,15 @@ class User {
 		}
 	}
 
-	async loginWithServices(url: string) {
+	async loginWithServices(url: string, isNew?: boolean) {
 		try {
 
+			console.log(url)
 
+			if (isNew) {
+				window.open(url, '_blank').focus();
+				return
+			}
 
 			await window.location.replace(url);
 			console.log(window.location.toString());
@@ -214,6 +219,22 @@ class User {
 
 		}
 	}
+
+	async telegramLink() {
+
+		await AuthService.telegramLink();
+
+
+	}
+
+
+	async telegramLogin() {
+
+		//await AuthService.telegramLogin();
+		window.location.replace('https://dev.kkep.su/api/auth/telegram/login');
+	}
+
+
 
 }
 

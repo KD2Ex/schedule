@@ -63,31 +63,35 @@ const LinkedAccount: FC<LinkedAccountProps> = ({isLinked, type}) => {
 
 	const handleClick = async () => {
 
-		// let url = '';
-		//
-		// switch (type) {
-		// 	case "VK": {
-		// 		url = VK_AUTH_URL;
-		// 		break;
-		// 	}
-		// 	case "GITHUB": {
-		// 		url = GITHUB_AUTH_URL;
-		// 		break;
-		// 	}
-		// 	case "GOOGLE": {
-		// 		url = GOOGLE_AUTH_URL;
-		// 		break;
-		// 	}
-		// 	case "TELEGRAM": {
-		// 		url = VK_AUTH_URL;
-		// 		break;
-		// 	}
-		// }
+		let url = '';
+		let isNew = false;
+
+
+		switch (type) {
+			case "VK": {
+				url = API_URL + `/oauth2/authorize/${type.toLowerCase()}?redirect_uri=${REDIRECT_URL}&link=1&token_bearer=${localStorage.getItem('token')}`;
+				break;
+			}
+			case "GITHUB": {
+				url = GITHUB_AUTH_URL;
+				break;
+			}
+			case "GOOGLE": {
+				url = GOOGLE_AUTH_URL;
+				break;
+			}
+			case "TELEGRAM": {
+				url = API_URL + '/auth/telegram/link?token=' + localStorage.getItem('token');
+				isNew = true;
+				break;
+			}
+		}
 		//await user.loginWithServices(`${url}&link=1`);
 
 		await user.refresh();
 		await user.loginWithServices(
-			API_URL + `/oauth2/authorize/${type.toLowerCase()}?redirect_uri=${REDIRECT_URL}&link=1&token_bearer=${localStorage.getItem('token')}`
+			url,
+			isNew
 		);
 
 	}

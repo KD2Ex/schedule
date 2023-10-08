@@ -18,6 +18,7 @@ import SignupPage from "../pages/SignupPage/SignupPage";
 import ProtectedPage from "../pages/ProtectedPage/ProtectedPage";
 import user from "../store/user";
 import {isAdmin} from "../api/http/data";
+import {loader as usersLoader} from '../pages/EditUsersPage/EditUsersPage'
 
 const isAuth = true;
 
@@ -50,6 +51,7 @@ export const routes = [
                     },
                     {
                         path: 'users',
+                        loader: usersLoader,
                         element: <EditUsersPage/>
                     },
                     {

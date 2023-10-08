@@ -8,11 +8,17 @@ import {
     Pagination,
     TextField,
     Tooltip,
-    Typography
+    Typography, useMediaQuery, useTheme
 } from "@mui/material";
 import UserList from "../../components/UserList/UserList";
 import ContainedButton from "../../components/styled/ContainedButton";
 import user from "../../store/user";
+import role from "../../store/role";
+
+export const loader = async () => {
+    await role.fetchRoles();
+    return null
+}
 
 const EditUsersPage = () => {
 
@@ -129,7 +135,10 @@ const EditUsersPage = () => {
 */
 
 
-    const size = 7;
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
+    const size = isMobile ? 3 : 7;
 
     const [value, setValue] = useState('');
     const [list, setList] = useState([]);
@@ -137,7 +146,7 @@ const EditUsersPage = () => {
     const [pages, setPages] = useState(Math.ceil(1));
 
     const handlePageChange = (event, value) => {
-        setPage(value)
+        setPage(value - 1)
     }
 
     const handleSearch = async (e) => {
@@ -286,12 +295,10 @@ const EditUsersPage = () => {
 
             <Box
                 sx={{
-                    /*display: 'flex',
+                    display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'flex-end'*/
-                    bottom: 10,
-                    right: 10,
-                    position: 'absolute'
+                    justifyContent: 'flex-end',
+                    mt: 2,
                 }}
             >
                 <Pagination

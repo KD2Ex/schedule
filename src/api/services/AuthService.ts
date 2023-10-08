@@ -22,4 +22,20 @@ export default class AuthService {
 		})
 	}
 
+	static async telegramLink() {
+		const response = await $api.get('/auth/telegram/link');
+
+		return response
+	}
+
+	static async telegramLogin() {
+		const response = await $api.get('/auth/telegram/login', {
+			params: {
+				redirectUrl: REDIRECT_URL
+			}
+		});
+
+		return response
+	}
+
 }

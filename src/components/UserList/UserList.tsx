@@ -1,6 +1,8 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {Autocomplete, Box, Button, TextField, Tooltip} from "@mui/material";
 import UserItem from "../UserItem/UserItem";
+import UserService from "../../api/services/UserService";
+import role from "../../store/role";
 
 interface UserListProps {
     data: any[]
@@ -8,11 +10,7 @@ interface UserListProps {
 
 const UserList: FC<UserListProps> = ({data}) => {
 
-    const permissions = [
-        {id: 1, label: 'Студент'},
-        {id: 2, label: 'Преподаватель'},
-        {id: 2, label: 'Администратор'},
-    ]
+    console.log(data)
 
     return (
         <Box
