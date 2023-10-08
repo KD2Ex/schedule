@@ -52,6 +52,7 @@ const SchedulePage = observer(() => {
 
 				const ISODate = schedule.getDate(isPrevWeek ? 0 : week)
 				console.log(ISODate)
+				console.log('replace ' + isReplaceActive)
 				console.log(await schedule.fetchSchedule(
 					ISODate,
 					isReplaceActive,
@@ -72,7 +73,7 @@ const SchedulePage = observer(() => {
 			
 		}
 
-	}, [filterValue, week, isPrevWeek])
+	}, [filterValue, week, isPrevWeek, isReplaceActive])
 
 
 	useEffect(() => {

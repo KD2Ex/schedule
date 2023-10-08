@@ -15,6 +15,9 @@ export default class ScheduleService {
 			console.log(reason)
 		})
 		console.log(result.data.response)
+
+		console.log(result.data.response.days.map(item => item.pairs.map(i => i.lessons.map(j => j.replacement))))
+
 		return result.data.response.days;
 	}
 

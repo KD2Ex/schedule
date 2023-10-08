@@ -235,6 +235,7 @@ const UserItem: FC<UserItemProps> = ({userInfo}) => {
                     open={open}
                     size='small'
                     multiple
+                    disabled={user.permissions.find(item => item === '')}
                     sx={{
                         width: '100%',
                         mt: {xs: 1, md: 0},

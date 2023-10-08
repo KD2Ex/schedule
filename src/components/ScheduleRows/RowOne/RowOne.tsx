@@ -27,6 +27,7 @@ const RowOne: FC<TableRowOneProps> = observer(({row, isReplaced, isEmpty, editab
 	}*/
 
 
+	console.log(isReplaced)
 
 
 	const [hidden, setHidden] = useState<boolean>(
