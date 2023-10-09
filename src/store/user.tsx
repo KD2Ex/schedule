@@ -117,11 +117,15 @@ class User {
 
 	// getLoggedUser()
 
-	logout() {
+	logout(alert: boolean = true) {
 		this.setAuth(false);
 		localStorage.clear();
 		this.permissions = [...defaultPermissions];
-		alerts.openWarningAlert('Вы вышли из системы')
+
+		if (alert) {
+
+			alerts.openWarningAlert('Вы вышли из системы')
+		}
 	}
 
 	async refresh() {

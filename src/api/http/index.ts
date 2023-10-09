@@ -3,7 +3,7 @@ import alerts from "../../store/alerts";
 import user from "../../store/user";
 import {actions, errorsList} from "./data";
 
-export const API_URL = 'https://dev.kkep.su/api';
+export const API_URL = 'https://api.kkep.su/api';
 
 const $api = axios.create({
 	withCredentials: true,
@@ -119,6 +119,14 @@ $api.interceptors.response.use(
 
 		}
 
+		if (error.code == "ERR_NETWORK") {
+			alerts.setIsLoading(false);
+			alerts.openErrorAlert(`Ошибка сервера`)
+			user.logout( false)
+			return Promise.reject(error)
+
+		}
+
 		let errorMessage = error;
 
 		console.log(error)
@@ -160,7 +168,7 @@ $api.interceptors.response.use(
 		if (error.config.url === '/auth/login' && (error.response.status === 404 || error.response.status === 400) ) {
 			errorMessage = 'Неправильная почта или пароль'
 		}
-		alerts.setIsLoading(false);
+
 
 		console.log(errorMessage)
 

@@ -73,94 +73,6 @@ const UserItem: FC<UserItemProps> = ({userInfo}) => {
 
     }, [userInfo])
 
-
-/*
-    return (
-        <Box
-            sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                gap: 2,
-                alignItems: 'center',
-                flexWrap: {xs: 'wrap', md: 'nowrap'},
-                width: '100%'
-            }}
-        >
-
-            <Typography
-                sx={{
-                    minWidth: '30%'
-                }}
-            >
-                {
-                    isFullNameSet ?
-                        `${userInfo.surname}
-                     ${userInfo.name}
-                    ${userInfo.patronymic}`
-                        : 'Имя не задано'
-                }
-            </Typography>
-
-            <Typography
-                sx={{
-                    minWidth: '30%'
-                }}
-            >
-                {userInfo.uuid}
-            </Typography>
-
-            <ButtonUserVerify
-                verified={userInfo.verified}
-                uuid={userInfo.uuid}
-            />
-
-            <Autocomplete
-                value={value}
-                open={open}
-                size='small'
-                multiple
-                sx={{width: '100%'}}
-                onOpen={() => {
-
-                    setOpen(true)
-                }}
-                onClose={() => {
-                    setOpen(false);
-                }}
-                renderInput={(params) => (<TextField
-                    {...params}
-                    label={`Роль`}
-                    InputProps={{
-                        ...params.InputProps,
-                    }}
-                />)}
-                options={options}
-                onChange={async (event: any, newValue: any) => {
-
-                    console.log('Новое значение')
-                    let roleName;
-                    if (value.length > newValue.length) {
-                        roleName = value.filter(item => !newValue.includes(item))
-                    } else {
-                        roleName = newValue.filter(item => !value.includes(item))
-                    }
-
-                    roleName = roleAliases.find(item => item.alias === roleName[0])?.value
-                    console.log(roleName)
-                    if (value.length > newValue.length) {
-
-                        await role.removeRole(roleName, userInfo.id)
-
-                    } else {
-                        await role.addRole(roleName, userInfo.id)
-                    }
-
-                    setValue(newValue);
-                }}
-            />
-        </Box>
-    )*/
-
     return (
         <Grid
             container
@@ -242,6 +154,9 @@ const UserItem: FC<UserItemProps> = ({userInfo}) => {
                             sx={{
                                 width: '100%',
                                 mt: {xs: 1, md: 0},
+                                '& .MuiChip-label': {
+                                    color: 'white'
+                                }
                             }}
                             onOpen={() => {
 

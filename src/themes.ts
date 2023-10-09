@@ -40,7 +40,7 @@ export const getMode = (mode: any) => (
                 primary: 'rgba(0,0,0,0.82)',
                 secondary: 'rgba(26,26,26,0.61)',
                 disabled: 'rgba(196,196,196,0.5)',
-
+                union: 'rgba(255,255,255,0.82)'
             },
             background: {
                 default: 'rgb(255,255,255)',
@@ -64,6 +64,7 @@ export const getMode = (mode: any) => (
             primary: {
                 main: "rgb(255,255,255)",
                 /*main: "rgb(38,37,37)",*/
+                //contrastText: 'rgba(218,217,217,0.82)',
                 contrastText: 'rgba(24,24,24,0.82)',
                 //main: "rgba(81,130,255,0.82)",
                 //index: "rgba(3, 29, 96, 0.05)",

@@ -305,6 +305,14 @@ const EditUsersPage = () => {
                     count={pages}
                     page={page + 1}
                     onChange={handlePageChange}
+                    sx={{
+                        '& .MuiButtonBase-root': {
+                            color: 'text.union'
+                        },
+                        '& .MuiPaginationItem-previousNext': {
+                            color: 'primary.main'
+                        }
+                    }}
                 />
             </Box>
 
