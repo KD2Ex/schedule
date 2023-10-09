@@ -1,5 +1,4 @@
-import {API_URL} from "./index";
-
+export const API_URL = 'https://api.kkep.su/api';
 export let REDIRECT_URL: string;
 
 if (import.meta.env.PROD) {

@@ -10,8 +10,10 @@ import user from "../../store/user";
 
 export const loader = async () => {
 
-	await user.checkAuth()
-	if (user.isAuth) {
+	const isAuth = await user.refresh()
+	console.log(user.permissions.length)
+	console.log(isAuth)
+	if (isAuth && user.permissions.length <= 1) {
 		await user.getPermissions();
 	}
 	return null

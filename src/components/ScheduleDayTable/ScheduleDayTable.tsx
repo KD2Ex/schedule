@@ -47,9 +47,6 @@ const ScheduleDayTable: React.FC<DayGridProps> = observer(
 	}) => {
 
 
-
-	console.log('scheduleTable')
-
 	const handleClick = () => {
 		if (clickable) {
 			console.log('click')

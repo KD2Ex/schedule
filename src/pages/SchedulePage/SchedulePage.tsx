@@ -39,7 +39,6 @@ const SchedulePage = observer(() => {
 
 
 	const date = new Date();
-	const currentDay = date.getDay() - 1;
 
 	useEffect(() => {
 		schedule.setIsLoading(false);
@@ -48,17 +47,13 @@ const SchedulePage = observer(() => {
 		if (filterValue !== null) {
 
 			(async () => {
-				//setIsScheduleLoading(true);
 
 				const ISODate = schedule.getDate(isPrevWeek ? 0 : week)
-				console.log(ISODate)
-				console.log('replace ' + isReplaceActive)
 				console.log(await schedule.fetchSchedule(
 					ISODate,
 					isReplaceActive,
 					filterType.value,
 					filterValue.id))
-				//setIsScheduleLoading(false);
 				schedule.setIsLoading(false);
 
 				setSearchParams({
@@ -80,7 +75,6 @@ const SchedulePage = observer(() => {
 
 
 		(async () => {
-			//setIsScheduleLoading(true);
 
 			if (schedule.currentData === null) {
 				await schedule.fetchCurrentData().catch((error) => {
@@ -93,7 +87,6 @@ const SchedulePage = observer(() => {
 			console.log(schedule.currentData)
 
 			if (searchParams.size !== 0) {
-				console.log(searchParams.size)
 
 				const type: ScheduleEntityType = searchParams.get('type');
 				const value: number = +searchParams.get('value');

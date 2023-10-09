@@ -24,7 +24,7 @@ import kkeplogo from '../../styles/logos/kkep.svg'
 import {GITHUB_AUTH_URL, GOOGLE_AUTH_URL, REDIRECT_URL, VK_AUTH_URL} from "../../api/http/urls";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import alerts from "../../store/alerts";
-import {API_URL} from "../../api/http";
+import {API_URL} from "../../api/http/urls";
 
 const LoginForm: FC = observer(() => {
 
@@ -32,8 +32,6 @@ const LoginForm: FC = observer(() => {
 	const [password, setPassword] = useState<string>('');
 	const [showPassword, setShowPassword] = React.useState(false);
 	const navigate = useNavigate();
-
-
 
 	const handleLogin = async (e) => {
 
@@ -137,7 +135,10 @@ const LoginForm: FC = observer(() => {
 						Авторизуйтесь через
 					</Typography>
 					<Box sx={{m: 0}}>
-						<IconButton onClick={() => user.loginWithServices(VK_AUTH_URL)}>
+						<IconButton onClick={() => {
+							user.loginWithServices(VK_AUTH_URL)
+							}
+						}>
 							<img src={vklogo} style={{width: '32px', height: '32px', margin: 0}}/>
 						</IconButton>
 						<IconButton onClick={() => user.loginWithServices(API_URL + '/auth/telegram/login?redirectUrl=' + REDIRECT_URL)}>

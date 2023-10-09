@@ -5,7 +5,7 @@ import 'filepond/dist/filepond.min.css';
 import {Box, useTheme} from "@mui/material";
 import schedule from "../../store/schedule";
 import axios from "axios";
-import {API_URL} from "../../api/http";
+import {API_URL} from "../../api/http/urls";
 
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 

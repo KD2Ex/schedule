@@ -36,7 +36,7 @@ const ProfileInfo = () => {
             setNameDisabled(true);
         }
 
-    }, [])
+    }, [user.profile])
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 

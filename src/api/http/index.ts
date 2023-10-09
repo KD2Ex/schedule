@@ -2,8 +2,9 @@ import axios from 'axios';
 import alerts from "../../store/alerts";
 import user from "../../store/user";
 import {actions, errorsList} from "./data";
+import {API_URL} from "./urls";
 
-export const API_URL = 'https://api.kkep.su/api';
+
 
 const $api = axios.create({
 	withCredentials: true,
@@ -83,8 +84,6 @@ $api.interceptors.request.use(
 		const permitCheck = actions.find(item => item.url === config.url);
 
 
-		console.log(permitCheck)
-
 		if (permitCheck) {
 			if (user.permissions.find(item => item === permitCheck.permission)) {
 				console.log('aprovved')
@@ -99,6 +98,7 @@ $api.interceptors.request.use(
 		return config;
 
 	}, (error) => {
+
 		return Promise.reject(error)
 	}
 )
@@ -169,7 +169,7 @@ $api.interceptors.response.use(
 			errorMessage = 'Неправильная почта или пароль'
 		}
 
-
+		alerts.setIsLoading(false)
 		console.log(errorMessage)
 
 		alerts.openErrorAlert(`Ошибка: ${errorMessage}`)

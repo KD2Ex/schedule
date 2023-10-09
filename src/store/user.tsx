@@ -3,7 +3,8 @@ import {IUser} from "../models/interfaces/IUser";
 import AuthService from "../api/services/AuthService";
 import axios from "axios";
 import {AuthResponse} from "../models/response/AuthResponse";
-import $api, {API_URL} from "../api/http";
+import $api from "../api/http";
+import  {API_URL} from '../api/http/urls'
 import {REDIRECT_URL, VK_AUTH_URL} from "../api/http/urls";
 import UserService from "../api/services/UserService";
 import alerts from "./alerts";
@@ -11,13 +12,13 @@ import {SocialType} from "../models/types/SocialType";
 import {ISocial} from "../models/interfaces/ISocial";
 import {ILinkedSchedule} from "../models/interfaces/ILinkedSchedule";
 import AdminService from "../api/services/AdminService";
+import {ScheduleEntityType} from "../models/enums/ScheduleEntityType";
 
 const defaultPermissions = [
 	'permissions.me'
 ]
 
 class User {
-	user = {} as IUser;
 	profile = {} as IUser;
 	isAuth = false;
 	uuid = '';
@@ -28,6 +29,18 @@ class User {
 
 	constructor() {
 		makeAutoObservable(this)
+	}
+
+	async updateLinkedSchedule(id: number, type: ScheduleEntityType) {
+		await UserService.setLinkedSchedule(ScheduleEntityType.TEACHER, -1);
+
+		if (id && type) {
+			await UserService.setLinkedSchedule(type, id);
+		}
+
+		this.profile.linkedSchedule.linkedEntityId = id;
+		this.profile.linkedSchedule.linkedEntityType = type;
+
 	}
 
 	setAuth(isAuth: boolean) {
@@ -89,7 +102,7 @@ class User {
 				return
 			}
 
-			await window.location.replace(url);
+			window.location.replace(url);
 			console.log(window.location.toString());
 			//window.open(url)
 			//localStorage.setItem('token', )
@@ -119,8 +132,18 @@ class User {
 
 	logout(alert: boolean = true) {
 		this.setAuth(false);
+
+		const mode = localStorage.getItem('mode')
+
 		localStorage.clear();
+
+		if (mode) {
+			localStorage.setItem('mode', mode);
+		}
+
 		this.permissions = [...defaultPermissions];
+		this.profile = {};
+
 
 		if (alert) {
 
@@ -129,7 +152,15 @@ class User {
 	}
 
 	async refresh() {
-		if (new Date(Number(localStorage.getItem('expiry'))) <= new Date()) {
+
+		const expiry = localStorage.getItem('expiry');
+
+		if (!expiry) {
+			this.isAuth = false;
+			return false
+		}
+
+		if (new Date(Number(expiry)) <= new Date()) {
 			try {
 				const response = await $api.post(`/auth/refresh`, {
 					refreshToken: localStorage.getItem('refreshToken')
@@ -138,19 +169,24 @@ class User {
 				localStorage.setItem('expiry', response.data.response.expiry);
 				localStorage.setItem('refreshToken', response.data.response.refreshToken);
 				alerts.setIsLoading(false);
+				this.isAuth = true;
 
 
-
+				return true;
 			} catch (e) {
 				console.log('Не авторизован')
-
 				this.logout()
+				return false
 			}
 		}
+		return true;
 	}
 
 	async fetchProfile() {
 
+		if (this.profile.uuid) {
+			return
+		}
 		const response = await UserService.getProfileInfo()
 
 		this.setUser(

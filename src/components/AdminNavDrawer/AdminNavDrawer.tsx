@@ -19,7 +19,7 @@ const AdminNavDrawer: FC<AdminNavDrawerProps> = ({open, setOpen}) => {
         {
             url: '/edit/users',
             title: 'Пользователи',
-            visible: !!user.permissions.find(item => item === "verified.add")
+            visible: !!user.permissions.find(item => item === "verified.add") || !!user.permissions.find(item => item === "role.manager.view")
         }
     ]
 

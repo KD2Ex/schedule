@@ -15,10 +15,11 @@ import ScheduleMailing from "../ScheduleMailing/ScheduleMailing";
 import ProfileInfo from "../../components/ProfileInfo/ProfileInfo";
 
 export const loader = async () => {
-	await user.fetchProfile().catch((reason) => console.log(reason));
+	if (window.location.pathname === '/profile' && !(user.permissions.length === 1)) {
+		return null
+	}
 	return null
 }
-
 
 const ProfilePage = observer(() =>  {
 
@@ -36,6 +37,7 @@ const ProfilePage = observer(() =>  {
 		(async () => {
 				//await user.fetchProfile();
 				//console.log(user.profile)
+				await user.fetchProfile().catch((reason) => console.log(reason));
 
 			}
 		)()

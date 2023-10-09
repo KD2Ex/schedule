@@ -296,7 +296,6 @@ export const errorsList = [
 ]
 
 export const isAdmin = (permissions: string[]) => {
-    console.log(permissions.length)
     return permissions.filter(item => {
         return item === 'verified.find'
         || item === 'verified.remove'

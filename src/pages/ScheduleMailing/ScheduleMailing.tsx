@@ -49,12 +49,8 @@ const ScheduleMailing = observer(() => {
     }
 
     const handleLinkSchedule = async () => {
-        await UserService.setLinkedSchedule(ScheduleEntityType.TEACHER, -1);
-        if (filterValue !== null) {
-            await UserService.setLinkedSchedule(filterType.value, filterValue?.id);
-        } else {
-            //await UserService.setLinkedSchedule(ScheduleEntityType.TEACHER, -1);
-        }
+
+        await user.updateLinkedSchedule(filterValue?.id, filterType.value)
 
         console.log(schedule.currentData)
 
@@ -84,7 +80,7 @@ const ScheduleMailing = observer(() => {
 
         })()
 
-    }, [])
+    }, [user.profile])
 
     return (
         <>

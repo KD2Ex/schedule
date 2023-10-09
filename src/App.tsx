@@ -26,11 +26,6 @@ const App = observer(() => {
 
 		(async () => {
 
-			//await user.checkAuth()
-			if (user.isAuth) {
-				//await user.getPermissions();
-			}
-			console.log('check auth')
 
 		})()
 

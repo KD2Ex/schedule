@@ -27,8 +27,6 @@ const RowOne: FC<TableRowOneProps> = observer(({row, isReplaced, isEmpty, editab
 	}*/
 
 
-	console.log(isReplaced)
-
 
 	const [hidden, setHidden] = useState<boolean>(
 		!!schedule.newSchedule?.hideLessons?.find(item => item === id)
@@ -44,7 +42,6 @@ const RowOne: FC<TableRowOneProps> = observer(({row, isReplaced, isEmpty, editab
 	}, [JSON.stringify(schedule.newSchedule?.hideLessons)])
 
 
-
 	const handleHide = () => {
 		if (hidden) {
 			setHidden(false);
@@ -55,9 +52,6 @@ const RowOne: FC<TableRowOneProps> = observer(({row, isReplaced, isEmpty, editab
 		}
 	}
 
-	if (id === 487) {
-		console.log(hidden)
-	}
 
 	return (
 		<TableRow

@@ -7,8 +7,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import styles from '../LinkedAccount/LinkedAccount.module.css'
 import AuthService from "../../api/services/AuthService";
 import user from "../../store/user";
-import {GITHUB_AUTH_URL, GOOGLE_AUTH_URL, REDIRECT_URL, VK_AUTH_URL, VK_LINK_URL} from "../../api/http/urls";
-import {API_URL} from "../../api/http";
+import {API_URL, GITHUB_AUTH_URL, GOOGLE_AUTH_URL, REDIRECT_URL, VK_AUTH_URL, VK_LINK_URL} from "../../api/http/urls";
 import {observer} from "mobx-react-lite";
 import MailingButton from "../MailingButton/MailingButton";
 
