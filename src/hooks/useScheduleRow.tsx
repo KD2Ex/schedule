@@ -13,6 +13,10 @@ export const useScheduleRow = (pair: IPair, filterType, key: number, editable: b
 
     const cells: string[][] = [[pair.number.toString()], []];
 
+    if (pair.lessons[0].empty) {
+
+    }
+
     pair.lessons.forEach((lesson, index) => {
         switch (filterType.title) {
             case SCHEDULE_ENTITY.GROUP: {
@@ -76,6 +80,10 @@ export const useScheduleRow = (pair: IPair, filterType, key: number, editable: b
                     secondRow={cells[1]}
                     replaces={replaces}
                     ids={[pair.lessons[0]?.id, pair.lessons[1]?.id]}
+                    empty={[
+                        pair.lessons[0]?.empty,
+                        pair.lessons[1]?.empty,
+                    ]}
                 />
             )
         }

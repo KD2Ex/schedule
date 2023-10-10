@@ -5,7 +5,6 @@ import {actions, errorsList} from "./data";
 import {API_URL} from "./urls";
 
 
-
 const $api = axios.create({
 	withCredentials: true,
 	baseURL: API_URL

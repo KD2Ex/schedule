@@ -13,10 +13,19 @@ interface ScheduleRowDoubleProps {
 	secondRow: string[],
 	replaces: boolean[],
 	editable: boolean,
-	ids: number[]
+	ids: number[],
+	empty: boolean[]
 }
 
-const RowDouble: FC<ScheduleRowDoubleProps> = ({firstRow, secondRow, replaces, editable, ids}) => {
+const RowDouble: FC<ScheduleRowDoubleProps> =
+	({
+		 firstRow,
+		 secondRow,
+		 replaces,
+		 editable,
+		 ids,
+		empty
+	}) => {
 
 	const [secondHidden, setSecondHidden] = useState(false);
 	const [firstHidden, setFirstHidden] = useState(false);
@@ -43,7 +52,6 @@ const RowDouble: FC<ScheduleRowDoubleProps> = ({firstRow, secondRow, replaces, e
 			setSecondHidden(prev => !prev)
 		}
 
-		console.log(ids)
 	}
 
 	useEffect(() => {
@@ -52,8 +60,8 @@ const RowDouble: FC<ScheduleRowDoubleProps> = ({firstRow, secondRow, replaces, e
 		setSecondHidden(!!schedule.newSchedule.hideLessons?.find(item => item === ids[1]))
 
 
-
 	}, [JSON.stringify(schedule.newSchedule?.hideLessons)])
+
 
 	return (
 		<>
@@ -83,7 +91,8 @@ const RowDouble: FC<ScheduleRowDoubleProps> = ({firstRow, secondRow, replaces, e
 				}
 
 				{
-					firstRow.length !== 0
+					//firstRow.length !== 0
+					!empty[0]
 						? (firstRow.map((item, index, array) => (
 					<TooltippedCell
 						key={index}
@@ -92,7 +101,7 @@ const RowDouble: FC<ScheduleRowDoubleProps> = ({firstRow, secondRow, replaces, e
 					>
 						{item}
 					</TooltippedCell>)))
-						: useEmptyRow(secondRow[0], true)
+						: useEmptyRow(firstRow[0], true)
 				}
 
 			</TableRow>
@@ -105,7 +114,8 @@ const RowDouble: FC<ScheduleRowDoubleProps> = ({firstRow, secondRow, replaces, e
 				}}
 			>
 				{
-					secondRow.length !== 0
+					//secondRow.length !== 0
+					!empty[1]
 						? secondRow
 							.slice(firstRow.length !== 0 ? 0 : 1)
 							.map((item, index, array) => (

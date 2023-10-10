@@ -34,7 +34,7 @@ const LoadedSchedule: FC<LoadedScheduleProps> = observer(({newSchedule}) => {
                             rows={group.pairs}
                             isSelected={false}
                             isReplacementEnabled={true}
-                            header={group.pairs[0].lessons[0].group}
+                            header={group.groupName}
                             filterType={
                                 {
                                     value: ScheduleEntityType.GROUP,
@@ -44,7 +44,7 @@ const LoadedSchedule: FC<LoadedScheduleProps> = observer(({newSchedule}) => {
                             minPairNumber={schedule.firstPair}
                             maxPairNumber={schedule.lastPair}
                             clickable={true}
-                            edited={isEdited(group.pairs[0].lessons[0].group)}
+                            edited={isEdited(group.groupName)}
                         />
                     </Grid>
 

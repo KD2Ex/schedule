@@ -1,6 +1,7 @@
 
 
 export default interface ILesson {
+	empty: boolean,
 	group: string,
 	id: number,
 	replacement: boolean,
