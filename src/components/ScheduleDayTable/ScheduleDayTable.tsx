@@ -46,11 +46,16 @@ const ScheduleDayTable: React.FC<DayGridProps> = observer(
 		edited
 	}) => {
 
+/*
+		if (!rows) {
+			return
+		}
+		console.log(rows)*/
 
 	const handleClick = () => {
 		if (clickable) {
 			console.log('click')
-			schedule.setEditableSchedule(rows);
+			schedule.setEditableSchedule(rows, header);
 		}
 	}
 

@@ -36,7 +36,7 @@ const ProfileInfo = () => {
             setNameDisabled(true);
         }
 
-    }, [user.profile])
+    }, [JSON.stringify(user.profile)])
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -46,14 +46,15 @@ const ProfileInfo = () => {
     const handleEnableEmailEditing = async (e) => {
         e.preventDefault()
 
-        setEmailEditing(prev => !prev);
+		await UserService.updateEmail(email);
+		alerts.openInfoDialog(
+			'Подтверждение смены почты',
+			'На новую почту придет письмо. Перейдите по ссылке, указанной в нем, чтобы завершить смену почты'
+		)
+        /*setEmailEditing(prev => !prev);
         if (emailEditing) {
-            await UserService.updateEmail(email);
-			alerts.openInfoDialog(
-				'Подтверждение смены почты',
-				'На новую почту придет письмо. Перейдите по ссылке, указанной в нем, чтобы завершить смену почты'
-			)
-        }
+
+        }*/
     }
 
     const handleNameChange = (e) => {
@@ -63,7 +64,7 @@ const ProfileInfo = () => {
             'Подтверждение ФИО',
             'После подтверждения аккаунта администратором, вы больше не сможете ' +
             'изменить ФИО, поэтому убедитесь что введенные данные корректны',
-            user.updateFullname,
+            user.updateFullname.bind(user),
             [firstName, lastName, patronymic]
         )
 
@@ -85,6 +86,7 @@ const ProfileInfo = () => {
 					alerts.openSuccessAlert("Пароль успешно сменен")
 					setOldPassword('');
 					setNewPassword('');
+					user.setContainPassword(true);
 
 				}).catch(error => {
 					console.log(error.response.data.code)
@@ -192,6 +194,7 @@ const ProfileInfo = () => {
                     mt: 0
                 }}
                 component={'form'}
+				onSubmit={handleEnableEmailEditing}
             >
 
                 <Grid item xs={12}>
@@ -203,12 +206,7 @@ const ProfileInfo = () => {
                         label={'Email'}
                         onChange={handleEmailChange}
                         error={!isEmailCorrect}
-                        disabled={!emailEditing}
-                        InputProps={{
-
-
-
-                        }}
+                        //disabled={!emailEditing}
                     />
 
                 </Grid>
@@ -223,7 +221,8 @@ const ProfileInfo = () => {
 				>
 					<Button
 						variant={'outlined'}
-						onClick={handleEnableEmailEditing}
+						type={'submit'}
+						//onClick={handleEnableEmailEditing}
 					>
 						Изменить
 					</Button>

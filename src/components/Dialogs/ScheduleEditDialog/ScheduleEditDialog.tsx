@@ -32,8 +32,8 @@ const ScheduleEditDialog: FC<ScheduleEditDialogProps> = observer(() => {
 
         schedule.updateHiddenLessons();
 
-        console.log(schedule.editableSchedule[0].lessons[0].group)
-        schedule.addEditedSchedule(schedule.editableSchedule[0].lessons[0].group)
+        console.log(schedule.editableSchedule.groupName)
+        schedule.addEditedSchedule(schedule.editableSchedule.groupName)
 
         setOpen(false);
         const timer = setTimeout(() => schedule.setEditableSchedule([]), 600)
@@ -42,7 +42,7 @@ const ScheduleEditDialog: FC<ScheduleEditDialogProps> = observer(() => {
 
     useEffect(() => {
 
-        if (schedule.editableSchedule.length !== 0) {
+        if (schedule.editableSchedule.groupName) {
             setOpen(true);
         }
 
@@ -68,15 +68,15 @@ const ScheduleEditDialog: FC<ScheduleEditDialogProps> = observer(() => {
             <DialogTitle>
 
                 <Typography variant={'h4'}>
-                    Расписание группы {schedule.editableSchedule[0]?.lessons[0].group} на {schedule.editDate.toDate().toLocaleDateString()}
+                    Расписание группы {schedule.editableSchedule.groupName} на {schedule.editDate.toDate().toLocaleDateString()}
 
                 </Typography>
             </DialogTitle>
 
             <DialogContent>
                 {schedule.editableSchedule &&  <ScheduleDayTable
-                    rows={schedule.editableSchedule}
-                    header={schedule.editableSchedule[0]?.lessons[0].group}
+                    rows={schedule.editableSchedule.schedule}
+                    header={schedule.editableSchedule.groupName}
                     isSelected={false}
                     isReplacementEnabled={true}
                     filterType={{value: ScheduleEntityType.GROUP, title: SCHEDULE_ENTITY.GROUP} as IScheduleEntity}

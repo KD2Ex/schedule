@@ -94,6 +94,8 @@ const AdminNavDrawer: FC<AdminNavDrawerProps> = ({open, setOpen}) => {
 									key={item.url}
                                     sx={{
                                         py: 0,
+                                        px: 0,
+
                                     }}
                                 >
                                     <ListItemButton

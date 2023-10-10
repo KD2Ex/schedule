@@ -18,7 +18,7 @@ class Schedule {
 	editedSchedules: string[] = []
 	showedLessons: number[] = []
 	hiddenLessons: number[] = []
-	editableSchedule = []
+	editableSchedule = {}
 
 	mockSchedule: any = [
 
@@ -39,9 +39,9 @@ class Schedule {
 		this.editDate = date;
 	}
 
-	setEditableSchedule(schedule) {
+	setEditableSchedule(schedule, groupName: string) {
 		console.log(schedule)
-		this.editableSchedule = schedule
+		this.editableSchedule = {schedule: schedule, groupName: groupName}
 	}
 
 	getFirstPair(schedule) {
@@ -118,6 +118,7 @@ class Schedule {
 	rejectEditing() {
 		this.hiddenLessons = [];
 		this.showedLessons = [];
+
 	}
 
 	clearSchedule() {
@@ -130,6 +131,7 @@ class Schedule {
 			type: 'NONE',
 			hideLessons: []
 		}
+		this.editedSchedules = []
 	}
 
 	async fetchSchedule(date, replaced, type, entity) {

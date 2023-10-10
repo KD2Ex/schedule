@@ -30,6 +30,8 @@ const RowDouble: FC<ScheduleRowDoubleProps> =
 	const [secondHidden, setSecondHidden] = useState(false);
 	const [firstHidden, setFirstHidden] = useState(false);
 	const styles = replaces[0] ? {...rowDoubleStyle, ...replacedStyle} : {...rowDoubleStyle}
+	const number = Number.isInteger(+firstRow[0]) ? firstRow[0] : secondRow[0]
+
 
 	const handleCheck = (isFirst: boolean) => {
 
@@ -91,7 +93,7 @@ const RowDouble: FC<ScheduleRowDoubleProps> =
 				}
 
 				{
-					//firstRow.length !== 0
+					firstRow.length !== 0 &&
 					!empty[0]
 						? (firstRow.map((item, index, array) => (
 					<TooltippedCell
@@ -101,7 +103,7 @@ const RowDouble: FC<ScheduleRowDoubleProps> =
 					>
 						{item}
 					</TooltippedCell>)))
-						: useEmptyRow(firstRow[0], true)
+						: useEmptyRow(number, true)
 				}
 
 			</TableRow>
@@ -114,7 +116,7 @@ const RowDouble: FC<ScheduleRowDoubleProps> =
 				}}
 			>
 				{
-					//secondRow.length !== 0
+					secondRow.length !== 0 &&
 					!empty[1]
 						? secondRow
 							.slice(firstRow.length !== 0 ? 0 : 1)

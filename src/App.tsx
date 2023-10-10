@@ -24,12 +24,10 @@ const App = observer(() => {
 
 	useEffect(() => {
 
-		(async () => {
+		console.log('User has been changed')
+		console.log(user)
 
-
-		})()
-
-	}, [])
+	}, [JSON.stringify(user)])
 
 	useVK([]);
 

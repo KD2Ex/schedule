@@ -72,7 +72,12 @@ class User {
 
 	async signup(email: string, password: string) {
 
-		const response = await AuthService.signup(email, password)
+		try {
+			const response = await AuthService.signup(email, password)
+
+		} catch (e) {
+
+		}
 
 
 	}
@@ -171,7 +176,6 @@ class User {
 				alerts.setIsLoading(false);
 				this.isAuth = true;
 
-
 				return true;
 			} catch (e) {
 				console.log('Не авторизован')
@@ -179,6 +183,7 @@ class User {
 				return false
 			}
 		}
+		this.isAuth = true;
 		return true;
 	}
 
@@ -204,7 +209,18 @@ class User {
 	}
 
 	async updateFullname(name: string, surname: string, patronymic: string) {
-		const response = await UserService.updateFullname(name, surname, patronymic);
+
+		try {
+			const response = await UserService.updateFullname(name, surname, patronymic);
+
+			console.log(this)
+			this.profile.firstName = name;
+			this.profile.lastName = surname;
+			this.profile.patronymic = patronymic;
+		} catch (e) {
+			console.log(e)
+		}
+
 	}
 
 	async getAllUsers(value: string, size: number, page: number) {
@@ -274,7 +290,9 @@ class User {
 		window.location.replace('https://dev.kkep.su/api/auth/telegram/login');
 	}
 
-
+	setContainPassword(value: boolean) {
+		this.profile.containPassword = value;
+	}
 
 }
 

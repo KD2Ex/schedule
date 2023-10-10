@@ -22,7 +22,7 @@ const ScheduleDatePicker = ({date, setDate}) => {
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={'ru'}>
             <DatePicker
                 sx={{
-                    width: '30%'
+                    width: {xs: '100%',md: '30%'}
                 }}
                 label={'Выберите дату'}
                 value={date}

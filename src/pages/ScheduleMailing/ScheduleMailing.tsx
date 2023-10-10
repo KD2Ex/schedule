@@ -149,6 +149,7 @@ const ScheduleMailing = observer(() => {
                     />
 
                     <ContainedButton
+                        disabled={!user.permissions.find(item => item === 'profile.updating.linked_schedule')}
                         onClick={handleLinkSchedule}
                     >
                         Сохранить

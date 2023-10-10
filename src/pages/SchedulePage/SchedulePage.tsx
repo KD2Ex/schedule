@@ -33,7 +33,7 @@ const SchedulePage = observer(() => {
 	const [isReplaceActive, setIsReplaceActive] = useState(true);
 	const [filterValue, setFilterValue] = useState<AutocompleteOption | null>(null);
 	const [filterType, setScheduleEntityType] = useState<IScheduleEntity>(
-		{value: ScheduleEntityType.TEACHER, title: SCHEDULE_ENTITY.TEACHER}
+		{value: ScheduleEntityType.GROUP, title: SCHEDULE_ENTITY.TEACHER}
 	);
 	const [isPrevWeek, setIsPrevWeek] = useState(false);
 
@@ -49,11 +49,15 @@ const SchedulePage = observer(() => {
 			(async () => {
 
 				const ISODate = schedule.getDate(isPrevWeek ? 0 : week)
-				console.log(await schedule.fetchSchedule(
+
+				console.log(filterType.value)
+
+
+				await schedule.fetchSchedule(
 					ISODate,
 					isReplaceActive,
 					filterType.value,
-					filterValue.id))
+					filterValue.id)
 				schedule.setIsLoading(false);
 
 				setSearchParams({
@@ -88,6 +92,8 @@ const SchedulePage = observer(() => {
 
 			if (searchParams.size !== 0) {
 
+
+				console.log('SEARCH_PARAMS')
 				const type: ScheduleEntityType = searchParams.get('type');
 				const value: number = +searchParams.get('value');
 
@@ -106,8 +112,8 @@ const SchedulePage = observer(() => {
 				)
 
 			} else if (schedule.currentData.type) {
-				setScheduleEntityType({value: schedule.currentData.type, title: SCHEDULE_ENTITY[schedule.currentData.type]});
 				let entity = await switchFetching(schedule.currentData.type);
+				setScheduleEntityType({value: schedule.currentData.type, title: SCHEDULE_ENTITY[schedule.currentData.type]});
 				setFilterValue({label: entity.find((item) => item.id === schedule.currentData.entityId)?.fullName, id: schedule.currentData.entityId} as AutocompleteOption)
 			}
 
@@ -115,6 +121,7 @@ const SchedulePage = observer(() => {
 
 			setWeek(schedule.currentData.firstWeek ? 1 : 2);
 			setCurrentWeek(schedule.currentData.firstWeek ? 1 : 2)
+			console.log('exit effect')
 		})()
 
 

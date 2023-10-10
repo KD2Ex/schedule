@@ -69,7 +69,9 @@ $api.interceptors.request.use(
 
 		}
 
-		alerts.setIsLoading(true);
+		if (config.url !== '/schedule') {
+			alerts.setIsLoading(true);
+		}
 		if (localStorage.getItem('token')) {
 			config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
 		}

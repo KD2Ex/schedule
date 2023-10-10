@@ -58,7 +58,7 @@ export const useScheduleRow = (pair: IPair, filterType, key: number, editable: b
         case LessonType.EMPTY:
         case LessonType.ONE: {
             return (
-                <RowПотомOne
+                <RowOne
                     id={pair.lessons[0]?.id}
                     editable={editable}
                     key={key}

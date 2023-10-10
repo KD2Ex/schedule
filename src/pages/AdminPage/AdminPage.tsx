@@ -23,7 +23,8 @@ const AdminPage = observer(() => {
 					variant={'outlined'}
 					sx={{
 						position: 'absolute',
-						mt: 4
+						mt: 4,
+						zIndex: 1200
 					}}
 				>
 					Меню
@@ -47,7 +48,14 @@ const AdminPage = observer(() => {
 
 			</Box>
 
-			<Outlet/>
+
+			<Box
+				sx={{
+					mt: {xs: 5, md: 0}
+				}}
+			>
+				<Outlet/>
+			</Box>
 
 
 
