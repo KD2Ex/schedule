@@ -1,10 +1,11 @@
 
 
 export default interface ILesson {
-	teacher: string,
-	subject: string,
-	room: string,
 	group: string,
+	id: number,
 	replacement: boolean,
-	dateWorkOut: Date,
+	room: string,
+	subject: string,
+	teacher: string,
+	dateWorkOut?: Date,
 }

@@ -1,5 +1,6 @@
 import {ScheduleEntityType} from "../../models/enums/ScheduleEntityType";
 import $api from "../http";
+import {IScheduleSavedResponse} from "../../models/interfaces/IScheduleSavedResponse";
 
 export default class ScheduleService {
 	static async fetchSchedule(startDate: string, isReplacement: boolean, type: ScheduleEntityType, id: number) {
@@ -44,7 +45,7 @@ export default class ScheduleService {
 
 	static async fetchSavedSchedule(date: string) {
 
-		const response = await $api.get('/schedule/saved', {
+		const response = await $api.get<IScheduleSavedResponse>('/schedule/saved', {
 			params: {
 				date: date
 			}

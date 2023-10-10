@@ -149,13 +149,13 @@ class Schedule {
 	async fetchSavedSchedule(date: string) {
 		const schedule = await ScheduleService.fetchSavedSchedule(date);
 		console.log(schedule)
-		this.firstPair = this.getFirstPair(schedule.lessons);
-		this.lastPair = this.getLastPair(schedule.lessons);
+		this.firstPair = this.getFirstPair(schedule.groups);
+		this.lastPair = this.getLastPair(schedule.groups);
 		console.log(this.firstPair)
 		console.log(this.lastPair)
-		schedule.lessons.sort((a, b) => {
-			return Number(a[0].lessons[0].group.split(/[а-я]/ig)[0])
-				- Number(b[0].lessons[0].group.split(/[а-я]/ig)[0])
+		schedule.groups.sort((a, b) => {
+			return a.group
+				- b.group
 		})
 		this.newSchedule = schedule;
 	}

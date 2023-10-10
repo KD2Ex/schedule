@@ -73,8 +73,8 @@ const RowDouble: FC<ScheduleRowDoubleProps> = ({firstRow, secondRow, replaces, e
 								handleCheck={handleCheck}
 								value={firstHidden}
 								value2={secondHidden}
-								disabled={replaces[0] || firstRow.length === 0}
-								disabled2={replaces[1] || secondRow.length === 0}
+								disabled={!replaces[0] || firstRow.length === 0}
+								disabled2={!replaces[1] || secondRow.length === 0}
 							/>
 						</>
 

@@ -68,7 +68,8 @@ export const useScheduleRow = (pair: IPair, filterType, key: number, editable: b
         case LessonType.DOUBLE:
         case LessonType.FIRST: {
             return(
-                <RowDouble
+                <
+                    RowDouble
                     editable={editable}
                     key={key}
                     firstRow={cells[0]}
