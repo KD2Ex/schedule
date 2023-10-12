@@ -13,6 +13,8 @@ import { ruRU } from '@mui/x-data-grid'
 import GlobalAlert from "./components/GlobalAlert/GlobalAlert";
 import alerts from "./store/alerts";
 import Loader from "./components/Loader/Loader";
+import whiteLogo from './styles/logos/kkep_white.svg'
+import blackLogo from './styles/logos/kkep.svg'
 
 const App = observer(() => {
 
@@ -45,7 +47,7 @@ const App = observer(() => {
 
 	const themeColorMode = getMode(mode);
 
-	let link = document.querySelector("link[rel~='icon']");
+	/*let link = document.querySelector("link[rel~='icon']");
 	if (!link) {
 		link = document.createElement('link');
 		link.rel = 'icon';
@@ -53,11 +55,11 @@ const App = observer(() => {
 	}
 
 	if (!prefersDarkMode) {
-		link.href = './src/styles/logos/kkep.svg';
+		link.href = blackLogo;
 	} else {
-		link.href = './src/styles/logos/kkep_white.svg';
+		link.href = whiteLogo;
 
-	}
+	}*/
 
 	// @ts-ignore
 	const theme = createTheme({
