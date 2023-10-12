@@ -18,6 +18,7 @@ const defaultPermissions = [
 	'permissions.me'
 ]
 
+
 class User {
 	profile = {} as IUser;
 	isAuth = false;
@@ -25,7 +26,16 @@ class User {
 	permissions: string[] = [
 		...defaultPermissions
 	];
-
+	accessUrls = [
+		{
+			url: '/edit/schedule',
+			permissions: ['schedule.updating.replacement']
+		},
+		{
+			url: '/edit/users',
+			permissions: ['verified.add', 'role.manager.view']
+		}
+	]
 
 	constructor() {
 		makeAutoObservable(this)

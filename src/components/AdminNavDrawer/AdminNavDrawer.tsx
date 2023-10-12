@@ -1,27 +1,36 @@
-import React, {FC, Fragment, useState} from 'react';
+import React, {FC, Fragment, useEffect, useState} from 'react';
 import {Box, Button, Divider, Drawer, List, ListItem, ListItemButton, Toolbar, useTheme} from "@mui/material";
 import {Link} from "react-router-dom";
 import user from "../../store/user";
+import {adminNavList} from "./data";
 
 interface AdminNavDrawerProps {
     open: boolean,
     setOpen: React.Dispatch<boolean>
 }
 
+
 const AdminNavDrawer: FC<AdminNavDrawerProps> = ({open, setOpen}) => {
 
-    const scheduleList = [
-        {
-            url: '/edit/schedule',
-            title: 'Редактирование расписания',
-            visible: !!user.permissions.find(item => item === "schedule.updating.replacement")
-        },
-        {
-            url: '/edit/users',
-            title: 'Пользователи',
-            visible: !!user.permissions.find(item => item === "verified.add") || !!user.permissions.find(item => item === "role.manager.view")
-        }
-    ]
+
+    useEffect(() => {
+
+        adminNavList.forEach((item) => {
+            const permissions = user.accessUrls
+                .find(url => url.url === item.url)?.permissions
+
+            let visible = false;
+
+            user.permissions.forEach((permit) => {
+                if (permissions.includes(permit)) {
+                    visible = true;
+                }
+            })
+            item.visible = visible
+        })
+
+    }, [])
+
 
     const dataEditList = [
         {url: '/edit/data/subjects', title: 'Дисциплины'},
@@ -30,7 +39,7 @@ const AdminNavDrawer: FC<AdminNavDrawerProps> = ({open, setOpen}) => {
         {url: '/edit/data/rooms', title: 'Аудитории'},
     ]
     const lists = [
-        scheduleList,
+        adminNavList,
         //dataEditList
     ]
 

@@ -3,6 +3,7 @@ import {observer} from "mobx-react-lite";
 import {Box, Button, Container, Grid, Paper} from "@mui/material";
 import {Link, Outlet, useNavigate} from 'react-router-dom';
 import AdminNavDrawer from "../../components/AdminNavDrawer/AdminNavDrawer";
+import {adminNavList} from "../../components/AdminNavDrawer/data";
 
 const AdminPage = observer(() => {
 
@@ -12,7 +13,11 @@ const AdminPage = observer(() => {
 
 	useEffect(() => {
 
-		navigate('/edit/schedule')
+
+		const url = adminNavList.find(item => item.visible)
+
+		navigate(url.url)
+
 
 	}, [])
 
