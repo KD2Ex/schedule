@@ -22,119 +22,6 @@ export const loader = async () => {
 
 const EditUsersPage = () => {
 
-/*
-    const data = [
-        {
-            firstName: 'Кирилл',
-            lastName: 'Костицу',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-        {
-            firstName: 'Кирилл',
-            lastName: 'Костицу2',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-        {
-            firstName: 'Кирилл',
-            lastName: 'Костицу3',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-        {
-            firstName: 'Кирилл',
-            lastName: 'Чан',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-        {
-            firstName: 'Кирилл',
-            lastName: 'НеКо',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-{
-            firstName: 'Кирилл',
-            lastName: 'НеКо',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-{
-            firstName: 'Кирилл',
-            lastName: 'НеКо',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-{
-            firstName: 'Кирилл',
-            lastName: 'НеКо',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-{
-            firstName: 'Кирилл',
-            lastName: 'НеКо',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-{
-            firstName: 'Кирилл',
-            lastName: 'НеКо',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-{
-            firstName: 'Кирилл',
-            lastName: 'НеКо',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-{
-            firstName: 'Кирилл',
-            lastName: 'НеКо',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-{
-            firstName: 'Кирилл',
-            lastName: 'НеКо',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-{
-            firstName: 'Кирилл',
-            lastName: 'НеКо',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-{
-            firstName: 'Кирилл',
-            lastName: 'НеКо',
-            patronymic: 'Андреевич',
-            uuid: '2cd3e28e-4f09-11ee-be56-0242ac120002',
-            group: '632-КД9-4ИСП'
-        },
-
-
-    ]
-*/
-
-
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
@@ -170,8 +57,6 @@ const EditUsersPage = () => {
 
         setList(newList);
 */
-
-
 
 
     }, [value])

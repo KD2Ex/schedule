@@ -20,6 +20,7 @@ import user from "../store/user";
 import {isAdmin} from "../api/http/data";
 import {loader as usersLoader} from '../pages/EditUsersPage/EditUsersPage'
 import {loader as mainLoader} from '../pages/MainPage/MainPage'
+import MigrationPage from "../pages/MigrationPage/MigrationPage";
 
 const isAuth = true;
 
@@ -56,6 +57,10 @@ export const routes = [
                         loader: usersLoader,
                         element: <EditUsersPage/>
                     },
+                    {
+                        path: 'migrate',
+                        element: <MigrationPage/>
+                    },
                     /*{
                         path: "data",
                         element: <EditDataPage/>,
@@ -84,7 +89,6 @@ export const routes = [
             {
                 path: "profile",
                 element: <ProfilePage/>,
-                loader: profileLoader,
                 children: [
                     {
                         path: 'verification',

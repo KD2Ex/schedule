@@ -67,8 +67,6 @@ const UserItem: FC<UserItemProps> = ({userInfo}) => {
     useEffect(() => {
 
 
-        console.log(userInfo.roles)
-
         setValue([...userInfo.roles.map(item => roleAliases.find(role => role.value === item)?.alias)])
 
     }, [userInfo])

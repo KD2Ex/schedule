@@ -61,8 +61,10 @@ export const getMode = (mode: any) => (
                 /*hover: 'rgba(0,19,69,0.82)',*/
                 selected: 'rgba(0,19,69,0.82)',
             },
+            //contrastThreshold: 1,
             primary: {
                 main: "rgb(255,255,255)",
+                //main: "rgb(31,62,162)",
                 /*main: "rgb(38,37,37)",*/
                 //contrastText: 'rgba(218,217,217,0.82)',
                 contrastText: 'rgba(24,24,24,0.82)',
@@ -74,9 +76,9 @@ export const getMode = (mode: any) => (
 				fileLoader: 'rgba(24,24,24,0.82)'
             },
             secondary: {
-                //main: "rgb(255, 255, 255)",
+                main: "rgb(255, 255, 255)",
                 /*main: "rgb(3, 29, 96, 0.82)",*/
-                main: "rgba(3, 29, 96, 0.82)",
+                //main: "rgba(3, 29, 96, 0.82)",
                 main2: "rgb(31,62,162)",
                 success: 'rgba(104,252,140,0.91)',
                 error: 'rgb(255,44,44)',
@@ -137,14 +139,15 @@ export const themeObject = {
                 root: {
                     fontWeight: '400',
                     fontSize: 16,
+                    /*'&.MuiButton-contained': {
+                        backgroundColor: 'rgb(2,71,161)',
+                        color: 'rgb(229,229,229)'
+                    },*/
                     '&.Mui-disabled': {
                         color: 'rgb(176,176,176)',
                         backgroundColor: 'rgb(119,119,119)'
                     },
-                    '&.MuiButton-contained': {
-                        //backgroundColor: 'rgb(2,71,161)',
-                        //color: 'rgb(229,229,229)'
-                    }
+
                 }
             }
         },

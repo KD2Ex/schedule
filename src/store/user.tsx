@@ -34,7 +34,12 @@ class User {
 		{
 			url: '/edit/users',
 			permissions: ['verified.add', 'role.manager.view']
+		},
+		{
+			url: '/edit/migrate',
+			permissions: ['verified.add', 'role.manager.view']
 		}
+
 	]
 
 	constructor() {

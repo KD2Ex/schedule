@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Button, Tooltip} from "@mui/material";
 import user from "../../store/user";
 import alerts from "../../store/alerts";
@@ -12,6 +12,14 @@ interface ButtonUserVerifyProps {
 const ButtonUserVerify: FC<ButtonUserVerifyProps> = ({disabled, verified, uuid}) => {
 
     const [verify, setVerify] = useState(verified)
+
+    console.log(verify)
+
+    useEffect(() => {
+
+        setVerify(verified)
+
+    }, [verified])
 
     const handleVerify = async () => {
         try {
