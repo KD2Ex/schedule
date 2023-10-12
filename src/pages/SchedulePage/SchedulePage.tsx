@@ -37,7 +37,6 @@ const SchedulePage = observer(() => {
 	);
 	const [isPrevWeek, setIsPrevWeek] = useState(false);
 
-
 	const date = new Date();
 
 	useEffect(() => {

@@ -135,7 +135,14 @@ class User {
 
 	// getLoggedUser()
 
-	logout(alert: boolean = true) {
+	logout(alert: boolean = true, message?: string) {
+
+		let alertMessage = 'Вы вышли из системы'
+
+		if (message) {
+			alertMessage = message
+		}
+
 		this.setAuth(false);
 
 		const mode = localStorage.getItem('mode')
@@ -151,8 +158,7 @@ class User {
 
 
 		if (alert) {
-
-			alerts.openWarningAlert('Вы вышли из системы')
+			alerts.openWarningAlert(alertMessage)
 		}
 	}
 

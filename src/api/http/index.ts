@@ -156,7 +156,7 @@ $api.interceptors.response.use(
 			} catch (e) {
 				console.log('Не авторизован')
 
-				user.logout()
+				user.logout(true, 'Авторизуйтесь снова')
 				window.location.replace('/schedule ')
 			}
 		}

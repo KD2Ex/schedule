@@ -56,7 +56,7 @@ export const routes = [
                         loader: usersLoader,
                         element: <EditUsersPage/>
                     },
-                    {
+                    /*{
                         path: "data",
                         element: <EditDataPage/>,
                         children: [
@@ -77,7 +77,7 @@ export const routes = [
                                 element: <EditRoomsPage/>,
                             },
                         ]
-                    },
+                    },*/
 
                 ]
             },
