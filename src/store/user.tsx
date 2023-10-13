@@ -282,9 +282,9 @@ class User {
 				if (!social.enabledMailing) { // проверка обратна логике, потому что состояние обновляется только по
 					// окончанию выполнения хэндлера
 					social.enabledMailing = true;
-					alerts.openSuccessAlert('Расслка успешно включена!')
+					alerts.openSuccessAlert('Рассылка успешно включена!')
 				} else {
-					alerts.openWarningAlert('Расслка отключена')
+					alerts.openWarningAlert('Рассылка отключена')
 					social.enabledMailing = false;
 				}
 

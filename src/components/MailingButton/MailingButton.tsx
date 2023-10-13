@@ -52,7 +52,7 @@ const MailingButton: FC<MailingButtonProps> = ({type}) => {
                     fontSize: 14
                 }}
             >
-                Включить расслыку
+                Включить рассылку
             </ProfileButton>
             <ProfileButton
                 onClick={handleMailing}
@@ -62,7 +62,7 @@ const MailingButton: FC<MailingButtonProps> = ({type}) => {
                     fontSize: 14
                 }}
             >
-                Отключить расслыку
+                Отключить рассылку
             </ProfileButton>
         </>
     );
